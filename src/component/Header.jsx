@@ -168,7 +168,7 @@ function Header() {
                   toggleDropdown();
                 }}
               >
-                Fetch Blog
+                Fetch My Blog
               </NavLink>
               <button
                 className="block px-4 py-2 text-left w-full hover:bg-gray-100"

@@ -22,7 +22,7 @@ const CarouselComponent = () => {
             </Carousel>
           </div>
           <figcaption className="sm:px-8 py-4 flex flex-col gap-8">
-            <div className="reactions flex items-center gap-8 text-[40px]">
+            {/* <div className="reactions flex items-center gap-8 text-[40px]">
               <a href="" className="hover:text-purple-700">
                 <AiOutlineLike />
               </a>
@@ -35,7 +35,7 @@ const CarouselComponent = () => {
               <a href="" className="hover:text-purple-700">
                 <BsShare />
               </a>
-            </div>
+            </div> */}
             <div className="description flex flex-col gap-8 text-[18px] md:text-[24px] font-bold">
               <p>
                 Drive engagement, build trust, and earn loyalty with AI-assisted

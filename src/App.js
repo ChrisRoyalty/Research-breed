@@ -13,6 +13,10 @@ import CreateAccount from "./component/CreateAccount";
 import ProtectedRoute from "./component/ProtectedRoute";
 import EditProfile from "./component/EditProfile";
 import CreateBlog from "./component/CreateBlog";
+import FetchBlog from "./component/FetchBlog";
+import AdminLogin from "./component/admin/AdminLogin";
+import AdminDashboard from "./components/AdminDashboard";
+
 function App() {
   return (
     <Routes>
@@ -25,12 +29,23 @@ function App() {
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="edit-profile" element={<EditProfile />} />
         <Route path="create-blog" element={<CreateBlog />} />
+        <Route path="fetch-blog" element={<FetchBlog />} />
+
         <Route
           path="/profile"
           element={<ProtectedRoute element={<Profile />} />}
         />
       </Route>
       <Route path="/login" element={<Login />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route
+        path="/admin-dashboard"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import { useNavigate } from "react-router-dom";
+import Modal from "./Modal"; // Import the Modal component
 
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
@@ -10,12 +12,14 @@ const CreateBlog = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const token = sessionStorage.getItem("authToken"); // Retrieve token from sessionStorage
+    const token = sessionStorage.getItem("authToken");
 
     if (!token) {
       setError("You are not authenticated. Please log in.");
@@ -30,12 +34,12 @@ const CreateBlog = () => {
 
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/create-post", // Use your correct API URL here
+        "https://dev-api.researchbreed.com/api/create-post",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // Attach the token to the request header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -43,9 +47,11 @@ const CreateBlog = () => {
       if (response.data.success) {
         setMessage("Blog created successfully!");
         setError("");
-        // Optionally, reset form fields or redirect the user to another page
+        setShowModal(true); // Show success modal
       } else {
+        setMessage("");
         setError("Failed to create blog.");
+        setShowModal(true); // Show error modal
       }
     } catch (err) {
       if (err.response) {
@@ -53,6 +59,8 @@ const CreateBlog = () => {
       } else {
         setError("An unexpected error occurred.");
       }
+      setMessage("");
+      setShowModal(true); // Show error modal
     }
 
     setIsLoading(false);
@@ -118,11 +126,18 @@ const CreateBlog = () => {
           </button>
         </form>
       </div>
+
+      {showModal && (
+        <Modal
+          message={error || message}
+          onClose={() => setShowModal(false)}
+          onSuccess={() => navigate("/blog")} // Redirect to blog page on success
+        />
+      )}
     </div>
   );
 };
 
-// Configure Quill modules and formats
 CreateBlog.modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
