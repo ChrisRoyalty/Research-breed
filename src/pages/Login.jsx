@@ -3,7 +3,7 @@ import Logo from "../assets/logo.png";
 function Login() {
   return (
     <div className="w-full h-screen bg-purple-900 flex justify-center items-center">
-      <div className="md:w-[45%] h-fit bg-[#F8E8FE] p-16 shadow-lg">
+      <div className="w-[90%] md:w-[45%] h-fit bg-[#F8E8FE] p-16 shadow-lg">
         <div className="log">
           <img
             src={Logo}
