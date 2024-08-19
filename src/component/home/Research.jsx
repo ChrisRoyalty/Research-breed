@@ -9,59 +9,6 @@ import { IoIosArrowDown } from "react-icons/io";
 
 function Research() {
   return (
-    // <>
-    //   <div className="container mx-auto flex flex-col md:flex-row justify-between items-center ">
-    //     <div className="md:w-0.4 w-full mx-5">
-    //       <img
-    //         src={GraduationImg}
-    //         alt="Graduates"
-    //         className="w-full rounded-lg shadow-lg"
-    //       />
-    //     </div>
-
-    //     <div className="md:w-0.4 w-full mt-8 md:mt-0 md:ml-12">
-    //       <h3 className="text-xl font-bold">New Research opportunities</h3>
-    //       <p className="mt-2 text-gray-600">
-    //         Gain access to over 160 million call for papers and stay updated
-    //         with what is happening in your field.
-    //       </p>
-
-    //       <div className="mt-4 flex space-x-2.5">
-    //         <div className="flex items-center border border-black rounded-lg px-4 py-2 w-full md:w-1/2">
-    //           {/* <FontAwesomeIcon icon={faSearch} className="text-gray-400 mr-2" /> */}
-    //           <input
-    //             type="text"
-    //             placeholder="Search"
-    //             className="focus:outline-none w-full text-sm text-gray-600"
-    //           />
-    //         </div>
-
-    //         <button className="flex items-center border border-black rounded-lg px-4 py-2">
-    //           <span className="text-sm font-medium">FILTERS</span>
-    //           {/* <FontAwesomeIcon icon={faFilter} className="ml-2 text-gray-600" /> */}
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-8">
-    //     <div className="md:w-0.4 w-full mt-8 md:mt-0 md:ml-12 md:pr-9">
-    //       <h3 className="text-xl font-bold">
-    //         Advance your Research and Collaborate with our community
-    //       </h3>
-    //       <div className="mt-4 flex space-x-2 mb-6">
-    //         <button>Connect</button>
-    //       </div>
-    //     </div>
-    //     <div className="md:w-0.4 w-full mx-5">
-    //       <img
-    //         src={LearningImg}
-    //         alt="Graduates"
-    //         className="w-full rounded-lg shadow-lg "
-    //       />
-    //     </div>
-    //   </div>
-    // </>
     <section className="w-full h-fit md:py-[10vh] flex justify-center items-center">
       <div className="w-[90%] sm:w-[80%] h-fit">
         <section className="section1 grid md:grid-cols-2 grid-cols-1 items-center gap-8 sm:gap-24">
