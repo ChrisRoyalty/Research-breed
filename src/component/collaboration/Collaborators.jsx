@@ -9,7 +9,7 @@ const Collaborators = () => {
     <div className="w-full h-fit flex justify-center items-center">
       <div className="md:w-[80%] w-[90%]">
         {collabrationData.map((call, index) => (
-          <div className="text-center  border-[30px] border-[#300937] rounded-[30px] py-8 my-16 shadow-lg ">
+          <div className="text-center  border-[30px] border-[#300937] rounded-[30px] py-8 max-sm:mb-10 mb-16 shadow-lg ">
             <img
               src={call.image}
               alt=""
@@ -86,7 +86,7 @@ const Collaborators = () => {
               </div>
               <div className="items-center w-fit m-auto pl-12 max-[400px]:px-8 grid grid-cols-2 justify-center text-start max-[450px]:pl-8 max-[700px]:gap-[50px] gap-[200px] mt-6">
                 <h4 className="font-bold px-0 max-[700px]:w-[150px] w-[200px]"></h4>
-                <div className="flex gap-4 items-center">
+                <div className="flex max-sm:gap-2 gap-4 items-center">
                   <a href="" className="hover:text-blue-500 text-[22px]">
                     <FaFacebookSquare />
                   </a>

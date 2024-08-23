@@ -19,22 +19,34 @@ function Login() {
           <form className="flex flex-col gap-2 sm:gap-4 sm:mt-6">
             <input
               type="text"
-              className="h-[60px] bg-transparent border-b-[1px] border-gray-500 outline-none text-gray-500 text-[18px]"
-              placeholder="Email Address"
+              required
+              className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
+              placeholder="Enter your username"
             />
             <input
-              type="text"
-              className="h-[60px] bg-transparent border-b-[1px] border-gray-500 outline-none text-gray-500 text-[18px]"
-              placeholder="Email Address"
+              type="password"
+              required
+              className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
+              placeholder="Enter your password"
             />
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name=""
+                id=""
+                required
+                className="w-[18px] h-[18px]"
+              />
+              <label htmlFor="">Remember me</label>
+            </div>
             <button className="bg-purple-900 h-[60px] text-white rounded-xl hover:bg-purple-800/80 text-[20px] mt-4">
               Login
             </button>
           </form>
-          <footer className="flex justify-center md:justify-end items-center sm:mt-8 mt-4">
-            <div className="flex max-sm:flex-col max-sm:text-center gap-2 justify-center">
-              <a href="">Do not have access ?</a>
-              <a href="">Make payment</a>
+          <footer className="flex items-center sm:mt-8 mt-4">
+            <div className="w-full flex max-sm:flex-col max-sm:text-center gap-2 justify-between">
+              <a href="">Don't have an Account?</a>
+              <a href="">Forgot Password?</a>
             </div>
           </footer>
         </div>

@@ -3,7 +3,7 @@ import TeamImg from "../../assets/team.png";
 import "../../css/about.css";
 const AboutMain = () => {
   return (
-    <main className="w-full md:h-[86vh] h-fit bg-[#F8E8FE] flex justify-center py-28">
+    <main className="w-full md:h-[86vh] h-fit bg-[#F8E8FE] flex justify-center py-20 sm:py-28">
       <div className="md:w-[80%] w-[90%] text-center">
         <h4 className="font-bold text-[20px]">About us</h4>
         <p className="text-[18px]">

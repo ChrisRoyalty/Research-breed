@@ -17,7 +17,7 @@ function Header() {
   };
 
   return (
-    <header className="w-full h-[12vh] bg-white fixed flex justify-center items-center shadow-lg z-50">
+    <header className="w-full h-[12vh] bg-white fixed top-0 flex justify-center items-center shadow-lg z-50">
       <div className="w-[90%] sm:w-[80%] flex justify-between items-center">
         <div className="menu text-[48px] lg:hidden" onClick={displayMenu}>
           <AiOutlineMenu />
