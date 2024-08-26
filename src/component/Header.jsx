@@ -15,7 +15,9 @@ function Header() {
   const displayMenu = () => {
     toggleMenu === "hidden" ? setToggleMenu("flex") : setToggleMenu("hidden");
   };
-
+  const hideMenu = () => {
+    setToggleMenu("hidden");
+  };
   return (
     <header className="w-full h-[12vh] bg-white fixed top-0 flex justify-center items-center shadow-lg z-50">
       <div className="w-[90%] sm:w-[80%] flex justify-between items-center">
@@ -30,49 +32,48 @@ function Header() {
         >
           <NavLink
             to="/"
-            element={<Home />}
             className="lg:bg-transparent max-lg:hover:bg-[#8F3FA9] lg:w-fit w-full lg:hover:p-0 hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
           >
             Home
           </NavLink>
           <NavLink
             to="/about"
-            element={<About />}
+            onClick={hideMenu}
             className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
           >
             About us
           </NavLink>
           <NavLink
             to="/publications"
-            element={<Publications />}
+            onClick={hideMenu}
             className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
           >
             Publications
           </NavLink>
           <NavLink
             to="/collabration"
-            element={<Collabration />}
+            onClick={hideMenu}
             className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
           >
             Collaborate
           </NavLink>
           <NavLink
             to="/blog"
-            element={<Blog />}
+            onClick={hideMenu}
             className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
           >
             Blog
           </NavLink>
           <NavLink
             to="/profile"
-            element={<Profile />}
+            onClick={hideMenu}
             className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
           >
             Profile
           </NavLink>
         </nav>
         <div className="text-[16px] font-bold bg-[#8F3FA9] py-2 px-6 text-white rounded-lg">
-          <NavLink to="/login" element={<Login />}>
+          <NavLink to="/login" onClick={hideMenu}>
             Login
           </NavLink>
         </div>

@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import Publications from "./pages/Publications";
 import Login from "./pages/Login";
 import { Routes, Route } from "react-router-dom";
+import CreateAccount from "./component/CreateAccount";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/collabration" element={<Collabration />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/create-account" element={<CreateAccount />} />
       </Route>
       <Route path="/login" element={<Login />} />
     </Routes>

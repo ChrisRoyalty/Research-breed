@@ -1,6 +1,7 @@
 import React from "react";
 // import Button from "./ShortButton";
 import StudentImg from "../../assets/girl.png";
+import { Link } from "react-router-dom";
 function HeroSection() {
   return (
     <section className="hero-section bg-[#F8E8FE] py-24 mb-5 lg:h-[86vh] h-fit lg:p-0 flex justify-center items-center">
@@ -30,9 +31,12 @@ function HeroSection() {
           <p className="text-lg text-black-100 mb-6 font-bold">
             Your source for new research opportunities
           </p>
-          <button className="bg-[#8F3FA9] text-white w-[240px] h-[50px] rounded-lg shadow-lg font-bold">
+          <Link
+            to="/create-account"
+            className="bg-[#8F3FA9] text-white px-16 py-4 rounded-lg shadow-lg font-bold"
+          >
             Sign Up
-          </button>
+          </Link>
         </div>
         <div>
           <img src={StudentImg} alt="" />
