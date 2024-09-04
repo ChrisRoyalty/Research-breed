@@ -19,7 +19,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/publications" element={<Publications />} />
-        <Route path="/collabration" element={<Collabration />} />
+        <Route path="/collaboration" element={<Collabration />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route
