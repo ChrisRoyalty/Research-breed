@@ -1,0 +1,15 @@
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+.blinking-icon {
+  animation: blink 1.5s infinite ease-in-out;
+}
