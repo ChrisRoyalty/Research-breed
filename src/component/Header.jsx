@@ -1,13 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Logo from "../assets/logo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaUserCircle } from "react-icons/fa"; // Import a user icon
+import { FaUserCircle } from "react-icons/fa";
 import "../../src/css/header.css";
+
 function Header() {
   const [toggleMenu, setToggleMenu] = useState("hidden");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false); // State for dropdown visibility
+  const [showDropdown, setShowDropdown] = useState(false);
+  const headerRef = useRef(null);
+  const navigate = useNavigate(); // For navigation
+
+  // Check for auth token in sessionStorage on component mount
+  useEffect(() => {
+    const token = sessionStorage.getItem("authToken");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // ResizeObserver logic to observe header resizing
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        console.log("Header size changed:", entry.contentRect);
+      }
+    });
+
+    if (headerRef.current) {
+      resizeObserver.observe(headerRef.current);
+    }
+
+    return () => {
+      if (headerRef.current) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
 
   const displayMenu = () => {
     setToggleMenu(toggleMenu === "hidden" ? "flex" : "hidden");
@@ -17,19 +45,22 @@ function Header() {
     setToggleMenu("hidden");
   };
 
-  // Check for auth token in sessionStorage on component mount
-  useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
-    setIsAuthenticated(!!token);
-  }, []);
-
-  // Toggle dropdown visibility
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
+  // Handle user logout
+  const handleLogout = () => {
+    sessionStorage.removeItem("authToken"); // Clear the token from sessionStorage
+    setIsAuthenticated(false); // Update state to reflect logged-out status
+    navigate("/login"); // Redirect user to login page
+  };
+
   return (
-    <header className="w-full h-[12vh] bg-white fixed top-0 flex justify-center items-center shadow-lg z-50">
+    <header
+      ref={headerRef}
+      className="w-full h-[12vh] bg-white fixed top-0 flex justify-center items-center shadow-lg z-50"
+    >
       <div className="w-[90%] sm:w-[80%] flex justify-between items-center">
         <div className="menu text-[48px] lg:hidden" onClick={displayMenu}>
           <AiOutlineMenu />
@@ -88,11 +119,11 @@ function Header() {
           )}
         </nav>
 
-        {/* Conditional rendering for login button or user icon */}
+        {/* Conditional rendering for login/logout button or user icon */}
         {isAuthenticated ? (
           <div className="relative">
             <FaUserCircle
-              className="text-[42px] text-[#8F3FA9] cursor-pointer blinking-icon" // Added blinking-icon class
+              className="text-[42px] text-[#8F3FA9] cursor-pointer blinking-icon"
               onClick={toggleDropdown}
             />
             <div
@@ -102,6 +133,16 @@ function Header() {
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
+              <NavLink
+                to="/edit-profile"
+                className="block px-4 py-2 hover:bg-gray-100"
+                onClick={() => {
+                  hideMenu();
+                  toggleDropdown();
+                }}
+              >
+                Edit Profile
+              </NavLink>
               <NavLink
                 to="/create-blog"
                 className="block px-4 py-2 hover:bg-gray-100"
@@ -122,6 +163,15 @@ function Header() {
               >
                 Fetch Blog
               </NavLink>
+              <button
+                className="block px-4 py-2 text-left w-full hover:bg-gray-100"
+                onClick={() => {
+                  toggleDropdown();
+                  handleLogout(); // Trigger logout
+                }}
+              >
+                Logout
+              </button>
             </div>
           </div>
         ) : (

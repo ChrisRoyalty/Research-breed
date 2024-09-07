@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader"; // Importing a specific spinner
-
 function Login() {
   // const [data, setData] = useState(null);
   // const [loading, setLoading] = useState(true);
@@ -41,11 +40,16 @@ function Login() {
         { email, password }
       );
 
+      console.log("Login Response:", response);
+      console.log("Response Data:", response.data);
+
       if (response.data.success) {
         setMessage("Login successful!");
-        sessionStorage.setItem("authToken", response.data.token);
+        sessionStorage.setItem("authToken", response.data.data.token);
         setIsAuthenticated(true);
-        window.location.href = "/profile";
+        console.log("Login Response:", response);
+        console.log("Response Data:", response.data.data.token);
+        window.location.href = "/edit-profile";
       } else {
         handleError(response.data.message);
       }

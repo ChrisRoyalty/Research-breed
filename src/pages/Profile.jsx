@@ -1,38 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ProfileImg from "../assets/profileImg.png"; // Placeholder image
 
-function Profile() {
-  const [formData, setFormData] = useState({
-    name: "",
-    location: "",
-    gender: "",
-    phone: "",
-    occupation: "",
-    interest: "",
-    publications: "",
-    institution: "",
-    fieldOfStudy: "",
-    degree: "",
-    linkedinUrl: "",
-    facebookUrl: "",
-    twitterUrl: "",
-    openToCollaborate: "", // For "Yes" or "No"
-    profileImage: null, // For storing the image file
-  });
-
-  const [previewImage, setPreviewImage] = useState(ProfileImg); // Preview of the uploaded image
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+const Profile = () => {
+  const [profileData, setProfileData] = useState(null); // To store profile information
+  const [error, setError] = useState(""); // For error handling
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const token = sessionStorage.getItem("authToken");
-        console.log("Auth Token:", token); // Log token for debugging
-
         if (!token) {
-          throw new Error("No authentication token found");
+          window.location.href = "/login"; // Redirect to login if no token
+          return;
         }
 
         const response = await axios.get(
@@ -44,221 +23,156 @@ function Profile() {
           }
         );
 
-        // Check if response status is OK
-        if (response.status === 200) {
-          setFormData(response.data);
-          setPreviewImage(response.data.profileImage || ProfileImg);
-        } else {
-          console.error("Response Error:", response.status);
-          setError("Failed to fetch profile data. Status: " + response.status);
-        }
+        setProfileData(response.data.data); // Set profile data to state
       } catch (error) {
-        console.error("Error fetching profile data:", error); // Log complete error object
-        setError("Failed to fetch profile data: " + error.message);
+        setError("Failed to fetch profile data.");
       }
     };
 
     fetchProfileData();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
+  // Check if profileData is null, display a loading state or error message
+  if (error) {
+    return <p className="text-red-600 text-center mt-6">{error}</p>;
+  }
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({ ...formData, profileImage: file });
-
-    // Display image preview
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    setError("");
-
-    try {
-      const token = sessionStorage.getItem("authToken");
-
-      // Create form data object for file upload
-      const data = new FormData();
-      Object.keys(formData).forEach((key) => {
-        if (key !== "profileImage") {
-          data.append(key, formData[key]);
-        }
-      });
-      if (formData.profileImage) {
-        data.append("profileImage", formData.profileImage); // Append image file
-      }
-
-      const response = await axios.patch(
-        "https://dev-api.researchbreed.com/api/update-profile", // Replace with your update profile API URL
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.data.success) {
-        setMessage("Profile updated successfully!");
-      } else {
-        setError("Update failed: " + response.data.message);
-      }
-    } catch (error) {
-      setError("An error occurred while updating the profile.");
-    }
-  };
+  if (!profileData) {
+    return <p className="text-center mt-6">Loading profile data...</p>;
+  }
 
   return (
-    <div className="pt-[12vh] w-full h-fit flex justify-center items-center">
-      <div className="sm:w-[80%] w-[90%]">
-        <div className="intro text-center my-8 sm:my-16">
-          <h1 className="text-[28px]">Profile Edit</h1>
-          <p className="text-[20px]">Fill in your details</p>
+    <div className="flex justify-center items-center h-auto py-[15vh] bg-gray-100">
+      <div className="max-w-xl w-full bg-white p-8 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center">Your Profile</h1>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Name</h2>
+          <p>
+            {profileData.firstname} {profileData.lastname}
+          </p>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="profileImg flex justify-center">
-            <img
-              src={previewImage}
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover"
-            />
-          </div>
-          <div className="flex justify-center mt-4">
-            <input
-              type="file"
-              name="profileImage"
-              required
-              onChange={handleImageChange}
-              accept="image/*"
-              className="outline-none border-[1px] border-purple-700 rounded-[30px] px-4 py-2"
-            />
-          </div>
-          <div className="personalInfo w-full md:w-[70%] m-auto py-8">
-            <h1 className="sm:text-[28px] text-[22px]">Personal Information</h1>
-            <div className="grid grid-cols-2 gap-8 mt-4">
-              {Object.keys(formData).map((key) => {
-                if (key === "profileImage") return null;
-                return (
-                  <React.Fragment key={key}>
-                    <h3 className="text-[18px] sm:text-[20px] capitalize">
-                      {key.replace(/([A-Z])/g, " $1")}
-                    </h3>
-                    <input
-                      type="text"
-                      name={key}
-                      required
-                      value={formData[key]}
-                      onChange={handleChange}
-                      className="outline-none border-[1px] border-purple-700 rounded-[30px] px-4 h-[35px] sm:h-[40px]"
-                    />
-                  </React.Fragment>
-                );
-              })}
-            </div>
-          </div>
 
-          <div className="personalInfo w-full md:w-[70%] m-auto py-8">
-            <h1 className="text-[22px] sm:text-[28px]">Open to Collaborate</h1>
-            <div className="flex gap-8 mt-4">
-              <label className="flex items-center text-[18px] sm:text-[20px]">
-                <input
-                  type="radio"
-                  name="openToCollaborate"
-                  required
-                  value="yes"
-                  checked={formData.openToCollaborate === "yes"}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Yes
-              </label>
-              <label className="flex items-center text-[18px] sm:text-[20px]">
-                <input
-                  type="radio"
-                  name="openToCollaborate"
-                  required
-                  value="no"
-                  checked={formData.openToCollaborate === "no"}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                No
-              </label>
-            </div>
-          </div>
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Email</h2>
+          <p>{profileData.email}</p>
+        </div>
+        {/* 
+          <div className="mb-4">
+            <h2 className="text-lg font-bold">Location</h2>
+            <p>{profileData.location || "Not provided"}</p>
+          </div> */}
 
-          <div className="personalInfo w-full md:w-[70%] m-auto py-8">
-            <h1 className="text-[22px] sm:text-[28px]">
-              Social Media Links Section
-            </h1>
-            <div className="grid grid-cols-2 gap-8 mt-4">
-              <h3 className="text-[18px] sm:text-[20px]">LinkedIn</h3>
-              <input
-                type="text"
-                name="linkedinUrl"
-                required
-                value={formData.linkedinUrl}
-                onChange={handleChange}
-                className="outline-none border-[1px] border-purple-700 rounded-[30px] px-4 h-[35px] sm:h-[40px]"
-              />
-              <h3 className="text-[18px] sm:text-[20px]">Facebook</h3>
-              <input
-                type="text"
-                name="facebookUrl"
-                required
-                value={formData.facebookUrl}
-                onChange={handleChange}
-                className="outline-none border-[1px] border-purple-700 rounded-[30px] px-4 h-[35px] sm:h-[40px]"
-              />
-              <h3 className="text-[18px] sm:text-[20px]">Twitter</h3>
-              <input
-                type="text"
-                name="twitterUrl"
-                required
-                value={formData.twitterUrl}
-                onChange={handleChange}
-                className="outline-none border-[1px] border-purple-700 rounded-[30px] px-4 h-[35px] sm:h-[40px]"
-              />
-            </div>
-            <div className="btns flex gap-4 pt-12 sm:pt-16 justify-center sm:justify-end">
-              <button
-                type="submit"
-                className="bg-[#8F3FA9] max-sm:w-[50%] sm:px-16 h-[60px] text-white rounded-lg"
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Gender</h2>
+          <p>{profileData.gender}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Phone</h2>
+          <p>{profileData.phone || "Not provided"}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Occupation</h2>
+          <p>{profileData.occupation || "Not provided"}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Interest</h2>
+          <p>{profileData.interest || "Not provided"}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Number of Publications</h2>
+          <p>{profileData.number_of_publications || "Not provided"}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Institution</h2>
+          <p>{profileData.institution || "Not provided"}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Field of Study</h2>
+          <p>{profileData.field_of_study || "Not provided"}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Degree</h2>
+          <p>{profileData.degree || "Not provided"}</p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">LinkedIn</h2>
+          <p>
+            {profileData.linkedin_url ? (
+              <a
+                href={profileData.linkedin_url}
+                className="text-blue-600"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Save
-              </button>
-              <button
-                type="button"
-                className="bg-[#8F3FA9] max-sm:w-[50%] sm:px-16 h-[60px] text-white rounded-lg"
-                onClick={() => window.location.reload()} // Refresh the page or redirect as needed
+                {profileData.linkedin_url}
+              </a>
+            ) : (
+              "Not provided"
+            )}
+          </p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Facebook</h2>
+          <p>
+            {profileData.facebook_url ? (
+              <a
+                href={profileData.facebook_url}
+                className="text-blue-600"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </form>
-        {message && (
-          <p className="text-green-600 text-center mt-4">{message}</p>
-        )}
-        {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+                {profileData.facebook_url}
+              </a>
+            ) : (
+              "Not provided"
+            )}
+          </p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Twitter</h2>
+          <p>
+            {profileData.twitter_url ? (
+              <a
+                href={profileData.twitter_url}
+                className="text-blue-600"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {profileData.twitter_url}
+              </a>
+            ) : (
+              "Not provided"
+            )}
+          </p>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">Open to Collaborate?</h2>
+          <p>{profileData.open_to_collaborate ? "Yes" : "No"}</p>
+        </div>
+
+        <div className="text-center mt-6">
+          <a
+            href="/edit-profile"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+          >
+            Edit Profile
+          </a>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default Profile;

@@ -26,7 +26,7 @@ const CreateAccount = () => {
     try {
       console.log("Starting registration process...");
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/register",
+        "https://dev-api.researchbreed.com/api/create-account",
         {
           firstname: firstname,
           lastname: lastname,
@@ -125,7 +125,9 @@ const CreateAccount = () => {
               placeholder="Enter your password"
             />
           </div>
-
+          {message && (
+            <div className="message text-center text-[#8F3FA9]">{message}</div>
+          )}
           <footer className="flex flex-col justify-center items-center sm:mt-8 mt-4 gap-4">
             <button
               type="submit"
