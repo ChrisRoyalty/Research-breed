@@ -59,14 +59,21 @@ function Header() {
   return (
     <header
       ref={headerRef}
-      className="w-full h-[12vh] bg-white fixed top-0 flex justify-center items-center shadow-lg z-50"
+      className="w-full h-[12vh] max-sm:h-[15vh] bg-white fixed top-0 flex justify-center items-center shadow-lg z-50"
     >
       <div className="w-[90%] sm:w-[80%] flex justify-between items-center">
-        <div className="menu text-[48px] lg:hidden" onClick={displayMenu}>
+        <div
+          className="menu text-[48px] lg:hidden max-sm:text-[40px]"
+          onClick={displayMenu}
+        >
           <AiOutlineMenu />
         </div>
         <div className="logo z-50">
-          <img src={Logo} alt="Logo" className="w-[56px] h-[40px]" />
+          <img
+            src={Logo}
+            alt="Logo"
+            className="w-[56px] h-[40px] max-sm:w-[40px] max-sm:h-[40px]"
+          />
         </div>
         <nav
           className={`max-lg:py-10 fixed top-[13vh] lg:w-fit w-[90%] lg:h-fit h-[85vh] lg:bg-transparent bg-white lg:shadow-none shadow-lg left-0 lg:p-0 px-[10%] lg:static ${toggleMenu} lg:flex items-start lg:flex-row flex-col lg:items-center gap-8 text-[16px] font-bold`}
@@ -123,7 +130,7 @@ function Header() {
         {isAuthenticated ? (
           <div className="relative">
             <FaUserCircle
-              className="text-[42px] text-[#8F3FA9] cursor-pointer blinking-icon"
+              className="text-[42px] max-sm:text-[40px] text-[#8F3FA9] cursor-pointer blinking-icon"
               onClick={toggleDropdown}
             />
             <div

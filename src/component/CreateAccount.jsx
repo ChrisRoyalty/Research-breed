@@ -1,63 +1,85 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaLock } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+// Modal component
+const SuccessModal = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+        <h2 className="text-2xl font-bold mb-4 text-[#8F3FA9]">Success!</h2>
+        <p>Your account has been created successfully.</p>
+        <button
+          className="mt-4 bg-[#8F3FA9] text-white px-4 py-2 rounded"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const CreateAccount = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false); // For controlling modal visibility
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents the form from refreshing the page
-
-    // Proceed with registration since there's no need to confirm password
+    e.preventDefault();
+    setLoading(true);
     registerUser();
   };
 
   const registerUser = async () => {
     try {
-      console.log("Starting registration process...");
       const response = await axios.post(
         "https://dev-api.researchbreed.com/api/create-account",
         {
-          firstname: firstname,
-          lastname: lastname,
-          email: email,
-          password: password,
+          firstname,
+          lastname,
+          email,
+          password,
         }
       );
-      console.log("Received response:", response);
+
       const data = response.data;
 
       if (data.success) {
         setMessage("Account created successfully!");
         setError("");
-        console.log("Success: Account created successfully!");
+        setShowModal(true); // Show modal on success
+
+        // Auto-close modal and navigate to login after 3 seconds
+        setTimeout(() => {
+          setShowModal(false);
+          navigate("/login");
+        }, 3000);
       } else {
         setError("Failed to create account: " + data.message);
         setMessage("");
-        console.error("Error: Failed to create account - " + data.message);
       }
     } catch (error) {
       if (error.response) {
         setError("Error: " + error.response.data.message);
-        console.error("Error response:", error.response);
       } else if (error.request) {
         setError("Error: No response from server.");
-        console.error("Error request:", error.request);
       } else {
         setError("Error: " + error.message);
-        console.error("Error message:", error.message);
       }
       setMessage("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,7 +87,7 @@ const CreateAccount = () => {
     <div className="pt-[18vh] pb-[7vh] w-full h-fit flex justify-center items-center bg-purple-950">
       <div className="md:w-[45%] w-[90%] bg-white sm:p-10 p-8 relative ">
         <div className="google_facebook flex flex-col items-center justify-center gap-4">
-          <div className="lockIcon  bg-[#8F3FA9] rounded-full w-fit p-4  absolute top-[-25px] items-center ">
+          <div className="lockIcon bg-[#8F3FA9] rounded-full w-fit p-4 absolute top-[-25px] items-center">
             <FaLock className="text-white text-[30px]" />
           </div>
           <h4 className="text-[24px] font-bold">Create an Account</h4>
@@ -131,9 +153,35 @@ const CreateAccount = () => {
           <footer className="flex flex-col justify-center items-center sm:mt-8 mt-4 gap-4">
             <button
               type="submit"
-              className="bg-[#8F3FA9] h-[65px] w-full rounded-[30px] text-white"
+              className={`bg-[#8F3FA9] h-[65px] w-full rounded-[30px] text-white flex justify-center items-center ${
+                loading ? "opacity-50" : ""
+              }`}
+              disabled={loading}
             >
-              Sign up
+              {loading ? (
+                <svg
+                  className="animate-spin h-5 w-5 mr-3 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+              ) : (
+                "Sign up"
+              )}
             </button>
             <div className="w-full flex max-sm:flex-col max-sm:text-center gap-2 justify-between">
               <Link className="font-bold text-[18px]" to="/login">
@@ -146,6 +194,7 @@ const CreateAccount = () => {
           </footer>
         </form>
       </div>
+      {showModal && <SuccessModal onClose={() => setShowModal(false)} />}
     </div>
   );
 };

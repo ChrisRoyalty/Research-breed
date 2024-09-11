@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import CreateAccount from "./component/CreateAccount";
 import ProtectedRoute from "./component/ProtectedRoute";
 import EditProfile from "./component/EditProfile";
+import CreateBlog from "./component/CreateBlog";
 function App() {
   return (
     <Routes>
@@ -23,6 +24,7 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="edit-profile" element={<EditProfile />} />
+        <Route path="create-blog" element={<CreateBlog />} />
         <Route
           path="/profile"
           element={<ProtectedRoute element={<Profile />} />}

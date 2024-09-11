@@ -49,7 +49,7 @@ function Login() {
         setIsAuthenticated(true);
         console.log("Login Response:", response);
         console.log("Response Data:", response.data.data.token);
-        window.location.href = "/edit-profile";
+        window.location.href = "/profile";
       } else {
         handleError(response.data.message);
       }

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ClipLoader from "react-spinners/ClipLoader"; // Importing a specific spinner
 
 const Profile = () => {
   const [profileData, setProfileData] = useState(null); // To store profile information
   const [error, setError] = useState(""); // For error handling
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -88,10 +90,10 @@ const Profile = () => {
           <p>{profileData.number_of_publications || "Not provided"}</p>
         </div>
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <h2 className="text-lg font-bold">Institution</h2>
           <p>{profileData.institution || "Not provided"}</p>
-        </div>
+        </div> */}
 
         <div className="mb-4">
           <h2 className="text-lg font-bold">Field of Study</h2>
@@ -109,7 +111,7 @@ const Profile = () => {
             {profileData.linkedin_url ? (
               <a
                 href={profileData.linkedin_url}
-                className="text-blue-600"
+                className="text-[#8F3FA9]"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -127,7 +129,7 @@ const Profile = () => {
             {profileData.facebook_url ? (
               <a
                 href={profileData.facebook_url}
-                className="text-blue-600"
+                className="text-[#8F3FA9]"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -145,7 +147,7 @@ const Profile = () => {
             {profileData.twitter_url ? (
               <a
                 href={profileData.twitter_url}
-                className="text-blue-600"
+                className="text-[#8F3FA9]"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -165,12 +167,17 @@ const Profile = () => {
         <div className="text-center mt-6">
           <a
             href="/edit-profile"
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+            className="bg-[#8F3FA9] hover:bg-[#8F3FA9]/90 text-white py-2 px-4 rounded"
           >
-            Edit Profile
+            {isLoading ? "Loading..." : "Edit Profile"}
           </a>
         </div>
       </div>
+      {isLoading && (
+        <div className="loader text-center mt-2 text-[#8F3FA9] font-bold">
+          <ClipLoader size={50} color="#8F3FA9" />
+        </div>
+      )}
     </div>
   );
 };

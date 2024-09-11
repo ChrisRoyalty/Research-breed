@@ -74,7 +74,7 @@ const EditProfile = () => {
     if (name === "open_to_collaborate") {
       setFormData({
         ...formData,
-        [name]: value === "yes" ? "1" : "0",
+        [e.target.name]: e.target.value,
       });
     } else {
       setFormData({
@@ -160,7 +160,7 @@ const EditProfile = () => {
         {error && <p className="text-red-600 mb-4">{error}</p>}
         {message && <p className="text-green-600 mb-4">{message}</p>}
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="location" className="block text-gray-700">
               Location
             </label>
@@ -172,7 +172,7 @@ const EditProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
             />
-          </div>
+          </div> */}
 
           <div className="mb-4">
             <label htmlFor="gender" className="block text-gray-700">
@@ -249,7 +249,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="institution" className="block text-gray-700">
               Institution
             </label>
@@ -261,7 +261,7 @@ const EditProfile = () => {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
             />
-          </div>
+          </div> */}
 
           <div className="mb-4">
             <label htmlFor="field_of_study" className="block text-gray-700">
@@ -281,14 +281,21 @@ const EditProfile = () => {
             <label htmlFor="degree" className="block text-gray-700">
               Degree
             </label>
-            <input
-              type="text"
+            <select
               id="degree"
               name="degree"
               value={formData.degree}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
-            />
+            >
+              <option value="">Select Degree</option>
+              <option value="WAEC">WAEC</option>
+              <option value="ND">ND</option>
+              <option value="HND">HND</option>
+              <option value="BSC">BSC</option>
+              <option value="MSC">MSC</option>
+              <option value="PhD">PhD</option>
+            </select>
           </div>
 
           <div className="mb-4">
@@ -338,17 +345,17 @@ const EditProfile = () => {
               htmlFor="open_to_collaborate"
               className="block text-gray-700"
             >
-              Open to Collaborate?
+              Open to Collaborate
             </label>
             <select
               id="open_to_collaborate"
               name="open_to_collaborate"
-              value={formData.open_to_collaborate === "1" ? "yes" : "no"}
+              value={formData.open_to_collaborate}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
             >
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
+              <option value="0">No</option>
+              <option value="1">Yes</option>
             </select>
           </div>
 
@@ -356,7 +363,7 @@ const EditProfile = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+              className="w-full bg-[#8F3FA9] hover:bg-[#8F3FA9]/90 text-white py-2 px-4 rounded-lg transition duration-200"
             >
               {loading ? "Updating..." : "Update Profile"}
             </button>
