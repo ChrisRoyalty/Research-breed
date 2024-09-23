@@ -1,0 +1,8 @@
+/* Tailwind customization for Quill components */
+.ql-toolbar button:hover {
+  @apply text-purple-600 border-purple-600;
+}
+
+.ql-toolbar .ql-active {
+  @apply text-purple-600;
+}

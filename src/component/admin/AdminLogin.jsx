@@ -61,7 +61,7 @@ function AdminLogin() {
       if (response.data.success) {
         setMessage("Login successful!");
         sessionStorage.setItem("authToken", response.data.data.token);
-        navigate("/admin-dashboard"); // Redirect to admin dashboard
+        navigate("/admin"); // Redirect to admin dashboard
       } else {
         handleError(response.data.message);
       }

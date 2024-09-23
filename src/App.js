@@ -15,7 +15,13 @@ import EditProfile from "./component/EditProfile";
 import CreateBlog from "./component/CreateBlog";
 import FetchBlog from "./component/FetchBlog";
 import AdminLogin from "./component/admin/AdminLogin";
-import AdminDashboard from "./components/AdminDashboard";
+import AdminDashboard from "./component/admin/AdminDashboard";
+import AllBlogs from "./component/admin/AllBlogs";
+import UpdateBlog from "./component/admin/UpdateBlog";
+import FetchPublications from "./component/admin/FetchPublications";
+import AddPublication from "./component/admin/AddPublication";
+import RemovePublication from "./component/admin/RemovePublication";
+import FetchUsers from "./component/admin/FetchUsers";
 
 function App() {
   return (
@@ -38,14 +44,14 @@ function App() {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/admin-login" element={<AdminLogin />} />
-      <Route
-        path="/admin-dashboard"
-        element={
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/admin" element={<AdminDashboard />}>
+        <Route path="all-blogs" element={<AllBlogs />} />
+        <Route path="approved-blogs" element={<UpdateBlog />} />
+        <Route path="publications" element={<FetchPublications />} />
+        <Route path="add-publication" element={<AddPublication />} />
+        <Route path="remove-publication" element={<RemovePublication />} />
+        <Route path="users" element={<FetchUsers />} />
+      </Route>
     </Routes>
   );
 }
