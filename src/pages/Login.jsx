@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../assets/logo.png";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 import axios from "axios";
-import ClipLoader from "react-spinners/ClipLoader"; // Importing a specific spinner
+import ClipLoader from "react-spinners/ClipLoader";
+
 function Login() {
-  // const [data, setData] = useState(null);
-  // const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Using useNavigate hook
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -15,7 +14,6 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isVerificationEmailResent, setIsVerificationEmailResent] =
     useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,15 +39,11 @@ function Login() {
       );
 
       console.log("Login Response:", response);
-      console.log("Response Data:", response.data);
 
       if (response.data.success) {
-        setMessage("Login successful!");
         sessionStorage.setItem("authToken", response.data.data.token);
-        setIsAuthenticated(true);
-        console.log("Login Response:", response);
-        console.log("Response Data:", response.data.data.token);
-        window.location.href = "/profile";
+        setMessage("Login successful!");
+        navigate("/profile"); // Use navigate to redirect
       } else {
         handleError(response.data.message);
       }
@@ -77,17 +71,14 @@ function Login() {
     }
   };
 
-  // Optionally, add a function to resend the verification email
   const resendVerificationEmail = async () => {
     try {
-      // Call your API to resend the verification email
       const response = await axios.post(
         "https://dev-api.researchbreed.com/api/resend-verification",
         { email }
       );
-
       if (response.data.success) {
-        setIsVerificationEmailResent(true); // Update state to hide the error
+        setIsVerificationEmailResent(true);
         setMessage("Verification email resent! Please check your inbox.");
       } else {
         setError(
@@ -96,17 +87,11 @@ function Login() {
       }
     } catch (error) {
       console.error("Error resending verification email:", error);
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        setError(
-          "Failed to resend verification email: " + error.response.data.message
-        );
-      } else {
-        setError("An unexpected error occurred. Please try again later.");
-      }
+      setError(
+        "Failed to resend verification email: " +
+          (error.response?.data?.message ||
+            "An unexpected error occurred. Please try again later.")
+      );
     }
   };
 
@@ -150,7 +135,6 @@ function Login() {
               className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
               placeholder="Enter your password"
             />
-
             <button
               type="submit"
               disabled={isLoading}
@@ -159,13 +143,11 @@ function Login() {
               {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
-
           {isLoading && (
             <div className="loader text-center mt-2 text-[#8F3FA9] font-bold">
               <ClipLoader size={50} color="#8F3FA9" />
             </div>
           )}
-
           {error && (
             <div className="error text-red-700 text-center mt-2 leading-[40px]">
               {error}
@@ -179,7 +161,6 @@ function Login() {
               )}
             </div>
           )}
-
           {message && (
             <div className="message text-center text-[#8F3FA9]">{message}</div>
           )}
