@@ -60,14 +60,20 @@ function Login() {
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
-
-  const handleError = (message) => {
-    if (message.includes("not verified")) {
-      setError(
-        "Your account is not verified. Please check your email for the verification link."
-      );
+  const handleError = (error) => {
+    console.error("Error object:", error); // Log the entire error object
+    if (error.response) {
+      // Server responded with a status other than 2xx
+      console.error("Response data:", error.response.data);
+      setError(error.response.data.message || "Login failed.");
+    } else if (error.request) {
+      // Request was made but no response was received
+      console.error("Request data:", error.request);
+      setError("No response from the server. Please try again later.");
     } else {
-      setError("Login failed: " + message);
+      // Something happened in setting up the request
+      console.error("Error message:", error.message);
+      setError("An unexpected error occurred. Please try again later.");
     }
   };
 
