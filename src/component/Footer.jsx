@@ -5,7 +5,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaRegCopyright } from "react-icons/fa";
-
+import { NavLink } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="w-full h-fit flex flex-col justify-center items-center mt-12">
@@ -16,12 +16,12 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 grid-cols-1 mt-4 items-center">
           <div className="flex flex-col gap-8">
             <nav className="grid grid-cols-3 gap-4">
-              <a href="">About us</a>
-              <a href="">FAQs</a>
-              <a href="">Collaborate</a>
-              <a href="">Contact us</a>
-              <a href="">Blog</a>
-              <a href="">Publications</a>
+              <NavLink to={"/about"}>About</NavLink>
+              <NavLink to={"/faq"}>FAQs</NavLink>
+              <NavLink to={"/collaboration"}>Collaborate</NavLink>
+              <NavLink to={"/contact"}>Contact Us</NavLink>
+              <NavLink to={"/blog"}>Blog</NavLink>
+              <NavLink to={"/publications"}>Publications</NavLink>
             </nav>
             <div className="socials flex gap-4">
               <a href="" className="text-[25px] hover:text-[#8F3FA9]">
@@ -67,7 +67,7 @@ const Footer = () => {
             Code of conduct
           </a>
           <a href="" className="flex items-center gap-2 max-sm:text-[12px]">
-            <FaRegCopyright /> 2024 DanTower, LLC. All Rights Reserved.
+            <FaRegCopyright /> 2024 Researchbreed, LLC. All Rights Reserved.
           </a>
           <a href=""></a>
         </div>

@@ -1,51 +1,77 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import axios from "axios"; // Import axios for making API calls
+import axios from "axios";
 import "tailwindcss/tailwind.css";
 
 const AddPublication = () => {
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Journal");
+  const [category, setCategory] = useState("journal");
   const [body, setBody] = useState("");
   const [publisher, setPublisher] = useState("");
   const [dateOfPublication, setDateOfPublication] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [externalLink, setExternalLink] = useState("");
+  const [message, setMessage] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalType, setModalType] = useState(""); // "success" or "error"
 
   const handlePublish = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault();
+    const token = sessionStorage.getItem("authToken");
+
+    if (!token) {
+      setMessage("You are not authenticated. Please log in again.");
+      setModalType("error");
+      showModal();
+      return;
+    }
 
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/admin/publications",
+        "https://dev-api.researchbreed.com/api/admin/publication",
         {
           title,
           category,
           body,
           publisher,
           date_of_publication: dateOfPublication,
+          external_link: externalLink,
         },
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`, // Adjust if using a different method for token storage
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       if (response.data.success) {
-        setSuccess("Publication published successfully!");
+        setMessage("Publication published successfully!");
+        setModalType("success");
         // Reset the form fields
         setTitle("");
-        setCategory("Journal");
+        setCategory("journal");
         setBody("");
         setPublisher("");
         setDateOfPublication("");
+        setExternalLink("");
+      } else {
+        setMessage("Failed to publish the publication. Please try again.");
+        setModalType("error");
       }
+      showModal();
     } catch (error) {
-      setError("Failed to publish the publication. Please try again.");
+      setMessage("Failed to publish the publication. Please try again.");
+      setModalType("error");
       console.error(error);
+      showModal();
     }
+  };
+
+  const showModal = () => {
+    setModalVisible(true);
+    setTimeout(() => {
+      setModalVisible(false);
+    }, 3000); // Hide the modal after 3 seconds
   };
 
   return (
@@ -69,16 +95,48 @@ const AddPublication = () => {
             stroke: #8F3FA9 !important;
             fill: #8F3FA9 !important;
           }
+          .blur-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(5px);
+            z-index: 40;
+          }
         `}
       </style>
+
+      {/* Modal for displaying messages */}
+      {isModalVisible && (
+        <>
+          <div className="blur-background" />
+          <div
+            className={`fixed top-0 left-0 w-full h-full flex items-center justify-center z-50`}
+          >
+            <div
+              className={`bg-white p-4 rounded-md shadow-md max-w-sm w-full ${
+                modalType === "success"
+                  ? "border-l-4 border-[#8F3FA9]"
+                  : "border-l-4 border-red-500"
+              }`}
+            >
+              <p
+                className={`text-center ${
+                  modalType === "success" ? "text-[#8F3FA9]" : "text-red-500"
+                }`}
+              >
+                {message}
+              </p>
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Add New Publication
         </h2>
-
-        {error && <p className="text-red-500">{error}</p>}
-        {success && <p className="text-green-500">{success}</p>}
 
         <form onSubmit={handlePublish} className="space-y-4">
           {/* Title */}
@@ -106,9 +164,9 @@ const AddPublication = () => {
               onChange={(e) => setCategory(e.target.value)}
               className="w-full p-3 border rounded-md focus:border-[#8F3FA9] focus:ring-2 focus:ring-[#8F3FA9]"
             >
-              <option value="Journal">Journal</option>
-              <option value="Research-project">Research Project</option>
-              <option value="Conference-paper">Conference Paper</option>
+              <option value="journal">Journal</option>
+              <option value="research-project">Research Project</option>
+              <option value="conference-paper">Conference Paper</option>
             </select>
           </div>
 
@@ -138,6 +196,20 @@ const AddPublication = () => {
               onChange={(e) => setDateOfPublication(e.target.value)}
               className="w-full p-3 border rounded-md focus:border-[#8F3FA9] focus:ring-2 focus:ring-[#8F3FA9]"
               required
+            />
+          </div>
+
+          {/* External Link */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              External Link
+            </label>
+            <input
+              type="url"
+              value={externalLink}
+              onChange={(e) => setExternalLink(e.target.value)}
+              className="w-full p-3 border rounded-md focus:border-[#8F3FA9] focus:ring-2 focus:ring-[#8F3FA9]"
+              placeholder="Enter external link (optional)"
             />
           </div>
 

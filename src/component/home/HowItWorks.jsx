@@ -5,7 +5,7 @@ function HowItWorks() {
     <section className="w-full h-fit flex justify-center items-center">
       <div className="w-[90%] sm:w-[80%] py-12 px-4">
         <h2 className="text-center text-2xl font-bold mb-4">
-          How DanTower works
+          How Researchbreed Works
         </h2>
         <p className="text-center text-gray-600 mb-10">
           Follow our easy 5-step process to get started

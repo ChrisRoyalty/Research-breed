@@ -6,7 +6,7 @@ import GraduationImg from "../../assets/graduates.jpg";
 import LearningImg from "../../assets/man_girl.jpg";
 import { IoSearch } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
-
+import { NavLink } from "react-router-dom";
 function Research() {
   return (
     <section className="w-full h-fit md:py-[10vh] flex justify-center items-center">
@@ -48,9 +48,12 @@ function Research() {
             <h3 className="text-xl font-bold">
               Advance your Research and <br /> Collaborate with our community
             </h3>
-            <button className="w-[90%] lg:w-[70%] rounded-lg h-[50px] bg-[#8F3FA9] text-white">
+            <NavLink
+              to="/collaboration"
+              className="w-[90%] lg:w-[70%] rounded-lg h-[50px] bg-[#8F3FA9] text-white flex justify-center items-center"
+            >
               Connect
-            </button>
+            </NavLink>
           </div>
 
           <div className="graduationImg">

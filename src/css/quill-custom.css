@@ -1,0 +1,8 @@
+/* quill-custom.css */
+.ql-toolbar button:hover {
+  @apply text-[#8F3FA9] border-[#8F3FA9];
+}
+
+.ql-toolbar .ql-active {
+  @apply text-[#8F3FA9];
+}

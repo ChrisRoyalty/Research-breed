@@ -1,56 +1,59 @@
-// AdminDashboard.js
-import { Link, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 function AdminDashboard() {
   return (
     <div className="flex flex-col md:flex-row h-screen overflow-hidden">
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-[#8F3FA9] text-white flex-none md:h-full h-auto md:overflow-y-auto">
-        <div className="p-4 text-center font-bold text-lg border-b border-gray-300">
+        <div className="p-4 text-center font-bold text-lg border-b border-[#8F3FA9]/20">
           Admin Dashboard
         </div>
         <nav className="flex flex-col p-4 space-y-2">
-          <Link
+          <NavLink
             to="users"
-            className="hover:bg-gray-50 hover:text-black p-2 rounded transition"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
+                : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
+            }
           >
             Fetch Users
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="all-blogs"
-            className="hover:bg-gray-50 hover:text-black p-2 rounded transition"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
+                : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
+            }
           >
             Fetch All Blogs
-          </Link>
-          <Link
-            to="approved-blogs"
-            className="hover:bg-gray-50 hover:text-black p-2 rounded transition"
-          >
-            Approve/Disapprove Blogs
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="publications"
-            className="hover:bg-gray-50 hover:text-black p-2 rounded transition"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
+                : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
+            }
           >
             Fetch Publications
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="add-publication"
-            className="hover:bg-gray-50 hover:text-black p-2 rounded transition"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
+                : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
+            }
           >
             Add Publication
-          </Link>
-          <Link
-            to="remove-publication"
-            className="hover:bg-gray-50 hover:text-black p-2 rounded transition"
-          >
-            Remove Publication
-          </Link>
+          </NavLink>
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 bg-purple-100 p-4 overflow-y-auto">
+      <main className="flex-1 bg-[#F2D4F5] p-4 overflow-y-auto">
         <h1 className="text-2xl font-semibold mb-4">
           Welcome to the Admin Dashboard
         </h1>
