@@ -9,7 +9,7 @@ function Publications() {
   return (
     <div className="pt-[12vh]">
       <Main />
-      <Access />
+      {/* <Access /> */}
       <Listings />
       <Footer />
     </div>

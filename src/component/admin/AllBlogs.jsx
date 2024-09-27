@@ -84,6 +84,8 @@ const FetchBlogs = () => {
       if (response.data.success) {
         console.log("Operation successful", response.data);
         // Update local state if necessary
+        // Refetch or update the blogs array
+        // fetchBlogs(); // Optionally refetch blogs
       } else {
         console.log("Operation failed", response.data.message);
       }
@@ -143,13 +145,13 @@ const FetchBlogs = () => {
                   View Post
                 </button>
               </td>
-              <td className="px-4 py-2 border">
+              <td className="px-4 py-2 border flex flex-col gap-2">
                 <button
                   onClick={() =>
                     handleApproveDisapprove(blog.post_slug, "approve")
                   }
                   disabled={updating}
-                  className={`bg-green-500 text-white px-3 py-1 rounded mr-2 hover:bg-green-700 ${
+                  className={` bg-[#8F3FA9] text-white px-3 py-1 rounded mr-2 hover:bg-green-700 ${
                     updating ? "opacity-50" : ""
                   }`}
                 >
