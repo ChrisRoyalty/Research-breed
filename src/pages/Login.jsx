@@ -13,6 +13,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isVerificationEmailResent, setIsVerificationEmailResent] =
     useState(false);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const navigate = useNavigate(); // Hook for navigation
@@ -37,7 +38,13 @@ function Login() {
     try {
       const response = await axios.post(
         "https://dev-api.researchbreed.com/api/login",
-        { email, password }
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer token",
+          },
+        }
       );
 
       console.log("Login Response:", response);
