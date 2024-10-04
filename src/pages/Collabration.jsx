@@ -9,7 +9,7 @@ function Collabration() {
     <div className="pt-[12vh]">
       <Intro />
       <Collaborators />
-      <Button />
+      {/* <Button /> */}
       <Footer />
     </div>
   );

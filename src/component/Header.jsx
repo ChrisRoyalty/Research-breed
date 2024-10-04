@@ -56,6 +56,17 @@ function Header() {
     navigate("/login"); // Redirect user to login page
   };
 
+  // Handle collaboration link click
+  const handleCollaborateClick = () => {
+    if (!isAuthenticated) {
+      // If the user is not authenticated, redirect to login
+      navigate("/login");
+    } else {
+      // If authenticated, go to collaboration page
+      navigate("/collaboration");
+    }
+  };
+
   return (
     <header
       ref={headerRef}
@@ -99,13 +110,16 @@ function Header() {
           >
             Publications
           </NavLink>
-          <NavLink
-            to="/collaboration"
-            className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
-            onClick={hideMenu}
+          {/* Collaboration link with authentication check */}
+          <button
+            className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg max-lg:text-start"
+            onClick={() => {
+              hideMenu();
+              handleCollaborateClick();
+            }}
           >
             Collaborate
-          </NavLink>
+          </button>
           <NavLink
             to="/blog"
             className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"

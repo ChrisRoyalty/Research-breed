@@ -3,10 +3,9 @@ import Logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 import axios from "axios";
-import ClipLoader from "react-spinners/ClipLoader";
+import ClipLoader from "react-spinners/ClipLoader"; // Importing a specific spinner
 
 function Login() {
-  const navigate = useNavigate(); // Using useNavigate hook
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -14,6 +13,9 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isVerificationEmailResent, setIsVerificationEmailResent] =
     useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,9 +43,13 @@ function Login() {
       console.log("Login Response:", response);
 
       if (response.data.success) {
-        sessionStorage.setItem("authToken", response.data.data.token);
         setMessage("Login successful!");
-        navigate("/profile"); // Use navigate to redirect
+        sessionStorage.setItem("authToken", response.data.data.token);
+        setIsAuthenticated(true);
+        console.log("Response Data:", response.data.data.token);
+
+        // Use navigate to redirect the user to the profile page
+        navigate("/profile"); // Correct client-side navigation
       } else {
         handleError(response.data.message);
       }
@@ -60,20 +66,14 @@ function Login() {
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
-  const handleError = (error) => {
-    console.error("Error object:", error); // Log the entire error object
-    if (error.response) {
-      // Server responded with a status other than 2xx
-      console.error("Response data:", error.response.data);
-      setError(error.response.data.message || "Login failed.");
-    } else if (error.request) {
-      // Request was made but no response was received
-      console.error("Request data:", error.request);
-      setError("No response from the server. Please try again later.");
+
+  const handleError = (message) => {
+    if (message.includes("not verified")) {
+      setError(
+        "Your account is not verified. Please check your email for the verification link."
+      );
     } else {
-      // Something happened in setting up the request
-      console.error("Error message:", error.message);
-      setError("An unexpected error occurred. Please try again later.");
+      setError("Login failed: " + message);
     }
   };
 
@@ -83,6 +83,7 @@ function Login() {
         "https://dev-api.researchbreed.com/api/resend-verification",
         { email }
       );
+
       if (response.data.success) {
         setIsVerificationEmailResent(true);
         setMessage("Verification email resent! Please check your inbox.");
@@ -93,11 +94,7 @@ function Login() {
       }
     } catch (error) {
       console.error("Error resending verification email:", error);
-      setError(
-        "Failed to resend verification email: " +
-          (error.response?.data?.message ||
-            "An unexpected error occurred. Please try again later.")
-      );
+      setError("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -141,6 +138,7 @@ function Login() {
               className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
               placeholder="Enter your password"
             />
+
             <button
               type="submit"
               disabled={isLoading}
@@ -149,11 +147,13 @@ function Login() {
               {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
+
           {isLoading && (
             <div className="loader text-center mt-2 text-[#8F3FA9] font-bold">
               <ClipLoader size={50} color="#8F3FA9" />
             </div>
           )}
+
           {error && (
             <div className="error text-red-700 text-center mt-2 leading-[40px]">
               {error}
@@ -167,6 +167,7 @@ function Login() {
               )}
             </div>
           )}
+
           {message && (
             <div className="message text-center text-[#8F3FA9]">{message}</div>
           )}
