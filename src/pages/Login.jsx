@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Logo from "../assets/logo.png";
-import ClipLoader from "react-spinners/ClipLoader"; // Importing spinner
+import ClipLoader from "react-spinners/ClipLoader";
+import {
+  MdOutlineCancelPresentation,
+  MdCheckCircle,
+  MdError,
+} from "react-icons/md"; // Importing success/error icons
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,6 +15,8 @@ function Login() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [isSuccess, setIsSuccess] = useState(false); // To control which icon to show
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,15 +73,26 @@ function Login() {
         sessionStorage.setItem("authToken", response.data.data.token);
         localStorage.setItem("authToken", response.data.data.token);
         setMessage("Login successful!");
-        navigate("/profile");
+        setIsSuccess(true); // Trigger success icon
+        setShowModal(true); // Show the modal
+        setTimeout(() => {
+          setShowModal(false); // Hide modal after 3 seconds
+          navigate("/");
+        }, 3000);
       } else {
         setError("Login failed: " + response.data.message);
+        setIsSuccess(false); // Trigger error icon
+        setShowModal(true); // Show the modal
+        setTimeout(() => setShowModal(false), 3000); // Hide after 3 seconds
       }
     } catch (error) {
       setError(
         error.response?.data?.message ||
           "An unexpected error occurred. Please try again later."
       );
+      setIsSuccess(false); // Trigger error icon
+      setShowModal(true); // Show the modal
+      setTimeout(() => setShowModal(false), 3000); // Hide after 3 seconds
     } finally {
       setIsLoading(false);
     }
@@ -85,11 +103,11 @@ function Login() {
   };
 
   return (
-    <div className="w-full h-screen bg-black flex justify-center items-center">
+    <div className="w-full h-screen bg-black flex justify-center items-center relative">
       <div className="w-[90%] md:w-[45%] h-fit bg-[#F8E8FE] sm:p-16 p-8 shadow-lg">
         <div className="cancelIcon">
           <Link to="/" className="flex justify-end">
-            {/* Cancel Icon */}
+            <MdOutlineCancelPresentation className="text-[50px] text-[#8F3FA9]" />
           </Link>
         </div>
         <div className="log">
@@ -140,15 +158,6 @@ function Login() {
             </div>
           )}
 
-          {error && (
-            <div className="error text-red-700 text-center mt-2 leading-[40px]">
-              {error}
-            </div>
-          )}
-          {message && (
-            <div className="message text-center text-[#8F3FA9]">{message}</div>
-          )}
-
           <footer className="flex items-center sm:mt-8 mt-4">
             <div className="w-full flex max-sm:flex-col max-sm:text-center gap-2 justify-between">
               <Link to="/create-account">Don't have an Account?</Link>
@@ -157,6 +166,22 @@ function Login() {
           </footer>
         </div>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-[80%] md:w-[30%]">
+            {isSuccess ? (
+              <MdCheckCircle className="text-[#8F3FA9] text-[50px] mx-auto" />
+            ) : (
+              <MdError className="text-red-500 text-[50px] mx-auto" />
+            )}
+            <p className="text-center mt-4 text-lg">
+              {isSuccess ? message : error}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

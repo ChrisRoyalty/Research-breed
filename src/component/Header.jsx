@@ -3,38 +3,18 @@ import Logo from "../assets/logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
-import "../../src/css/header.css";
 
 function Header() {
   const [toggleMenu, setToggleMenu] = useState("hidden");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showLoginDropdown, setShowLoginDropdown] = useState(false);
   const headerRef = useRef(null);
-  const navigate = useNavigate(); // For navigation
+  const navigate = useNavigate();
 
-  // Check for auth token in sessionStorage on component mount
   useEffect(() => {
     const token = sessionStorage.getItem("authToken");
     setIsAuthenticated(!!token);
-  }, []);
-
-  // ResizeObserver logic to observe header resizing
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        console.log("Header size changed:", entry.contentRect);
-      }
-    });
-
-    if (headerRef.current) {
-      resizeObserver.observe(headerRef.current);
-    }
-
-    return () => {
-      if (headerRef.current) {
-        resizeObserver.disconnect();
-      }
-    };
   }, []);
 
   const displayMenu = () => {
@@ -49,20 +29,20 @@ function Header() {
     setShowDropdown(!showDropdown);
   };
 
-  // Handle user logout
-  const handleLogout = () => {
-    sessionStorage.removeItem("authToken"); // Clear the token from sessionStorage
-    setIsAuthenticated(false); // Update state to reflect logged-out status
-    navigate("/login"); // Redirect user to login page
+  const toggleLoginDropdown = () => {
+    setShowLoginDropdown(!showLoginDropdown);
   };
 
-  // Handle collaboration link click
+  const handleLogout = () => {
+    sessionStorage.removeItem("authToken");
+    setIsAuthenticated(false);
+    navigate("/login");
+  };
+
   const handleCollaborateClick = () => {
     if (!isAuthenticated) {
-      // If the user is not authenticated, redirect to login
       navigate("/login");
     } else {
-      // If authenticated, go to collaboration page
       navigate("/collaboration");
     }
   };
@@ -91,28 +71,45 @@ function Header() {
         >
           <NavLink
             to="/"
-            className="lg:bg-transparent max-lg:hover:bg-[#8F3FA9] lg:w-fit w-full lg:hover:p-0 hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg transition-colors ${
+                isActive
+                  ? "bg-[#8F3FA9] text-white"
+                  : "hover:bg-[#8F3FA9] hover:text-white"
+              }`
+            }
             onClick={hideMenu}
           >
             Home
           </NavLink>
           <NavLink
             to="/about"
-            className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg transition-colors ${
+                isActive
+                  ? "bg-[#8F3FA9] text-white"
+                  : "hover:bg-[#8F3FA9] hover:text-white"
+              }`
+            }
             onClick={hideMenu}
           >
             About us
           </NavLink>
           <NavLink
             to="/publications"
-            className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg transition-colors ${
+                isActive
+                  ? "bg-[#8F3FA9] text-white"
+                  : "hover:bg-[#8F3FA9] hover:text-white"
+              }`
+            }
             onClick={hideMenu}
           >
             Publications
           </NavLink>
-          {/* Collaboration link with authentication check */}
           <button
-            className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg max-lg:text-start"
+            className="block py-2 px-4 rounded-lg transition-colors hover:bg-[#8F3FA9] hover:text-white"
             onClick={() => {
               hideMenu();
               handleCollaborateClick();
@@ -122,17 +119,28 @@ function Header() {
           </button>
           <NavLink
             to="/blog"
-            className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
+            className={({ isActive }) =>
+              `block py-2 px-4 rounded-lg transition-colors ${
+                isActive
+                  ? "bg-[#8F3FA9] text-white"
+                  : "hover:bg-[#8F3FA9] hover:text-white"
+              }`
+            }
             onClick={hideMenu}
           >
             Blog
           </NavLink>
 
-          {/* Conditionally render the Profile link based on sessionStorage */}
           {isAuthenticated && (
             <NavLink
               to="/profile"
-              className="max-lg:hover:bg-[#8F3FA9] max-lg:w-full max-lg:hover:p-4 max-lg:hover:text-white max-lg:rounded-lg"
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded-lg transition-colors ${
+                  isActive
+                    ? "bg-[#8F3FA9] text-white"
+                    : "hover:bg-[#8F3FA9] hover:text-white"
+                }`
+              }
               onClick={hideMenu}
             >
               Profile
@@ -140,11 +148,10 @@ function Header() {
           )}
         </nav>
 
-        {/* Conditional rendering for login/logout button or user icon */}
         {isAuthenticated ? (
           <div className="relative">
             <FaUserCircle
-              className="text-[42px] max-sm:text-[40px] text-[#8F3FA9] cursor-pointer blinking-icon"
+              className="text-[42px] max-sm:text-[40px] text-[#8F3FA9] cursor-pointer"
               onClick={toggleDropdown}
             />
             <div
@@ -188,7 +195,7 @@ function Header() {
                 className="block px-4 py-2 text-left w-full hover:bg-gray-100"
                 onClick={() => {
                   toggleDropdown();
-                  handleLogout(); // Trigger logout
+                  handleLogout();
                 }}
               >
                 Logout
@@ -196,10 +203,38 @@ function Header() {
             </div>
           </div>
         ) : (
-          <div className="text-[16px] font-bold bg-[#8F3FA9] py-2 px-6 text-white rounded-lg">
-            <NavLink to="/login" onClick={hideMenu}>
+          <div className="relative">
+            <div
+              className="text-[16px] font-bold bg-[#8F3FA9] py-2 px-6 text-white rounded-lg cursor-pointer"
+              onClick={toggleLoginDropdown}
+            >
               Login
-            </NavLink>
+            </div>
+
+            {showLoginDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg text-gray-800">
+                <button
+                  className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
+                  onClick={() => {
+                    hideMenu();
+                    toggleLoginDropdown();
+                    navigate("/login");
+                  }}
+                >
+                  User Login
+                </button>
+                <button
+                  className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
+                  onClick={() => {
+                    hideMenu();
+                    toggleLoginDropdown();
+                    navigate("/admin-login");
+                  }}
+                >
+                  Admin Login
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -38,6 +38,25 @@ const Publication = ({ publication }) => {
       <p className="text-xs text-gray-400 mb-2">
         {publication.date_of_publication}
       </p>
+
+      {/* Display Publisher Information */}
+      <p className="text-xs text-gray-500 mb-2">
+        Published by:{" "}
+        <span className="font-semibold">{publication.publisher}</span>
+      </p>
+
+      {/* External Link */}
+      {publication.external_link && (
+        <a
+          href={publication.external_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline text-xs mb-4 inline-block"
+        >
+          View Publication
+        </a>
+      )}
+
       <div className="text-sm text-gray-700 mb-4">
         <div
           dangerouslySetInnerHTML={{
@@ -57,6 +76,7 @@ const Publication = ({ publication }) => {
   );
 };
 
+// Listings Component
 const Listings = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("All");

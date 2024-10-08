@@ -35,11 +35,12 @@ const Collaborators = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-[#8F3FA9] border-solid"></div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-purple-500 border-solid"></div>
       </div>
     );
   }
+
   if (collaborators.length === 0) {
     return (
       <div className="w-full h-screen flex justify-center items-center text-center">
@@ -71,49 +72,74 @@ const Collaborators = () => {
   }
 
   return (
-    <div className="w-full h-fit flex justify-center items-center">
-      <div className="md:w-[80%] w-[90%]">
-        {collaborators.map((call, index) => (
+    <div className="w-full h-fit flex justify-center items-center py-10">
+      <div className="md:w-[40%] w-[90%] grid grid-cols-1 gap-8 border-[20px] border-[#8F3FA9] rounded-xl">
+        {collaborators.map((collaborator, index) => (
           <div
             key={index}
-            className="text-center border-[30px] border-[#300937] rounded-[30px] py-8 max-sm:mb-10 mb-16 shadow-lg"
+            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 p-6 flex flex-col items-center"
           >
-            Hello world
             <img
-              src={call.image}
-              alt={call.name}
-              className="profileImg rounded-full m-auto w-[180px] h-[180px]"
+              src={collaborator.image}
+              alt={`${collaborator.firstname} ${collaborator.lastname}`}
+              className="rounded-full m-auto w-[120px] h-[120px] border-4 border-[#8F3FA9]"
             />
-            <div className="m-auto">
-              <h4 className="font-bold">{`${call.firstname} ${call.lastname}`}</h4>
-              <p>{call.email}</p>
-              <p>{call.institution}</p>
-              <div className="flex gap-4 items-center justify-center mt-4">
-                {call.facebook_url && (
-                  <a
-                    href={call.facebook_url}
-                    className="hover:text-blue-500 text-[22px]"
-                  >
-                    <FaFacebookSquare />
-                  </a>
-                )}
-                {call.linkedin_url && (
-                  <a
-                    href={call.linkedin_url}
-                    className="hover:text-blue-500 text-[22px]"
-                  >
-                    <FaLinkedin />
-                  </a>
-                )}
-                {call.twitter_url && (
-                  <a
-                    href={call.twitter_url}
-                    className="hover:text-blue-500 text-[22px]"
-                  >
-                    <FaTwitter />
-                  </a>
-                )}
-              </div>
+            <h4 className="font-bold text-xl mt-4">{`${
+              collaborator.firstname || ""
+            } ${collaborator.lastname || ""}`}</h4>
+            {collaborator.email && (
+              <p className="text-gray-600">{collaborator.email}</p>
+            )}
+            {collaborator.institution && (
+              <p className="text-gray-500">{collaborator.institution}</p>
+            )}
+            {collaborator.occupation && (
+              <p className="text-gray-500">
+                Occupation: {collaborator.occupation}
+              </p>
+            )}
+            {collaborator.phone && (
+              <p className="text-gray-500">Phone: {collaborator.phone}</p>
+            )}
+            {collaborator.field_of_study && (
+              <p className="text-gray-500">
+                Field of Study: {collaborator.field_of_study}
+              </p>
+            )}
+            {collaborator.degree && (
+              <p className="text-gray-500">Degree: {collaborator.degree}</p>
+            )}
+            <div className="flex gap-4 items-center justify-center mt-4">
+              {collaborator.facebook_url && (
+                <a
+                  href={collaborator.facebook_url}
+                  className="hover:text-blue-500 text-[22px]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaFacebookSquare />
+                </a>
+              )}
+              {collaborator.linkedin_url && (
+                <a
+                  href={collaborator.linkedin_url}
+                  className="hover:text-blue-500 text-[22px]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaLinkedin />
+                </a>
+              )}
+              {collaborator.twitter_url && (
+                <a
+                  href={collaborator.twitter_url}
+                  className="hover:text-blue-500 text-[22px]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaTwitter />
+                </a>
+              )}
             </div>
           </div>
         ))}
