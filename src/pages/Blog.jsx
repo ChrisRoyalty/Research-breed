@@ -41,7 +41,7 @@ const Blog = () => {
 
       try {
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/posts",
+          "https://dev-api.researchbreed.com/api/blog-posts",
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -34,7 +34,11 @@ const Collaborators = () => {
   }, [navigate]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-[#8F3FA9] border-solid"></div>
+      </div>
+    );
   }
   if (collaborators.length === 0) {
     return (

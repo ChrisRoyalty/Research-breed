@@ -22,7 +22,7 @@ const FetchBlogs = () => {
       try {
         const token = sessionStorage.getItem("authToken");
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/admin/blogs",
+          "https://dev-api.researchbreed.com/api/admin/blog-posts",
           {
             headers: {
               Authorization: `Bearer ${token}`,
