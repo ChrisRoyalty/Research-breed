@@ -115,7 +115,7 @@ const FetchPublications = () => {
   };
 
   return (
-    <div className="p-4 md:p-10 lg:p-16 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-10 lg:p-16 bg-gray-50 min-h-screen rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Publications</h2>
 
       <div className="overflow-x-auto">

@@ -16,13 +16,14 @@ const FetchBlogs = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null); // To hold the blog being viewed
   const [updating, setUpdating] = useState(false); // To handle update loading state
+  const [status, setStatus] = useState({}); // To track the approval status of each blog
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const token = sessionStorage.getItem("authToken");
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/admin/blog-posts",
+          "https://dev-api.researchbreed.com/api/admin/blogs",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -31,6 +32,12 @@ const FetchBlogs = () => {
         );
         if (response.data.success) {
           setBlogs(response.data.data);
+          // Initialize the status state with blog status from API
+          const initialStatus = response.data.data.reduce((acc, blog) => {
+            acc[blog.slug] = blog.status; // Assuming the blog API returns a status
+            return acc;
+          }, {});
+          setStatus(initialStatus);
         } else {
           setError(response.data.message);
         }
@@ -61,33 +68,37 @@ const FetchBlogs = () => {
     return text;
   };
 
-  const handleApproveDisapprove = async (post_slug, action) => {
-    const url =
-      "http://localhost/apps_api/research-breed/public/api/admin/update-blog"; // Use the correct endpoint
+  const handleApproveDisapprove = async (slug, action) => {
+    const url = "https://dev-api.researchbreed.com/api/admin/update-blog"; // Ensure correct endpoint
+    const token = sessionStorage.getItem("authToken");
 
-    const token = sessionStorage.getItem("authToken"); // Ensure token is available
+    if (!token) {
+      console.error("No authentication token found. Please log in.");
+      return;
+    }
 
-    // Create the data payload with 'post_slug'
     const data = new URLSearchParams();
-    data.append("post_slug", post_slug);
-    data.append("action", action); // If the action is needed
+    data.append("post_slug", slug);
+    data.append("status", action); // 'approve' or 'disapprove'
 
     try {
-      setUpdating(true); // Set loading state to true
+      setUpdating(true);
+
       const response = await axios.patch(url, data, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include your authentication token
-          "Content-Type": "application/x-www-form-urlencoded", // Use the correct content type
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
       if (response.data.success) {
-        console.log("Operation successful", response.data);
-        // Update local state if necessary
-        // Refetch or update the blogs array
-        // fetchBlogs(); // Optionally refetch blogs
+        // Update the status for the blog
+        setStatus((prevStatus) => ({
+          ...prevStatus,
+          [slug]: action === "approve" ? "approved" : "disapproved",
+        }));
       } else {
-        console.log("Operation failed", response.data.message);
+        console.error("Operation failed", response.data.message);
       }
     } catch (error) {
       console.error(
@@ -95,7 +106,7 @@ const FetchBlogs = () => {
         error.response ? error.response.data : error.message
       );
     } finally {
-      setUpdating(false); // Reset updating state
+      setUpdating(false);
     }
   };
 
@@ -112,7 +123,7 @@ const FetchBlogs = () => {
   }
 
   return (
-    <div className="space-y-4 p-4 max-w-full overflow-x-auto">
+    <div className="space-y-4 p-4 max-w-full overflow-x-auto rounded-lg shadow-md">
       <table className="min-w-full bg-white border">
         <thead>
           <tr className="bg-[#8F3FA9] text-white">
@@ -136,7 +147,6 @@ const FetchBlogs = () => {
                 {blog.user.firstname} {blog.user.lastname}
               </td>
               <td className="px-4 py-2 border">
-                {/* Display truncated content */}
                 <p>{truncateText(blog.post.replace(/<[^>]+>/g, ""), 100)}</p>
                 <button
                   className="text-[#8F3FA9] font-semibold mt-2 hover:underline"
@@ -146,35 +156,45 @@ const FetchBlogs = () => {
                 </button>
               </td>
               <td className="px-4 py-2 border flex flex-col gap-2">
-                <button
-                  onClick={() =>
-                    handleApproveDisapprove(blog.post_slug, "approve")
-                  }
-                  disabled={updating}
-                  className={` bg-[#8F3FA9] text-white px-3 py-1 rounded mr-2 hover:bg-green-700 ${
-                    updating ? "opacity-50" : ""
-                  }`}
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() =>
-                    handleApproveDisapprove(blog.post_slug, "disapprove")
-                  }
-                  disabled={updating}
-                  className={`bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 ${
-                    updating ? "opacity-50" : ""
-                  }`}
-                >
-                  Disapprove
-                </button>
+                {status[blog.slug] === "approved" ? (
+                  <>
+                    <span>Approved</span>{" "}
+                    <FaCheckCircle className="text-green-500 text-2xl" />
+                  </>
+                ) : status[blog.slug] === "disapproved" ? (
+                  <FaTimesCircle className="text-red-500 text-2xl" />
+                ) : (
+                  <>
+                    <button
+                      onClick={() =>
+                        handleApproveDisapprove(blog.slug, "approve")
+                      }
+                      disabled={updating}
+                      className={`bg-[#8F3FA9] text-white px-3 py-1 rounded mr-2 hover:bg-green-700 ${
+                        updating ? "opacity-50" : ""
+                      }`}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleApproveDisapprove(blog.slug, "disapprove")
+                      }
+                      disabled={updating}
+                      className={`bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 ${
+                        updating ? "opacity-50" : ""
+                      }`}
+                    >
+                      Disapprove
+                    </button>
+                  </>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Modal for viewing full blog post */}
       <CSSTransition
         in={isModalOpen}
         timeout={300}

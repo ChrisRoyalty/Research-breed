@@ -3,7 +3,7 @@ import Logo from "../assets/logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
-
+import "../css/header.css";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState("hidden");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -163,13 +163,15 @@ function Header() {
             >
               <NavLink
                 to="/edit-profile"
-                className="block px-4 py-2 hover:bg-gray-100"
+                className={`block px-4 py-2 text-[#8F3FA9] hover:bg-gray-100 ${
+                  showDropdown ? "blinking-icon" : ""
+                }`}
                 onClick={() => {
                   hideMenu();
                   toggleDropdown();
                 }}
               >
-                Edit Profile
+                Update Profile
               </NavLink>
               <NavLink
                 to="/create-blog"

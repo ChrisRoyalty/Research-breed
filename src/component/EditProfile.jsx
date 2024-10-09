@@ -160,20 +160,6 @@ const EditProfile = () => {
         {error && <p className="text-red-600 mb-4">{error}</p>}
         {message && <p className="text-green-600 mb-4">{message}</p>}
         <form onSubmit={handleSubmit}>
-          {/* <div className="mb-4">
-            <label htmlFor="location" className="block text-gray-700">
-              Location
-            </label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-lg"
-            />
-          </div> */}
-
           <div className="mb-4">
             <label htmlFor="gender" className="block text-gray-700">
               Gender

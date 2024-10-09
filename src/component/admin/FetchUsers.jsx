@@ -85,7 +85,7 @@ const FetchUsers = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-4 flex flex-col items-center rounded-lg shadow-md">
       <h1 className="text-4xl font-bold mb-6">User List</h1>
       {successMessage && <Message type="success" text={successMessage} />}
       {error && <Message type="error" text={error} />}
