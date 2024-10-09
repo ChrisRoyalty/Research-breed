@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import ReviewCard from "../home/ReviewCard.jsx";
 import { FaStar } from "react-icons/fa6";
 import { RiPencilFill } from "react-icons/ri";
+import Image4 from "../../assets/image 4.png";
+import Image5 from "../../assets/image 5.png";
+import Image6 from "../../assets/image 6.png";
+import Image7 from "../../assets/image 7.png";
+import Image8 from "../../assets/image 8.png";
+import GirlImg from "../../assets/girl.png";
 
 const Reviews = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -23,42 +29,42 @@ const Reviews = () => {
     {
       name: "Jane Doe",
       title: "Researcher in Biology",
-      image: "image 4.png",
+      image: Image4,
       review:
         "As a biologist conducting research in the field, I have found, this platform to be an invaluable resource. The AI-integrated tool has saved me countless hours by efficiently summarizing relevant papers and identifying key insights. Additionally, the collaborative space has streamlined the process of working with other researchers on research papers. I highly recommend this platform to anyone in academia looking to enhance their research workflow.",
     },
     {
       name: "Michael Brown",
       title: "Academic Librarian",
-      image: "image 5.png",
+      image: Image5,
       review:
         "I work as an academic librarian, and I frequently recommend this platform to researchers and students at our institution. The educational resources and workshops offered on the platform provide valuable guidance on research writing, publishing, and academic career development. I've seen firsthand how these resources have helped our students improve their research skills and succeed in their academic endeavours. This platform is an essential resource for anyone navigating the world of scholarly communication.",
     },
     {
       name: "Sarah Johnson",
       title: "Undergraduate Student in History",
-      image: "image 6.png",
+      image: Image6,
       review:
         "Even as an undergraduate student, I've found this platform to be incredibly helpful for my research projects. The collaborative space connected me with a mentor who provided invaluable guidance on my senior thesis project. The research collaboration forums have also allowed me to connect with other students and exchange ideas on historical topics. With its diverse range of features catering to researchers at all levels, this platform has been a valuable asset to my academic journey.",
     },
     {
       name: "David Liu",
       title: "Independent Researcher",
-      image: "image 7.png",
+      image: Image7,
       review:
         "As an independent researcher, I appreciate the flexibility and support offered by this platform. The research impact tracking tools have allowed me to monitor the reach and influence of my work, gain more visibility. With its customizable features and user-friendly interface, this platform has become my go-to resource for conducting research.",
     },
     {
       name: "Alex Nguyen",
       title: "PhD Candidate in Environmental Science",
-      image: "image 8.png",
+      image: Image8,
       review:
         "Thanks to this platform's real-time collation and updating of current journals, I can access the most recent studies and developments in my field instantly. The seamless integration of collaboration tools has also facilitated productive partnerships with peers, enhancing the quality and scope of my research. With its commitment to supporting researchers and amplifying their visibility, this platform has become an indispensable asset in my academic journey.",
     },
     {
       name: "Maria Gomez",
       title: "Early Career Scholar in Sociology",
-      image: "girl.png",
+      image: GirlImg,
       review:
         "What truly sets this platform apart is its exceptional support system. The team behind it is responsive, knowledgeable, and genuinely invested in the success of its users. Whether I need technical assistance or advice on navigating the publishing process, I can always count on",
     },
