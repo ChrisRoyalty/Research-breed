@@ -4,11 +4,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
 import "../css/header.css";
+
 function Header() {
   const [toggleMenu, setToggleMenu] = useState("hidden");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showLoginDropdown, setShowLoginDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false); // State for showing modal
   const headerRef = useRef(null);
   const navigate = useNavigate();
 
@@ -29,10 +30,6 @@ function Header() {
     setShowDropdown(!showDropdown);
   };
 
-  const toggleLoginDropdown = () => {
-    setShowLoginDropdown(!showLoginDropdown);
-  };
-
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
     setIsAuthenticated(false);
@@ -41,7 +38,7 @@ function Header() {
 
   const handleCollaborateClick = () => {
     if (!isAuthenticated) {
-      navigate("/login");
+      setShowModal(true); // Show modal when user is not authenticated
     } else {
       navigate("/collaboration");
     }
@@ -72,10 +69,10 @@ function Header() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `block py-2 px-4 rounded-lg transition-colors ${
+              `block py-2 px-4 max-lg:rounded-lg transition-all duration-300 ease-linear ${
                 isActive
-                  ? "bg-[#8F3FA9] text-white"
-                  : "hover:bg-[#8F3FA9] hover:text-white"
+                  ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white lg:text-black lg:bg-transparent"
+                  : "hover:border-b-4 border-[#8F3FA9]"
               }`
             }
             onClick={hideMenu}
@@ -85,10 +82,10 @@ function Header() {
           <NavLink
             to="/about"
             className={({ isActive }) =>
-              `block py-2 px-4 rounded-lg transition-colors ${
+              `block py-2 px-4 max-lg:rounded-lg transition-all duration-300 ease-linear ${
                 isActive
-                  ? "bg-[#8F3FA9] text-white"
-                  : "hover:bg-[#8F3FA9] hover:text-white"
+                  ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white lg:text-black lg:bg-transparent"
+                  : "hover:border-b-4 border-[#8F3FA9]"
               }`
             }
             onClick={hideMenu}
@@ -98,32 +95,34 @@ function Header() {
           <NavLink
             to="/publications"
             className={({ isActive }) =>
-              `block py-2 px-4 rounded-lg transition-colors ${
+              `block py-2 px-4 max-lg:rounded-lg transition-all duration-300 ease-linear ${
                 isActive
-                  ? "bg-[#8F3FA9] text-white"
-                  : "hover:bg-[#8F3FA9] hover:text-white"
+                  ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white lg:text-black lg:bg-transparent"
+                  : "hover:border-b-4 border-[#8F3FA9]"
               }`
             }
             onClick={hideMenu}
           >
             Publications
           </NavLink>
-          <button
-            className="block py-2 px-4 rounded-lg transition-colors hover:bg-[#8F3FA9] hover:text-white"
-            onClick={() => {
-              hideMenu();
-              handleCollaborateClick();
-            }}
+          <span
+            className={`block py-2 px-4 lg:rounded-none rounded-lg lg:bg-transparent lg:text-black lg:hover:text-black transition-all duration-300 ease-linear ${
+              showModal
+                ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white"
+                : ""
+            }`}
+            onClick={handleCollaborateClick}
           >
             Collaborate
-          </button>
+          </span>
+
           <NavLink
             to="/blog"
             className={({ isActive }) =>
-              `block py-2 px-4 rounded-lg transition-colors ${
+              `block py-2 px-4 max-lg:rounded-lg transition-all duration-300 ease-linear ${
                 isActive
-                  ? "bg-[#8F3FA9] text-white"
-                  : "hover:bg-[#8F3FA9] hover:text-white"
+                  ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white lg:text-black lg:bg-transparent"
+                  : "hover:border-b-4 border-[#8F3FA9]"
               }`
             }
             onClick={hideMenu}
@@ -135,10 +134,10 @@ function Header() {
             <NavLink
               to="/profile"
               className={({ isActive }) =>
-                `block py-2 px-4 rounded-lg transition-colors ${
+                `block py-2 px-4 max-lg:rounded-lg transition-all duration-300 ease-linear ${
                   isActive
-                    ? "bg-[#8F3FA9] text-white"
-                    : "hover:bg-[#8F3FA9] hover:text-white"
+                    ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white lg:text-black lg:bg-transparent"
+                    : "hover:border-b-4 border-[#8F3FA9]"
                 }`
               }
               onClick={hideMenu}
@@ -205,41 +204,54 @@ function Header() {
             </div>
           </div>
         ) : (
-          <div className="relative">
-            <div
-              className="text-[16px] font-bold bg-[#8F3FA9] py-2 px-6 text-white rounded-lg cursor-pointer"
-              onClick={toggleLoginDropdown}
-            >
-              Login
-            </div>
-
-            {showLoginDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg text-gray-800">
-                <button
-                  className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
-                  onClick={() => {
-                    hideMenu();
-                    toggleLoginDropdown();
-                    navigate("/login");
-                  }}
-                >
-                  User Login
-                </button>
-                <button
-                  className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
-                  onClick={() => {
-                    hideMenu();
-                    toggleLoginDropdown();
-                    navigate("/admin-login");
-                  }}
-                >
-                  Admin Login
-                </button>
-              </div>
-            )}
+          <div
+            className="text-[16px] font-bold bg-[#8F3FA9] py-2 px-6 text-white rounded-lg cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
+            Login
           </div>
         )}
       </div>
+
+      {/* Modal for Login or Sign Up */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[90%] sm:w-[400px] shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Authentication Required
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Please log in or create an account to collaborate.
+            </p>
+            <div className="flex justify-between gap-4">
+              <button
+                className="w-full bg-[#8F3FA9] text-white py-2 rounded-lg"
+                onClick={() => {
+                  setShowModal(false);
+                  navigate("/login");
+                }}
+              >
+                Login
+              </button>
+              <button
+                className="w-full bg-gray-200 text-[#8F3FA9] py-2 rounded-lg"
+                onClick={() => {
+                  setShowModal(false);
+                  navigate("/signup");
+                }}
+              >
+                Sign Up
+              </button>
+            </div>
+            <button
+              className="w-full bg-gray-200 mt-4 text-[#8F3FA9] py-2 rounded-lg"
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

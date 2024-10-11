@@ -70,7 +70,7 @@ function Login() {
       );
 
       if (response.data.success) {
-        sessionStorage.setItem("authToken", response.data.data.token);
+        localStorage.setItem("authToken", response.data.data.token);
         localStorage.setItem("authToken", response.data.data.token);
         setMessage("Login successful!");
         setIsSuccess(true); // Trigger success icon
