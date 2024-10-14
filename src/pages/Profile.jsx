@@ -49,7 +49,7 @@ const Profile = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center items-center h-[70vh]">
         <ClipLoader size={50} color="#8F3FA9" />
       </div>
     );

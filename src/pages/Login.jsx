@@ -71,7 +71,6 @@ function Login() {
 
       if (response.data.success) {
         localStorage.setItem("authToken", response.data.data.token);
-        localStorage.setItem("authToken", response.data.data.token);
         setMessage("Login successful!");
         setIsSuccess(true); // Trigger success icon
         setShowModal(true); // Show the modal

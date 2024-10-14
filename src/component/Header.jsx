@@ -14,7 +14,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
+    const token = localStorage.getItem("authToken");
     setIsAuthenticated(!!token);
   }, []);
 
@@ -31,8 +31,8 @@ function Header() {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("authToken");
-    setIsAuthenticated(false);
+    localStorage.removeItem("authToken");
+    setIsAuthenticated(true);
     navigate("/login");
   };
 

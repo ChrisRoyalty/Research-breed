@@ -9,7 +9,7 @@ const FetchBlog = () => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const token = sessionStorage.getItem("authToken");
+      const token = localStorage.getItem("authToken");
 
       if (!token) {
         setError("User is not authenticated. Please log in.");

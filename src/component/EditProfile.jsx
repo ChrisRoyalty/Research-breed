@@ -27,7 +27,7 @@ const EditProfile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const token = sessionStorage.getItem("authToken");
+        const token = localStorage.getItem("authToken");
         if (!token) {
           window.location.href = "/login";
           return;

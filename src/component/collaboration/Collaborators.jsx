@@ -9,7 +9,7 @@ const Collaborators = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken"); // Or localStorage if you store the token there
+    const token = localStorage.getItem("authToken"); // Or localStorage if you store the token there
 
     if (!token) {
       // If no token, redirect to login
@@ -72,50 +72,58 @@ const Collaborators = () => {
   }
 
   return (
-    <div className="w-full h-fit flex justify-center items-center py-10">
-      <div className="md:w-[40%] w-[90%] grid grid-cols-1 gap-8 border-[20px] border-[#8F3FA9] rounded-xl">
+    <div className="w-full h-auto flex justify-center items-center py-12 bg-gray-50">
+      <div className="md:w-[60%] w-[90%] grid grid-cols-1 gap-8 border-[10px] border-[#8F3FA9] rounded-xl p-6 shadow-xl bg-white">
         {collaborators.map((collaborator, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 p-6 flex flex-col items-center"
+            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 p-8 flex flex-col items-center text-center"
           >
             <img
               src={collaborator.image}
               alt={`${collaborator.firstname} ${collaborator.lastname}`}
-              className="rounded-full m-auto w-[120px] h-[120px] border-4 border-[#8F3FA9]"
+              className="rounded-full w-[120px] h-[120px] border-4 border-[#8F3FA9] object-cover"
             />
-            <h4 className="font-bold text-xl mt-4">{`${
+            <h4 className="font-bold text-2xl mt-4 text-gray-800">{`${
               collaborator.firstname || ""
             } ${collaborator.lastname || ""}`}</h4>
             {collaborator.email && (
-              <p className="text-gray-600">{collaborator.email}</p>
+              <p className="text-gray-600 text-sm mt-2">{collaborator.email}</p>
             )}
             {collaborator.institution && (
-              <p className="text-gray-500">{collaborator.institution}</p>
+              <p className="text-gray-500 text-sm mt-1">
+                {collaborator.institution}
+              </p>
             )}
             {collaborator.occupation && (
-              <p className="text-gray-500">
+              <p className="text-gray-500 text-sm mt-1">
                 Occupation: {collaborator.occupation}
               </p>
             )}
             {collaborator.phone && (
-              <p className="text-gray-500">Phone: {collaborator.phone}</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Phone: {collaborator.phone}
+              </p>
             )}
             {collaborator.field_of_study && (
-              <p className="text-gray-500">
+              <p className="text-gray-500 text-sm mt-1">
                 Field of Study: {collaborator.field_of_study}
               </p>
             )}
             {collaborator.degree && (
-              <p className="text-gray-500">Degree: {collaborator.degree}</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Degree: {collaborator.degree}
+              </p>
             )}
-            <div className="flex gap-4 items-center justify-center mt-4">
+
+            {/* Social Media Links */}
+            <div className="flex gap-6 mt-4">
               {collaborator.facebook_url && (
                 <a
                   href={collaborator.facebook_url}
-                  className="hover:text-blue-500 text-[22px]"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-blue-500 transition-colors text-[24px]"
                 >
                   <FaFacebookSquare />
                 </a>
@@ -123,9 +131,9 @@ const Collaborators = () => {
               {collaborator.linkedin_url && (
                 <a
                   href={collaborator.linkedin_url}
-                  className="hover:text-blue-500 text-[22px]"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-blue-700 transition-colors text-[24px]"
                 >
                   <FaLinkedin />
                 </a>
@@ -133,9 +141,9 @@ const Collaborators = () => {
               {collaborator.twitter_url && (
                 <a
                   href={collaborator.twitter_url}
-                  className="hover:text-blue-500 text-[22px]"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-blue-400 transition-colors text-[24px]"
                 >
                   <FaTwitter />
                 </a>
