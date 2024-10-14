@@ -9,7 +9,7 @@ function AdminDashboard() {
   const [totalPublications, setTotalPublications] = useState(0);
   const [pendingReviews, setPendingReviews] = useState(0);
   const [recentActivity, setRecentActivity] = useState([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to control sidebar visibility
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default sidebar closed on small screens
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,6 +90,11 @@ function AdminDashboard() {
     }
   };
 
+  // Handle sidebar link click
+  const handleLinkClick = () => {
+    setIsSidebarOpen(false); // Close the sidebar after clicking any link
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen overflow-hidden">
       {/* Sidebar */}
@@ -106,6 +111,7 @@ function AdminDashboard() {
                   ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
                   : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
               }
+              onClick={handleLinkClick} // Close sidebar on link click
             >
               Fetch Users
             </NavLink>
@@ -116,6 +122,7 @@ function AdminDashboard() {
                   ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
                   : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
               }
+              onClick={handleLinkClick} // Close sidebar on link click
             >
               Fetch All Blogs
             </NavLink>
@@ -126,6 +133,7 @@ function AdminDashboard() {
                   ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
                   : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
               }
+              onClick={handleLinkClick} // Close sidebar on link click
             >
               Fetch Publications
             </NavLink>
@@ -136,13 +144,17 @@ function AdminDashboard() {
                   ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
                   : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
               }
+              onClick={handleLinkClick} // Close sidebar on link click
             >
               Add Publication
             </NavLink>
             {/* Logout Button */}
             <NavLink
               to="/"
-              onClick={handleLogout}
+              onClick={() => {
+                handleLogout(); // Logout functionality
+                handleLinkClick(); // Close the sidebar
+              }}
               className={({ isActive }) =>
                 isActive
                   ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105 text-center"
@@ -151,6 +163,7 @@ function AdminDashboard() {
             >
               Logout
             </NavLink>
+
             {/* Cancel Button (using close icon) */}
             <button
               className="absolute top-4 right-4 bg-white text-[#8F3FA9] p-2 rounded-full"
@@ -202,7 +215,7 @@ function AdminDashboard() {
             <p className="text-4xl font-bold text-[#8F3FA9]">
               {totalPublications}
             </p>
-            <p className="text-gray-500">Available Publications</p>
+            <p className="text-gray-500">Approved Publications</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
@@ -210,26 +223,38 @@ function AdminDashboard() {
             <p className="text-4xl font-bold text-[#8F3FA9]">
               {pendingReviews}
             </p>
-            <p className="text-gray-500">Reviews in Progress</p>
+            <p className="text-gray-500">Submissions Pending</p>
           </div>
         </section>
 
+        {/* Recent Activity */}
         <section className="mt-6">
-          <h2 className="text-2xl font-semibold mb-4">Recent Activity</h2>
-          <ul className="bg-white rounded-lg shadow-md p-4 space-y-2">
-            {recentActivity.length === 0 ? (
-              <li className="text-gray-500">No recent activity available</li>
-            ) : (
+          <h2 className="text-2xl font-bold text-[#8F3FA9] mb-4">
+            Recent Activity
+          </h2>
+          <ul className="bg-white rounded-lg shadow-md p-6">
+            {recentActivity.length > 0 ? (
               recentActivity.map((activity, index) => (
-                <li key={index} className="text-gray-600">
-                  {activity}
+                <li
+                  key={index}
+                  className="border-b last:border-none p-4 flex justify-between"
+                >
+                  <span>{activity.description}</span>
+                  <span className="text-gray-500">
+                    {new Date(activity.timestamp).toLocaleString()}
+                  </span>
                 </li>
               ))
+            ) : (
+              <p className="text-gray-500">No recent activity</p>
             )}
           </ul>
         </section>
 
-        <Outlet />
+        {/* Nested Outlet for different routes */}
+        <div className="mt-6">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
