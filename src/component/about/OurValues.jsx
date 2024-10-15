@@ -9,12 +9,14 @@ const OurValues = () => {
         </div>
         <div className="details">
           <p className="text-[18px]">
-            Empowerment: Supporting researchers and writers with Ai tools and
-            resources. <br /> Innovation: Utilizing cutting edge technology to
-            enhance academic writing. <br /> Visibility: Ensuring your work
-            reaches people of the same interest. <br /> Community: Connecting
-            scholars to advance knowledge and collaborations. <br /> Excellence:
-            Promoting high quality research and academic success.
+            Empowerment: Supporting researchers and writers with opportunities
+            and resources. <br /> Innovation: Utilizing cutting edge technology
+            to enhance academic writing. <br /> Visibility: Ensuring your work
+            reaches people of the same interest.
+            <br /> Community: Connecting scholars to advance knowledge and
+            collaborations.
+            <br /> Excellence: Promoting high quality research and academic
+            success.
           </p>
         </div>
       </div>

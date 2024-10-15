@@ -9,10 +9,9 @@ const Collaborators = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken"); // Or localStorage if you store the token there
+    const token = localStorage.getItem("authToken");
 
     if (!token) {
-      // If no token, redirect to login
       navigate("/login");
       return;
     }
@@ -90,6 +89,11 @@ const Collaborators = () => {
             {collaborator.email && (
               <p className="text-gray-600 text-sm mt-2">{collaborator.email}</p>
             )}
+            {collaborator.gender && (
+              <p className="text-gray-500 text-sm mt-1">
+                Gender: {collaborator.gender}
+              </p>
+            )}
             {collaborator.institution && (
               <p className="text-gray-500 text-sm mt-1">
                 {collaborator.institution}
@@ -100,6 +104,7 @@ const Collaborators = () => {
                 Occupation: {collaborator.occupation}
               </p>
             )}
+
             {collaborator.phone && (
               <p className="text-gray-500 text-sm mt-1">
                 Phone: {collaborator.phone}
@@ -115,15 +120,37 @@ const Collaborators = () => {
                 Degree: {collaborator.degree}
               </p>
             )}
-
-            {/* Social Media Links */}
+            {collaborator.interest && (
+              <p className="text-gray-500 text-sm mt-1">
+                Interest: {collaborator.interest}
+              </p>
+            )}
+            {collaborator.number_of_publications && (
+              <p className="text-gray-500 text-sm mt-1">
+                Num_Of_Publica..: {collaborator.number_of_publications}
+              </p>
+            )}
+            {collaborator.date_created && (
+              <p className="text-gray-500 text-sm mt-1">
+                Date Created: {collaborator.date_created}
+              </p>
+            )}
+            {collaborator.account_status && (
+              <p className="text-gray-500 text-sm mt-1">
+                Account Status:{" "}
+                <span className="text-green-600 text-[20px]">
+                  {collaborator.account_status}
+                </span>
+              </p>
+            )}
+            {/* Animated Social Media Icons */}
             <div className="flex gap-6 mt-4">
               {collaborator.facebook_url && (
                 <a
                   href={collaborator.facebook_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-500 transition-colors text-[24px]"
+                  className="text-gray-600 hover:text-blue-500 transition-transform animate-bounce text-[24px]"
                 >
                   <FaFacebookSquare />
                 </a>
@@ -133,7 +160,7 @@ const Collaborators = () => {
                   href={collaborator.linkedin_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-700 transition-colors text-[24px]"
+                  className="text-gray-600 hover:text-blue-700 transition-transform animate-bounce text-[24px]"
                 >
                   <FaLinkedin />
                 </a>
@@ -143,7 +170,7 @@ const Collaborators = () => {
                   href={collaborator.twitter_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-400 transition-colors text-[24px]"
+                  className="text-gray-600 hover:text-blue-400 transition-transform animate-bounce text-[24px]"
                 >
                   <FaTwitter />
                 </a>

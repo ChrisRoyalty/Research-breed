@@ -3,6 +3,7 @@ import { FaLock } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons for show/hide password
 import axios from "axios";
 
 // Modal component
@@ -28,6 +29,7 @@ const CreateAccount = () => {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -136,16 +138,22 @@ const CreateAccount = () => {
               placeholder="Enter your email"
             />
           </div>
-          <div className="w-full flex flex-col gap-2">
+          <div className="w-full flex flex-col gap-2 relative">
             <label className="rounded-[30px] font-bold">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Toggle between password and text
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               className="rounded-[30px] h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
               placeholder="Enter your password"
             />
+            <div
+              className="absolute right-4 top-[52px] cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
           </div>
           {message && (
             <div className="message text-center text-[#8F3FA9]">{message}</div>

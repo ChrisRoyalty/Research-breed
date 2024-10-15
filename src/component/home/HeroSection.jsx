@@ -24,20 +24,20 @@ function HeroSection() {
         </div>
       </div> */}
       <div className="w-[80%] grid lg:grid-cols-2 grid-cols-1 items-center gap-16">
-        <div className="intro">
-          <h1 className="lg:text-4xl text-2xl font-bold text-gray-800 mb-4 leading-10 md:leading-[200px]">
-            Find, Connect, Write
-            <br />
-            The ResearchBreed Way
-            <br />
-            (Your Writing Ally)
+        <div className="intro flex flex-col gap-4 ">
+          <h1 className="text-4xl max-md:text-3xl font-bold text-gray-800">
+            RESEARCH BREED.
           </h1>
-          <p className="text-lg text-black-100 mb-6 font-bold">
-            Your source for new research opportunities
+          <h3 className="lg:text-3xl text-2xl font-bold">
+            Discover, Collaborate, Publish.
+          </h3>
+          <p className="text-lg text-black-100 font-bold">
+            Find calls for papers, connect with like-minded researchers, and
+            share your expertise. Your source for new research opportunities
           </p>
           <Link
             to="/create-account"
-            className="bg-[#8F3FA9] text-white px-16 py-4 rounded-lg shadow-lg font-bold"
+            className="lg:w-fit bg-[#8F3FA9] text-white px-16 py-4 rounded-lg shadow-lg font-bold"
           >
             Sign Up
           </Link>

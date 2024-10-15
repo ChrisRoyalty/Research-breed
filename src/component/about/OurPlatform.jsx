@@ -9,10 +9,10 @@ const OurValues = () => {
         </div>
         <div className="details">
           <p className="text-[18px]">
-            ResearchBreed connects you with the latest call for papers, offer
-            Ai-driven writing assistance, and helps increase the visibility of
-            your research. Join us to navigate academic opportunities
-            effortlessly and enhance your scholarly impact.
+            ResearchBreed connects you with the latest call for papers, and
+            helps increase the visibility of your research. Join us to navigate
+            academic opportunities effortlessly and enhance your scholarly
+            impact.
           </p>
         </div>
       </div>

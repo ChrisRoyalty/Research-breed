@@ -7,7 +7,9 @@ import {
   MdOutlineCancelPresentation,
   MdCheckCircle,
   MdError,
-} from "react-icons/md"; // Importing success/error icons
+  MdVisibility,
+  MdVisibilityOff,
+} from "react-icons/md"; // Importing success/error icons and visibility icons
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -17,6 +19,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const [isSuccess, setIsSuccess] = useState(false); // To control which icon to show
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -134,13 +137,25 @@ function Login() {
               className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
               placeholder="Enter your email"
             />
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
-              placeholder="Enter your password"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="h-[60px] w-full bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
+                placeholder="Enter your password"
+              />
+              <div
+                className="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <MdVisibilityOff className="text-gray-500" />
+                ) : (
+                  <MdVisibility className="text-gray-500" />
+                )}
+              </div>
+            </div>
 
             <button
               type="submit"

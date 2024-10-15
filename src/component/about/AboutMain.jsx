@@ -8,8 +8,8 @@ const AboutMain = () => {
         <h4 className="font-bold text-[20px]">About us</h4>
         <p className="text-[18px]">
           ResearchBreed is your gateway to the latest academic opportunities. We
-          connect researchers and writers with <br /> top journals, research
-          papers, and conference calls.
+          connect researchers and writers with <br /> top journals
+          opportunities, research papers, and conference calls.
         </p>
         <div className="grid md:grid-cols-2 grid-cols-1 items-center md:gap-48 gap-16 mt-16">
           <div className="text-start flex flex-col gap-6 text-[18px]">
