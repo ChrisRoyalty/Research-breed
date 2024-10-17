@@ -5,9 +5,9 @@ const Main = () => {
     <section className="bg-white py-12 w-full h-fit flex justify-center items-center">
       <div className="container w-[90%] sm:w-[80%] my-8">
         <div className="text-center my-8">
-          <h4 className="font-bold text-[24px]">Publications</h4>
+          <h4 className="font-bold text-[24px]">Call for Papers</h4>
           <p className="text-[20px]">
-            Explore our latest research and publications{" "}
+            Explore our latest research and call for papers
           </p>
         </div>
         <figure className="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">

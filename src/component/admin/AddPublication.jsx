@@ -14,6 +14,30 @@ const AddPublication = () => {
   const [message, setMessage] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState(""); // "success" or "error"
+  const [wordCount, setWordCount] = useState(0); // Track word count
+
+  const MAX_WORD_COUNT = 750;
+
+  // Function to count words
+  const countWords = (content) => {
+    const text = content.replace(/<[^>]*>/g, ""); // Remove HTML tags
+    const words = text.trim().split(/\s+/); // Split by whitespace
+    return words.filter((word) => word.length > 0).length; // Only count non-empty words
+  };
+
+  // Handle body change with word count restriction
+  const handleBodyChange = (content) => {
+    const currentWordCount = countWords(content);
+    setWordCount(currentWordCount);
+
+    if (currentWordCount > MAX_WORD_COUNT) {
+      setMessage("You have exceeded your limit for the day");
+      setModalType("error");
+      showModal();
+    } else {
+      setBody(content);
+    }
+  };
 
   const handlePublish = async (e) => {
     e.preventDefault();
@@ -94,15 +118,6 @@ const AddPublication = () => {
             color: #8F3FA9 !important;
             stroke: #8F3FA9 !important;
             fill: #8F3FA9 !important;
-          }
-          .blur-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(5px);
-            z-index: 40;
           }
         `}
       </style>
@@ -218,7 +233,7 @@ const AddPublication = () => {
             <label className="block text-gray-700 font-medium mb-2">Body</label>
             <ReactQuill
               value={body}
-              onChange={setBody}
+              onChange={handleBodyChange} // Handle change with word count restriction
               theme="snow"
               modules={{
                 toolbar: [
@@ -244,19 +259,24 @@ const AddPublication = () => {
                 "link",
                 "image",
               ]}
-              className="min-h-[200px] max-h-[500px] h-[40vh] w-full overflow-auto resize-none border rounded-md focus:ring-2 focus:ring-[#8F3FA9]"
+              className="min-h-[200px] max-h-[500px] w-full overflow-auto resize-none border rounded-md focus:ring-2 focus:ring-[#8F3FA9]"
               placeholder="Write your publication here..."
-              style={{ maxWidth: "100%", boxSizing: "border-box" }}
             />
+            {/* Display word count */}
+            <p className="text-right text-gray-500 mt-1">
+              {wordCount} / {MAX_WORD_COUNT} words
+            </p>
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-[#8F3FA9] text-white font-semibold rounded-md hover:bg-[#7A2D96] transition duration-300 focus:ring-2 focus:ring-[#8F3FA9] hover:scale-105"
-          >
-            Publish
-          </button>
+          {/* Publish Button */}
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="px-6 py-3 bg-[#8F3FA9] text-white rounded-md shadow-md hover:bg-[#7A3298] transition"
+            >
+              Publish
+            </button>
+          </div>
         </form>
       </div>
     </div>

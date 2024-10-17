@@ -103,7 +103,7 @@ function Header() {
             }
             onClick={hideMenu}
           >
-            Publications
+            Call for Papers
           </NavLink>
           <span
             className={`block py-2 px-4 lg:rounded-none rounded-lg lg:bg-transparent lg:text-black lg:hover:text-black transition-all duration-300 ease-linear ${

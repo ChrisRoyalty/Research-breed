@@ -128,7 +128,7 @@ const EditProfile = () => {
     });
 
     try {
-      const token = sessionStorage.getItem("authToken");
+      const token = localStorage.getItem("authToken");
       const response = await axios.patch(
         "https://dev-api.researchbreed.com/api/update-profile",
         dataToSend,
@@ -234,20 +234,6 @@ const EditProfile = () => {
               className="w-full p-2 border border-gray-300 rounded-lg"
             />
           </div>
-
-          {/* <div className="mb-4">
-            <label htmlFor="institution" className="block text-gray-700">
-              Institution
-            </label>
-            <input
-              type="text"
-              id="institution"
-              name="institution"
-              value={formData.institution}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-lg"
-            />
-          </div> */}
 
           <div className="mb-4">
             <label htmlFor="field_of_study" className="block text-gray-700">

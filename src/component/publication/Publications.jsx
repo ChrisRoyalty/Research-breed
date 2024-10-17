@@ -179,11 +179,11 @@ const Listings = () => {
       <div className="w-[90%] md:w-[80%]">
         <div className="publications flex justify-between max-sm:items-center gap-2">
           <h4 className="md:text-[22px] text-[15px] font-bold">
-            Publication Listings
+            Call for Papers Listings
           </h4>
-          <button className="bg-[#8F3FA9] px-4 sm:px-8 h-[60px] text-white rounded-[30px]">
+          {/* <button className="bg-[#8F3FA9] px-4 sm:px-8 h-[60px] text-white rounded-[30px]">
             Research with AI
-          </button>
+          </button> */}
         </div>
 
         {/* Search and Filter Components */}

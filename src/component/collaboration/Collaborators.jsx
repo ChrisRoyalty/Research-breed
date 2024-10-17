@@ -76,105 +76,133 @@ const Collaborators = () => {
         {collaborators.map((collaborator, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 p-8 flex flex-col items-center text-center"
+            className=" bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 grid lg:grid-cols-2 text-center"
           >
-            <img
-              src={collaborator.image}
-              alt={`${collaborator.firstname} ${collaborator.lastname}`}
-              className="rounded-full w-[120px] h-[120px] border-4 border-[#8F3FA9] object-cover"
-            />
-            <h4 className="font-bold text-2xl mt-4 text-gray-800">{`${
-              collaborator.firstname || ""
-            } ${collaborator.lastname || ""}`}</h4>
-            {collaborator.email && (
-              <p className="text-gray-600 text-sm mt-2">{collaborator.email}</p>
-            )}
-            {collaborator.gender && (
-              <p className="text-gray-500 text-sm mt-1">
-                Gender: {collaborator.gender}
-              </p>
-            )}
-            {collaborator.institution && (
-              <p className="text-gray-500 text-sm mt-1">
-                {collaborator.institution}
-              </p>
-            )}
-            {collaborator.occupation && (
-              <p className="text-gray-500 text-sm mt-1">
-                Occupation: {collaborator.occupation}
-              </p>
-            )}
+            <div className="lg:rounded-l-lg max-sm:rounded-t-lg px-4 py-12  bg-[#8F3FA9] text-white flex flex-col items-center">
+              <img
+                src={collaborator.image}
+                alt={`${collaborator.firstname} ${collaborator.lastname}`}
+                className="rounded-full w-[120px] h-[120px] border-4 border-white object-cover"
+              />
+              <h4 className="font-bold text-2xl mt-4 text-white">{`${
+                collaborator.firstname || ""
+              } ${collaborator.lastname || ""}`}</h4>
+              {collaborator.email && (
+                <p className="text-sm mt-2 text-white">{collaborator.email}</p>
+              )}
+            </div>
+            <div className="p-12">
+              {collaborator.gender && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">Gender:</strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.gender}
+                  </span>
+                </p>
+              )}
+              {collaborator.institution && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">Institution:</strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.institution}
+                  </span>
+                </p>
+              )}
+              {collaborator.occupation && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">Occupation:</strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.occupation}
+                  </span>
+                </p>
+              )}
 
-            {collaborator.phone && (
-              <p className="text-gray-500 text-sm mt-1">
-                Phone: {collaborator.phone}
-              </p>
-            )}
-            {collaborator.field_of_study && (
-              <p className="text-gray-500 text-sm mt-1">
-                Field of Study: {collaborator.field_of_study}
-              </p>
-            )}
-            {collaborator.degree && (
-              <p className="text-gray-500 text-sm mt-1">
-                Degree: {collaborator.degree}
-              </p>
-            )}
-            {collaborator.interest && (
-              <p className="text-gray-500 text-sm mt-1">
-                Interest: {collaborator.interest}
-              </p>
-            )}
-            {collaborator.number_of_publications && (
-              <p className="text-gray-500 text-sm mt-1">
-                Num_Of_Publica..: {collaborator.number_of_publications}
-              </p>
-            )}
-            {collaborator.date_created && (
-              <p className="text-gray-500 text-sm mt-1">
-                Date Created: {collaborator.date_created}
-              </p>
-            )}
-            {collaborator.account_status && (
-              <p className="text-gray-500 text-sm mt-1">
-                Account Status:{" "}
-                <span className="text-green-600 text-[20px]">
-                  {collaborator.account_status}
-                </span>
-              </p>
-            )}
-            {/* Animated Social Media Icons */}
-            <div className="flex gap-6 mt-4">
-              {collaborator.facebook_url && (
-                <a
-                  href={collaborator.facebook_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-500 transition-transform animate-bounce text-[24px]"
-                >
-                  <FaFacebookSquare />
-                </a>
+              {collaborator.phone && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">PhoneNo:</strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.phone}
+                  </span>
+                </p>
               )}
-              {collaborator.linkedin_url && (
-                <a
-                  href={collaborator.linkedin_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-700 transition-transform animate-bounce text-[24px]"
-                >
-                  <FaLinkedin />
-                </a>
+              {collaborator.field_of_study && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">
+                    Field Of Study:
+                  </strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.field_of_study}
+                  </span>
+                </p>
               )}
-              {collaborator.twitter_url && (
-                <a
-                  href={collaborator.twitter_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-400 transition-transform animate-bounce text-[24px]"
-                >
-                  <FaTwitter />
-                </a>
+              {collaborator.degree && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">Degree:</strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.degree}
+                  </span>
+                </p>
               )}
+              {collaborator.interest && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">Interest:</strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.interest}
+                  </span>
+                </p>
+              )}
+              {collaborator.number_of_publications && (
+                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">NumOfPubli..:</strong>{" "}
+                  <span className="w-[100%] text-start ">
+                    {collaborator.number_of_publications}
+                  </span>
+                </p>
+              )}
+
+              {collaborator.account_status && (
+                <p className="text-gray-500 text-sm mt-1 grid grid-cols-2 w-full items-center">
+                  <strong className="w-[80%] text-start">
+                    Account Status:
+                  </strong>{" "}
+                  <span className="w-[100%] text-start text-green-600 text-[22px]">
+                    {collaborator.account_status}
+                  </span>
+                </p>
+              )}
+              {/* Animated Social Media Icons */}
+              <div className="flex gap-6 mt-8 justify-center">
+                {collaborator.facebook_url && (
+                  <a
+                    href={collaborator.facebook_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#8F3FA9] hover:text-blue-500 transition-transform animate-bounce text-[24px]"
+                  >
+                    <FaFacebookSquare />
+                  </a>
+                )}
+                {collaborator.linked_url && (
+                  <a
+                    href={collaborator.linked_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#8F3FA9] hover:text-blue-700 transition-transform animate-bounce text-[24px]"
+                  >
+                    <FaLinkedin />
+                  </a>
+                )}
+                {collaborator.twitter_url && (
+                  <a
+                    href={collaborator.twitter_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#8F3FA9] hover:text-blue-400 transition-transform animate-bounce text-[24px]"
+                  >
+                    <FaTwitter />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         ))}

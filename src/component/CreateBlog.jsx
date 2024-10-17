@@ -13,6 +13,7 @@ const CreateBlog = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -66,6 +67,16 @@ const CreateBlog = () => {
     setIsLoading(false);
   };
 
+  const handlePostChange = (value) => {
+    const wordArray = value.trim().split(/\s+/); // Split post into words
+    const currentWordCount = wordArray.length;
+
+    if (currentWordCount <= 750) {
+      setPost(value);
+      setWordCount(currentWordCount);
+    }
+  };
+
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100 p-4">
       <div className="w-full max-w-[800px] bg-white p-6 rounded-lg shadow-md">
@@ -91,15 +102,18 @@ const CreateBlog = () => {
 
           <div className="mb-4">
             <label htmlFor="post" className="block text-gray-700">
-              Post
+              Post (Word count: {wordCount}/750)
             </label>
             <ReactQuill
               value={post}
-              onChange={setPost}
+              onChange={handlePostChange}
               modules={CreateBlog.modules}
               formats={CreateBlog.formats}
               className="h-[200px]"
             />
+            {wordCount > 750 && (
+              <p className="text-red-600 mt-2">Word limit exceeded!</p>
+            )}
           </div>
 
           <div className="mb-4">
@@ -120,7 +134,7 @@ const CreateBlog = () => {
           <button
             type="submit"
             className="w-full bg-purple-600 text-white p-3 rounded-lg"
-            disabled={isLoading}
+            disabled={isLoading || wordCount > 750}
           >
             {isLoading ? "Creating Blog..." : "Create Blog"}
           </button>
