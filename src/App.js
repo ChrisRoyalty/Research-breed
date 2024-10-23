@@ -22,6 +22,9 @@ import FetchPublications from "./component/admin/FetchPublications";
 import AddPublication from "./component/admin/AddPublication";
 import RemovePublication from "./component/admin/RemovePublication";
 import FetchUsers from "./component/admin/FetchUsers";
+import TermsOfService from "./component/TermsOfService";
+import PrivacyPolicy from "./component/PrivacyPolicy";
+import CodeOfConduct from "./component/CodeOfConduct";
 
 function App() {
   return (
@@ -36,6 +39,9 @@ function App() {
         <Route path="edit-profile" element={<EditProfile />} />
         <Route path="create-blog" element={<CreateBlog />} />
         <Route path="fetch-blog" element={<FetchBlog />} />
+        <Route path="terms-of-service" element={<TermsOfService />} />
+        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="code-of-conduct" element={<CodeOfConduct />} />
 
         <Route
           path="/profile"

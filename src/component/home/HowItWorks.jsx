@@ -8,7 +8,7 @@ function HowItWorks() {
           How Researchbreed Works
         </h2>
         <p className="text-center text-gray-600 mb-10">
-          Follow our easy 5-step process to get started
+          Follow our easy 4-step process to get started
         </p>
 
         <div className="grid md:grid-cols-2 grid-cols-1 gap-16">
@@ -36,7 +36,7 @@ function HowItWorks() {
               </h4>
             </div>
           </div>
-          <div className="relative border shadow-lg rounded-lg p-8 flex flex-col gap-1">
+          {/* <div className="relative border shadow-lg rounded-lg p-8 flex flex-col gap-1">
             <h3 className="font-bold">Research with AI</h3>
             <p className="text-[16px]">
               Use our integrated AI to write your papers efficiently, generate
@@ -47,7 +47,7 @@ function HowItWorks() {
                 3
               </h4>
             </div>
-          </div>
+          </div> */}
           <div className="relative border shadow-lg rounded-lg p-8 flex flex-col gap-1">
             <h3 className="font-bold">Collaborations</h3>
             <p className="text-[16px]">
@@ -56,19 +56,19 @@ function HowItWorks() {
             </p>
             <div className="w-full h-full absolute top-0 left-0 flex items-center justify-start">
               <h4 className="sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] rounded-full absolute top-auto left-[-15px] bg-black text-white flex justify-center items-center">
-                4
+                3
               </h4>
             </div>
           </div>
           <div className="relative border shadow-lg rounded-lg p-8 flex flex-col gap-1">
-            <h3 className="font-bold">Paper visibility (Brag your work)</h3>
+            <h3 className="font-bold">Paper visibility</h3>
             <p className="text-[16px]">
               Post contents about your papers on our blog, publish your contents
               for visibility, citations and increase your influence.
             </p>
             <div className="w-full h-full absolute top-0 left-0 flex items-center justify-start">
               <h4 className="sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] rounded-full absolute top-auto left-[-15px] bg-black text-white flex justify-center items-center">
-                5
+                4
               </h4>
             </div>
           </div>

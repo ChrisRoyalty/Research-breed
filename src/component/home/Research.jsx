@@ -7,6 +7,7 @@ import LearningImg from "../../assets/man_girl.jpg";
 import { IoSearch } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { NavLink } from "react-router-dom";
+import BlogImg from "../../assets/blog.jpg";
 function Research() {
   return (
     <section className="w-full h-fit md:py-[10vh] flex justify-center items-center">
@@ -28,18 +29,12 @@ function Research() {
               with what is happening in your field.
             </p>
             <div className="max-sm:mt-4 inputs flex max-md:flex-col gap-8">
-              <div className="flex justify-center items-center gap-4 border-2 border-gray-200 rounded-lg w-full sm:w-[50%] p-4">
-                <IoSearch className="text-[30px]" />
-                <input
-                  type="text"
-                  placeholder="Search.."
-                  className="border-none outline-none w-full"
-                />
-              </div>
-              <div className="flex justify-center items-center gap-4 border-2 border-gray-200 rounded-lg w-full sm:w-[50%] p-4">
-                <h5>FILTERS</h5>
-                <IoIosArrowDown />
-              </div>
+              <NavLink
+                to="/publications"
+                className="border rounded-lg w-full lg:w-[40%] flex justify-center items-center h-[50px] bg-[#8F3FA9] text-white hover:bg-[#8F3FA9]/80"
+              >
+                Explore
+              </NavLink>
             </div>
           </div>
         </section>
@@ -58,6 +53,32 @@ function Research() {
 
           <div className="graduationImg">
             <img src={LearningImg} alt="Graduation Img" className="h-[436px]" />
+          </div>
+        </section>
+        <section className="section1 grid md:grid-cols-2 grid-cols-1 items-center gap-8 sm:gap-24">
+          <div className="graduationImg">
+            <img
+              src={BlogImg} // Replace with your blog image source
+              alt="Blog Img"
+              className="h-[300px] md:h-[436px]"
+            />
+          </div>
+          <div className="details">
+            <h3 className="text-[20px] sm:text-[24px] font-bold">
+              Explore Our Blogs
+            </h3>
+            <p className="mt-2 text-gray-600 sm:text-[18px] text-[15px] leading-7 sm:leading-10">
+              Stay informed with the latest insights and updates from experts in
+              various fields.
+            </p>
+            <div className="max-sm:mt-4 inputs flex max-md:flex-col gap-8">
+              <NavLink
+                to="/blog" // Adjust the path if needed
+                className="border rounded-lg w-full lg:w-[40%] flex justify-center items-center h-[50px] bg-[#8F3FA9] text-white hover:bg-[#8F3FA9]/80"
+              >
+                Read Blogs
+              </NavLink>
+            </div>
           </div>
         </section>
       </div>

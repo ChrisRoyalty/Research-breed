@@ -24,10 +24,16 @@ const Footer = () => {
               <NavLink to={"/publications"}>Publications</NavLink>
             </nav>
             <div className="socials flex gap-4">
-              <a href="" className="text-[25px] hover:text-[#8F3FA9]">
+              <a
+                href="https://www.facebook.com/profile.php?id=61559852670778"
+                className="text-[25px] hover:text-[#8F3FA9]"
+              >
                 <FaFacebook />
               </a>
-              <a href="" className="text-[25px] hover:text-[#8F3FA9]">
+              <a
+                href="https://www.linkedin.com/company/research-breed/"
+                className="text-[25px] hover:text-[#8F3FA9]"
+              >
                 <FaLinkedin />
               </a>
               <a href="" className="text-[25px] hover:text-[#8F3FA9]">
@@ -57,15 +63,25 @@ const Footer = () => {
       </div>
       <div className="mt-12 py-[40px] border-t border-black w-full flex justify-center items-center">
         <div className="w-[90%] sm:w-[80%] flex gap-4 max-md:flex-col max-md:justify-start">
-          <a href="" className="md:border-r md:pr-3 border-black">
+          <NavLink
+            to={"/terms-of-service"}
+            className="md:border-r md:pr-3 border-black"
+          >
             Terms & Conditions
-          </a>
-          <a href="" className="md:border-r md:pr-3 border-black">
+          </NavLink>
+          <NavLink
+            to={"/privacy-policy"}
+            className="md:border-r md:pr-3 border-black"
+          >
             Privacy policy
-          </a>
-          <a href="" className="md:border-r md:pr-3 border-black">
+          </NavLink>
+          <NavLink
+            to={"/code-of-conduct"}
+            className="md:border-r md:pr-3 border-black"
+          >
             Code of conduct
-          </a>
+          </NavLink>
+
           <a href="" className="flex items-center gap-2 max-sm:text-[12px]">
             <FaRegCopyright /> 2024 Researchbreed, LLC. All Rights Reserved.
           </a>

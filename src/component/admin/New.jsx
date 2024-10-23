@@ -3,92 +3,55 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FiMenu, FiX } from "react-icons/fi"; // Import icons from react-icons
 
-const PublicationModal = ({ publication, onClose }) => {
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white w-3/4 md:w-1/2 h-[80%] p-6 rounded-lg relative overflow-y-auto shadow-lg">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 bg-[#8F3FA9] hover:bg-[#8F3FA9]/75 text-white px-4 py-2 rounded-lg"
-        >
-          Close
-        </button>
-
-        {/* Publication details */}
-        <h2 className="text-2xl font-bold mb-4">{publication.title}</h2>
-        <p className="text-sm text-gray-600 mb-2">
-          {publication.category.charAt(0).toUpperCase() +
-            publication.category.slice(1)}{" "}
-          by {publication.publisher}
-        </p>
-        <p className="text-sm text-gray-500 mb-4">
-          Published on:{" "}
-          {new Date(publication.date_of_publication).toLocaleDateString()}
-        </p>
-
-        {/* Display body content */}
-        <div
-          className="text-gray-700"
-          dangerouslySetInnerHTML={{ __html: publication.body }}
-        ></div>
-      </div>
-    </div>
-  );
-};
-
 function AdminDashboard() {
-  const [pendingBlogs, setPendingBlogs] = useState(0);
-  const [recentPublications, setRecentPublications] = useState([]);
-  const [selectedPublication, setSelectedPublication] = useState(null);
-
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalBlogs, setTotalBlogs] = useState(0);
   const [totalPublications, setTotalPublications] = useState(0);
   const [pendingReviews, setPendingReviews] = useState(0);
-  // const [recentActivity, setRecentActivity] = useState([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default sidebar closed on small screens
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [selectedPublication, setSelectedPublication] = useState(null); // Store selected publication details
   const navigate = useNavigate();
 
+  // Fetch dashboard data with token
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const token = sessionStorage.getItem("authToken"); // Retrieve the token from session storage (or localStorage if you prefer)
+        const token = sessionStorage.getItem("authToken");
+
+        if (!token) {
+          throw new Error("Token is missing.");
+        }
 
         const response = await axios.get(
           "https://dev-api.researchbreed.com/api/admin/dashboard",
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
-        const {
-          active_blogs,
-          pending_blogs,
-          users,
-          publications,
-          recent_publications,
-        } = response.data.data;
-
-        setTotalBlogs(active_blogs); // Active blogs count
-        setPendingBlogs(pending_blogs); // Pending blogs count
-        setTotalUsers(users); // Total users count
-        setTotalPublications(publications); // Total publications count
-        setRecentPublications(recent_publications); // Array of recent publications
+        const data = response.data.data;
+        setTotalUsers(data.users);
+        setTotalBlogs(data.active_blogs);
+        setTotalPublications(data.publications);
+        setPendingReviews(data.pending_blogs);
+        setRecentActivity(data.recent_publications);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
     };
 
-    fetchData();
+    fetchDashboardData();
   }, []);
 
   // Logout function
   const handleLogout = async () => {
     try {
-      await axios.post("https://dev-api.researchbreed.com/api/logout"); // Adjust to your actual endpoint
+      await axios.post("https://dev-api.researchbreed.com/api/logout");
+      sessionStorage.removeItem("authToken"); // Clear the token
       navigate("/"); // Redirect to home page
     } catch (error) {
       console.error("Error logging out:", error);
@@ -98,6 +61,18 @@ function AdminDashboard() {
   // Handle sidebar link click
   const handleLinkClick = () => {
     setIsSidebarOpen(false); // Close the sidebar after clicking any link
+  };
+
+  // Open modal to show publication details
+  const handleViewDetails = (publication) => {
+    setSelectedPublication(publication);
+    setIsModalOpen(true); // Open the publication modal
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPublication(null); // Reset selected publication
   };
 
   return (
@@ -201,7 +176,6 @@ function AdminDashboard() {
             aspects of your platform.
           </p>
         </header>
-
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
             <h2 className="text-xl font-semibold mb-2">Total Users</h2>
@@ -210,7 +184,7 @@ function AdminDashboard() {
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-            <h2 className="text-xl font-semibold mb-2">Total Blogs</h2>
+            <h2 className="text-xl font-semibold mb-2">Blog Posts</h2>
             <p className="text-4xl font-bold text-[#8F3FA9]">{totalBlogs}</p>
             <p className="text-gray-500">Published Blogs</p>
           </div>
@@ -231,51 +205,58 @@ function AdminDashboard() {
             <p className="text-gray-500">Submissions Pending</p>
           </div>
         </section>
-
-        {/* Recent Activity (Recent Publications) */}
+        {/* Recent Activity */}
         <section className="mt-6">
-          <h2 className="text-2xl font-bold text-[#8F3FA9] mb-4">
-            Recent Publications
-          </h2>
-          <ul className="bg-white rounded-lg shadow-md p-6">
-            {recentPublications.length > 0 ? (
-              recentPublications.map((publication, index) => (
-                <li
-                  key={index}
-                  className="border-b last:border-none p-4 flex justify-between items-center"
-                >
-                  {/* Render the publication title */}
-                  <span className="font-semibold text-xl">
-                    {publication.title}
-                  </span>
-
-                  {/* View more button to trigger modal */}
-                  <button
-                    onClick={() => setSelectedPublication(publication)}
-                    className="bg-[#8F3FA9] hover:bg-[#8F3FA9]/75 text-white px-4 py-2 rounded-lg no-underline ml-2"
-                  >
-                    View More
-                  </button>
-                </li>
-              ))
-            ) : (
-              <p className="text-gray-500">No recent publications</p>
-            )}
+          <h2 className="text-2xl font-semibold mb-4">Recent Publications</h2>
+          <ul className="max-h-60 overflow-y-auto border border-gray-300 rounded-lg bg-white shadow-md p-4">
+            {recentActivity.map((activity) => (
+              <li
+                key={activity.id}
+                className="flex justify-between items-center p-2 border-b border-gray-200 hover:bg-gray-100 cursor-pointer"
+                onClick={() => handleViewDetails(activity)} // Open modal with details
+              >
+                <span>{activity.title}</span>
+                <button className="text-[#8F3FA9] hover:underline">View</button>
+              </li>
+            ))}
           </ul>
-
-          {/* Modal to display full publication details */}
-          {selectedPublication && (
-            <PublicationModal
-              publication={selectedPublication}
-              onClose={() => setSelectedPublication(null)}
-            />
-          )}
         </section>
-
-        {/* Nested Outlet for different routes */}
-        <div className="mt-6">
-          <Outlet />
-        </div>
+        {/* Modal for Publication Details */}
+        {isModalOpen && selectedPublication && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div
+              className="bg-black opacity-75 absolute inset-0"
+              onClick={closeModal}
+            />
+            <div className="bg-white rounded-lg shadow-lg z-10 p-6 w-11/12 lg:w-[70%] max-h-[80vh] overflow-y-auto flex flex-col">
+              <h2 className="text-2xl font-bold mb-4">
+                {selectedPublication.title}
+              </h2>
+              <p className="text-xl font-bold mb-4">
+                Publisher: {selectedPublication.publisher}
+              </p>
+              <p className="text-lg text-gray-700 font-bold mb-4">
+                Category: {selectedPublication.category}
+              </p>
+              <a
+                href={`${selectedPublication.external_link}`}
+                className="text-gray-600 font-bold mb-4"
+              >
+                Read in full
+              </a>
+              <div
+                className="mb-4 prose"
+                dangerouslySetInnerHTML={{ __html: selectedPublication.body }} // Display HTML content
+              />
+              <button
+                className="bg-[#8F3FA9] text-white px-4 py-2 rounded hover:bg-[#7A2D8C] self-end"
+                onClick={closeModal}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

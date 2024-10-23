@@ -66,6 +66,7 @@ const Blog = () => {
         const response = await axios.get(
           "https://dev-api.researchbreed.com/api/blog-posts"
         );
+        console.log(response); // Log the full response to check its structure
         if (response.data && Array.isArray(response.data.data)) {
           setBlogs(response.data.data);
         } else {
