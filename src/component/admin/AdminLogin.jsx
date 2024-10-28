@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineCancelPresentation } from "react-icons/md";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import show/hide icons
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import Logo from "../../assets/logo.png"; // Update path accordingly
@@ -11,9 +12,10 @@ function AdminLogin() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const [isVerificationEmailResent, setIsVerificationEmailResent] =
     useState(false);
-  const [isResending, setIsResending] = useState(false); // For resending verification email
+  const [isResending, setIsResending] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ function AdminLogin() {
     if (message) {
       const timer = setTimeout(() => {
         setMessage("");
-      }, 5000); // Clear message after 5 seconds
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -30,7 +32,7 @@ function AdminLogin() {
     if (error) {
       const timer = setTimeout(() => {
         setError("");
-      }, 5000); // Clear error after 5 seconds
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [error]);
@@ -61,7 +63,7 @@ function AdminLogin() {
       if (response.data.success) {
         setMessage("Login successful!");
         sessionStorage.setItem("authToken", response.data.data.token);
-        navigate("/admin"); // Redirect to admin dashboard
+        navigate("/admin");
       } else {
         handleError(response.data.message);
       }
@@ -75,9 +77,7 @@ function AdminLogin() {
     }
   };
 
-  const validateEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleError = (message) => {
     if (message.includes("not verified")) {
@@ -145,13 +145,26 @@ function AdminLogin() {
               className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
               placeholder="Enter your email"
             />
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="h-[60px] bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
-              placeholder="Enter your password"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="h-[60px] w-full bg-transparent border-b-[1px] border-gray-700 outline-none text-gray-500 text-[18px]"
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? (
+                  <AiFillEyeInvisible size={24} />
+                ) : (
+                  <AiFillEye size={24} />
+                )}
+              </button>
+            </div>
 
             <button
               type="submit"
