@@ -106,12 +106,15 @@ function Header() {
             Call for Papers
           </NavLink>
           <span
-            className={`block py-2 px-4 lg:rounded-none rounded-lg lg:bg-transparent lg:text-black lg:hover:text-black transition-all duration-300 ease-linear ${
+            className={`block py-2 px-4 max-lg:rounded-lg transition-all duration-300 ease-linear ${
               showModal
-                ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white"
-                : ""
+                ? "lg:border-b-4 lg:border-[#8F3FA9] bg-[#8F3FA9] text-white lg:text-black lg:bg-transparent"
+                : "hover:border-b-4 border-[#8F3FA9]"
             }`}
-            onClick={handleCollaborateClick}
+            onClick={() => {
+              handleCollaborateClick();
+              hideMenu(); // Close sidebar on small screens
+            }}
           >
             Collaborate
           </span>
