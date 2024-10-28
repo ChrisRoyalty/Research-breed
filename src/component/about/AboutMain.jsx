@@ -14,9 +14,11 @@ const AboutMain = () => {
         <div className="grid md:grid-cols-2 grid-cols-1 items-center md:gap-48 gap-16 mt-16">
           <div className="text-start flex flex-col gap-6 text-[18px]">
             <p className="leading-10">
-              We empower academicians with AI-driven tools that enhance quality
-              writing and speed. We help you gain visibility for your papers,
-              ensuring your work reaches the right audience.
+              "We streamline your academic journey by bringing together
+              essential resources and calls for papers, giving you more time to
+              focus on impactful research. Join a thriving community of scholars
+              dedicated to advancing knowledge, sharing insights, and achieving
+              academic excellence."
             </p>
             <p className="leading-10">
               At ResearchBreed, we save you time by centralising call for papers

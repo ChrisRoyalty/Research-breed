@@ -7,7 +7,6 @@ const Collaborators = () => {
   const [collaborators, setCollaborators] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -29,6 +28,13 @@ const Collaborators = () => {
       .catch((error) => {
         console.error("Error fetching collaborators", error);
         setLoading(false);
+
+        // Check if the error is due to authorization
+        if (error.response && error.response.status === 401) {
+          // Clear token and redirect to login
+          localStorage.removeItem("authToken");
+          navigate("/login");
+        }
       });
   }, [navigate]);
 

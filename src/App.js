@@ -25,6 +25,7 @@ import FetchUsers from "./component/admin/FetchUsers";
 import TermsOfService from "./component/TermsOfService";
 import PrivacyPolicy from "./component/PrivacyPolicy";
 import CodeOfConduct from "./component/CodeOfConduct";
+import AdminBlogCreate from "./component/admin/AdminBlogCreate";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminDashboard />}>
         <Route path="all-blogs" element={<AllBlogs />} />
+        <Route path="create-admin-blog" element={<AdminBlogCreate />} />
         <Route path="approved-blogs" element={<UpdateBlog />} />
         <Route path="publications" element={<FetchPublications />} />
         <Route path="add-publication" element={<AddPublication />} />

@@ -1,12 +1,12 @@
 import React from "react";
-import John from "../../assets/john.png";
-import Edward from "../../assets/edward.png";
-import Chinedu from "../../assets/chinedu.png";
-import George from "../../assets/george.png";
-import Chisom from "../../assets/chisom.png";
-import Christiana from "../../assets/christiana.png";
-import Favour from "../../assets/favor.png";
-import Patience from "../../assets/patience.png";
+import John from "../../assets/officeMan01.jpg";
+import Edward from "../../assets/officeMan02.jpg";
+import Chinedu from "../../assets/officeMan03.jpg";
+import George from "../../assets/officeMan04.jpg";
+import Chisom from "../../assets/officeWoman01.jpg";
+import Christiana from "../../assets/officeWoman02.jpg";
+import Favour from "../../assets/officeWoman03.jpg";
+import Patience from "../../assets/officeWoman04.jpg";
 const Team = () => {
   return (
     <div className="w-full h-fit py-32 flex justify-center items-center">
@@ -17,7 +17,7 @@ const Team = () => {
             <img
               src={John}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Mr John Okeke</h4>
@@ -27,7 +27,7 @@ const Team = () => {
             <img
               src={Edward}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Dr Edward Peter</h4>
@@ -37,7 +37,7 @@ const Team = () => {
             <img
               src={Chinedu}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Mr Chinedu Okeke</h4>
@@ -47,7 +47,7 @@ const Team = () => {
             <img
               src={George}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Mr George Joel</h4>
@@ -57,7 +57,7 @@ const Team = () => {
             <img
               src={Chisom}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Miss Chisom Eke</h4>
@@ -67,7 +67,7 @@ const Team = () => {
             <img
               src={Christiana}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Dr Christiana Chris</h4>
@@ -77,7 +77,7 @@ const Team = () => {
             <img
               src={Favour}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Miss Favour John</h4>
@@ -87,7 +87,7 @@ const Team = () => {
             <img
               src={Patience}
               alt="ProfilePhoto"
-              className="border-[15px] md:border-[20px] border-[#07522D] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
+              className="border-[15px] md:border-[20px] border-[#8F3FA9] md:rounded-tl-[108px] rounded-tl-[75px] md:rounded-br-[108px] rounded-br-[75px] h-[220px] md:h-[249px]"
             />
             <figcaption>
               <h4>Mrs Patience Uzor</h4>
