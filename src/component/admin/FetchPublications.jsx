@@ -168,15 +168,12 @@ const FetchPublications = () => {
 
       {/* Modal for Full Publication Content */}
       {isModalVisible && selectedPublication && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
           <div
             className="backdrop-filter backdrop-blur-sm fixed top-0 left-0 w-full h-full bg-black opacity-50"
             onClick={closeModal}
           />
-          <div
-            className="bg-white p-6 rounded-md shadow-md max-w-3xl w-full z-50 h-4/5 overflow-y-auto"
-            style={{ maxHeight: "80%", width: "80%" }}
-          >
+          <div className="bg-white p-6 rounded-md shadow-md w-[80%] z-50 h-[95%] max-sm:w-[90%] overflow-y-auto">
             <h2 className="text-2xl font-bold mb-4 text-[#8F3FA9]">
               {selectedPublication.title}
             </h2>

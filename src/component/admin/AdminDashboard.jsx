@@ -6,7 +6,7 @@ import { FiMenu, FiX } from "react-icons/fi"; // Import icons from react-icons
 const PublicationModal = ({ publication, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white w-3/4 md:w-1/2 h-[80%] p-6 rounded-lg relative overflow-y-auto shadow-lg">
+      <div className="bg-white w-[90%] h-[90%] p-6 rounded-lg relative overflow-y-auto shadow-lg">
         {/* Close button */}
         <button
           onClick={onClose}

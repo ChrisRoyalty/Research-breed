@@ -181,7 +181,7 @@ const AddPublication = () => {
             >
               <option value="journal">Journal</option>
               <option value="research-project">Research Project</option>
-              <option value="conference-paper">Conference Paper</option>
+              <option value="conference-paper">International Conference</option>
             </select>
           </div>
 

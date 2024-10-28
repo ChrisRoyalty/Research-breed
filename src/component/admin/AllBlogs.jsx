@@ -208,7 +208,7 @@ const FetchBlogs = () => {
           className="modal-content fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white p-0 rounded-lg shadow-lg"
           overlayClassName="modal-overlay fixed inset-0 bg-black bg-opacity-60 z-40"
         >
-          <div className="modal-body w-[80vw] h-[80vh] overflow-y-auto p-6">
+          <div className="modal-body w-[90vw] h-[95vh] overflow-y-auto p-6">
             {selectedBlog && (
               <>
                 <h2 className="text-2xl font-bold mb-4">
