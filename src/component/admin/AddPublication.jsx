@@ -150,7 +150,7 @@ const AddPublication = () => {
 
       <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-          Add New Publication
+          Add Call for Papers
         </h2>
 
         <form onSubmit={handlePublish} className="space-y-4">

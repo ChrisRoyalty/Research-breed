@@ -7,12 +7,15 @@ import {
   FaTwitter,
   FaEnvelope,
   FaPhone,
-  FaSms,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 const Collaborators = () => {
   const [collaborators, setCollaborators] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [showActions, setShowActions] = useState(false);
+  const collaboratorsPerPage = 3; // Limit to 3 collaborators per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,19 +48,25 @@ const Collaborators = () => {
   }, [navigate]);
 
   const handleEmailClick = (email) => {
-    navigator.clipboard.writeText(email); // Copy email to clipboard
-    window.location.href = `mailto:${email}`; // Open default email client
+    navigator.clipboard.writeText(email);
+    window.location.href = `mailto:${email}`;
   };
 
   const handlePhoneClick = (phone) => {
-    navigator.clipboard.writeText(phone); // Copy phone to clipboard
-    window.location.href = `tel:${phone}`; // Open phone dialer
+    navigator.clipboard.writeText(phone);
+    window.location.href = `tel:${phone}`;
   };
 
-  const handleMessageClick = (phone) => {
-    navigator.clipboard.writeText(phone); // Copy phone to clipboard
-    window.location.href = `sms:${phone}`; // Open messaging app
+  const handleWhatsappClick = (phone) => {
+    const whatsappUrl = `https://wa.me/${phone}`;
+    window.open(whatsappUrl, "_blank");
   };
+
+  const totalPages = Math.ceil(collaborators.length / collaboratorsPerPage);
+  const displayedCollaborators = collaborators.slice(
+    currentPage * collaboratorsPerPage,
+    (currentPage + 1) * collaboratorsPerPage
+  );
 
   if (loading) {
     return (
@@ -98,12 +107,12 @@ const Collaborators = () => {
   }
 
   return (
-    <div className="w-full h-auto flex justify-center items-center py-12 bg-gray-50">
-      <div className="md:w-[60%] w-[90%] grid grid-cols-1 gap-8 border-[10px] border-[#8F3FA9] rounded-xl p-6 shadow-xl bg-white">
-        {collaborators.map((collaborator, index) => (
+    <div className="w-full flex justify-center items-center py-12 bg-gray-50">
+      <div className="lg:w-[30%] w-[90%] grid grid-cols-1 gap-8 p-6">
+        {displayedCollaborators.map((collaborator, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 grid lg:grid-cols-2 text-center"
+            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 grid text-center"
           >
             <div className="lg:rounded-l-lg max-sm:rounded-t-lg px-4 py-12 bg-[#8F3FA9] text-white flex flex-col items-center">
               <img
@@ -114,9 +123,6 @@ const Collaborators = () => {
               <h4 className="font-bold text-2xl mt-4 text-white">{`${
                 collaborator.firstname || ""
               } ${collaborator.lastname || ""}`}</h4>
-              {collaborator.email && (
-                <p className="text-sm mt-2 text-white">{collaborator.email}</p>
-              )}
             </div>
             <div className="p-12">
               {/* Collaborator details */}
@@ -141,14 +147,6 @@ const Collaborators = () => {
                   <strong className="w-[80%] text-start">Occupation:</strong>{" "}
                   <span className="w-[100%] text-start ">
                     {collaborator.occupation}
-                  </span>
-                </p>
-              )}
-              {collaborator.phone && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">PhoneNo:</strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.phone}
                   </span>
                 </p>
               )}
@@ -197,69 +195,83 @@ const Collaborators = () => {
                 </p>
               )}
 
-              {/* Social Media, Email, Call, and Messaging Icons */}
-              <div className="flex gap-6 mt-8 justify-center">
-                {collaborator.facebook_url && (
-                  <a
-                    href={collaborator.facebook_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#8F3FA9] hover:text-blue-500 transition-transform animate-bounce text-[24px]"
-                  >
-                    <FaFacebookSquare />
-                  </a>
-                )}
-                {collaborator.linkedin_url && (
-                  <a
-                    href={collaborator.linkedin_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#8F3FA9] hover:text-blue-700 transition-transform animate-bounce text-[24px]"
-                  >
-                    <FaLinkedin />
-                  </a>
-                )}
-                {collaborator.twitter_url && (
-                  <a
-                    href={collaborator.twitter_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#8F3FA9] hover:text-blue-400 transition-transform animate-bounce text-[24px]"
-                  >
-                    <FaTwitter />
-                  </a>
-                )}
-                {collaborator.email && (
-                  <button
+              <button
+                onClick={() => setShowActions(!showActions)}
+                className="mt-4 bg-[#8F3FA9] text-white px-4 py-2 rounded transition-colors hover:bg-[#741C9D]"
+              >
+                {`Collaborate with ${collaborator.firstname || "User"}`}
+              </button>
+
+              {/* Social Media Icons */}
+              {showActions && (
+                <div className="flex justify-center items-center mt-4 space-x-2">
+                  <FaFacebookSquare
+                    onClick={() =>
+                      window.open(
+                        `https://facebook.com/${collaborator.facebook}`,
+                        "_blank"
+                      )
+                    }
+                    className="text-[#3b5998] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                  />
+                  <FaLinkedin
+                    onClick={() =>
+                      window.open(
+                        `https://linkedin.com/in/${collaborator.linkedIn}`,
+                        "_blank"
+                      )
+                    }
+                    className="text-[#0077b5] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                  />
+                  <FaTwitter
+                    onClick={() =>
+                      window.open(
+                        `https://twitter.com/${collaborator.twitter}`,
+                        "_blank"
+                      )
+                    }
+                    className="text-[#1DA1F2] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                  />
+                  <FaEnvelope
                     onClick={() => handleEmailClick(collaborator.email)}
-                    className="text-[#8F3FA9] hover:text-red-500 transition-transform animate-bounce text-[24px]"
-                    title="Copy email & Open in default email client"
-                  >
-                    <FaEnvelope />
-                  </button>
-                )}
-                {collaborator.phone && (
-                  <>
-                    <button
-                      onClick={() => handlePhoneClick(collaborator.phone)}
-                      className="text-[#8F3FA9] hover:text-green-500 transition-transform animate-bounce text-[24px]"
-                      title="Copy phone & Open phone dialer"
-                    >
-                      <FaPhone />
-                    </button>
-                    <button
-                      onClick={() => handleMessageClick(collaborator.phone)}
-                      className="text-[#8F3FA9] hover:text-yellow-500 transition-transform animate-bounce text-[24px]"
-                      title="Copy phone & Open messaging app"
-                    >
-                      <FaSms />
-                    </button>
-                  </>
-                )}
-              </div>
+                    className="text-[#c71610] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                  />
+                  <FaPhone
+                    onClick={() => handlePhoneClick(collaborator.phone)}
+                    className="text-[#6d4c41] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                  />
+                  <FaWhatsapp
+                    onClick={() => handleWhatsappClick(collaborator.phone)}
+                    className="text-[#25D366] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                  />
+                </div>
+              )}
             </div>
           </div>
         ))}
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center items-center mt-4 w-full">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+            disabled={currentPage === 0}
+            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-l disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2">
+            {currentPage + 1} / {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))
+            }
+            disabled={currentPage === totalPages - 1}
+            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-r disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

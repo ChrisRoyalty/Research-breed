@@ -130,7 +130,7 @@ function AdminDashboard() {
               }
               onClick={handleLinkClick} // Close sidebar on link click
             >
-              Add Publication
+              Add Call for Papers
             </NavLink>
             <NavLink
               to="publications"
@@ -141,7 +141,7 @@ function AdminDashboard() {
               }
               onClick={handleLinkClick} // Close sidebar on link click
             >
-              All Publications
+              All Call for Papers
             </NavLink>
 
             <NavLink

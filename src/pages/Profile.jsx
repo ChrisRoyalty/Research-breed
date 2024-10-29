@@ -88,7 +88,7 @@ const Profile = () => {
         </div>
 
         <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Phone</h2>
+          <h2 className="text-lg font-bold">WhatsApp No.</h2>
           <p>{profileData.phone || "Not provided"}</p>
         </div>
 

@@ -53,7 +53,7 @@ const Publication = ({ publication }) => {
           rel="noopener noreferrer"
           className="text-blue-600 hover:underline text-xs mb-4 inline-block"
         >
-          View Publication
+          View Call for Papers
         </a>
       )}
 
