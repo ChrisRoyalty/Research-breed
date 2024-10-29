@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaFacebookSquare, FaLinkedin, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebookSquare,
+  FaLinkedin,
+  FaTwitter,
+  FaEnvelope,
+  FaPhone,
+  FaSms,
+} from "react-icons/fa";
 
 const Collaborators = () => {
   const [collaborators, setCollaborators] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -29,14 +37,27 @@ const Collaborators = () => {
         console.error("Error fetching collaborators", error);
         setLoading(false);
 
-        // Check if the error is due to authorization
         if (error.response && error.response.status === 401) {
-          // Clear token and redirect to login
           localStorage.removeItem("authToken");
           navigate("/login");
         }
       });
   }, [navigate]);
+
+  const handleEmailClick = (email) => {
+    navigator.clipboard.writeText(email); // Copy email to clipboard
+    window.location.href = `mailto:${email}`; // Open default email client
+  };
+
+  const handlePhoneClick = (phone) => {
+    navigator.clipboard.writeText(phone); // Copy phone to clipboard
+    window.location.href = `tel:${phone}`; // Open phone dialer
+  };
+
+  const handleMessageClick = (phone) => {
+    navigator.clipboard.writeText(phone); // Copy phone to clipboard
+    window.location.href = `sms:${phone}`; // Open messaging app
+  };
 
   if (loading) {
     return (
@@ -82,9 +103,9 @@ const Collaborators = () => {
         {collaborators.map((collaborator, index) => (
           <div
             key={index}
-            className=" bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 grid lg:grid-cols-2 text-center"
+            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 grid lg:grid-cols-2 text-center"
           >
-            <div className="lg:rounded-l-lg max-sm:rounded-t-lg px-4 py-12  bg-[#8F3FA9] text-white flex flex-col items-center">
+            <div className="lg:rounded-l-lg max-sm:rounded-t-lg px-4 py-12 bg-[#8F3FA9] text-white flex flex-col items-center">
               <img
                 src={collaborator.image}
                 alt={`${collaborator.firstname} ${collaborator.lastname}`}
@@ -98,6 +119,7 @@ const Collaborators = () => {
               )}
             </div>
             <div className="p-12">
+              {/* Collaborator details */}
               {collaborator.gender && (
                 <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
                   <strong className="w-[80%] text-start">Gender:</strong>{" "}
@@ -122,7 +144,6 @@ const Collaborators = () => {
                   </span>
                 </p>
               )}
-
               {collaborator.phone && (
                 <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
                   <strong className="w-[80%] text-start">PhoneNo:</strong>{" "}
@@ -165,7 +186,6 @@ const Collaborators = () => {
                   </span>
                 </p>
               )}
-
               {collaborator.account_status && (
                 <p className="text-gray-500 text-sm mt-1 grid grid-cols-2 w-full items-center">
                   <strong className="w-[80%] text-start">
@@ -176,7 +196,8 @@ const Collaborators = () => {
                   </span>
                 </p>
               )}
-              {/* Animated Social Media Icons */}
+
+              {/* Social Media, Email, Call, and Messaging Icons */}
               <div className="flex gap-6 mt-8 justify-center">
                 {collaborator.facebook_url && (
                   <a
@@ -188,9 +209,9 @@ const Collaborators = () => {
                     <FaFacebookSquare />
                   </a>
                 )}
-                {collaborator.linked_url && (
+                {collaborator.linkedin_url && (
                   <a
-                    href={collaborator.linked_url}
+                    href={collaborator.linkedin_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[#8F3FA9] hover:text-blue-700 transition-transform animate-bounce text-[24px]"
@@ -207,6 +228,33 @@ const Collaborators = () => {
                   >
                     <FaTwitter />
                   </a>
+                )}
+                {collaborator.email && (
+                  <button
+                    onClick={() => handleEmailClick(collaborator.email)}
+                    className="text-[#8F3FA9] hover:text-red-500 transition-transform animate-bounce text-[24px]"
+                    title="Copy email & Open in default email client"
+                  >
+                    <FaEnvelope />
+                  </button>
+                )}
+                {collaborator.phone && (
+                  <>
+                    <button
+                      onClick={() => handlePhoneClick(collaborator.phone)}
+                      className="text-[#8F3FA9] hover:text-green-500 transition-transform animate-bounce text-[24px]"
+                      title="Copy phone & Open phone dialer"
+                    >
+                      <FaPhone />
+                    </button>
+                    <button
+                      onClick={() => handleMessageClick(collaborator.phone)}
+                      className="text-[#8F3FA9] hover:text-yellow-500 transition-transform animate-bounce text-[24px]"
+                      title="Copy phone & Open messaging app"
+                    >
+                      <FaSms />
+                    </button>
+                  </>
                 )}
               </div>
             </div>

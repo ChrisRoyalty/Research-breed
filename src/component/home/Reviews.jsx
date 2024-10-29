@@ -107,12 +107,12 @@ const Reviews = () => {
               <span>Over 1000 reviews</span>
             </div>
           </div>
-          <div className="w-fit write-reviews bg-white py-3 pl-4 max-sm:px-2 rounded-lg text-black flex items-center gap-4 max-sm:w-[150px]">
+          <div className="write-reviews bg-white py-3 pl-4 max-sm:px-2 rounded-lg text-black flex items-center gap-4 max-sm:w-[150px] w-[50%]">
             <RiPencilFill className="text-[25px]" />
             <input
               type="text"
               placeholder="Write a review"
-              className="outline-none w-[70%]"
+              className="outline-none w-[90%]"
             />
           </div>
         </div>
