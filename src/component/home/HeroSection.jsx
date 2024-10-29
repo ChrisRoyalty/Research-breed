@@ -1,12 +1,30 @@
 import React from "react";
+import { motion } from "framer-motion";
 import StudentImg from "../../assets/girl.png";
 import { Link } from "react-router-dom";
 
 function HeroSection({ loggedIn }) {
+  // Animation variants for Framer Motion
+  const textVariant = {
+    hidden: { rotateY: 90, opacity: 0 },
+    visible: { rotateY: 0, opacity: 1, transition: { duration: 1 } },
+  };
+
+  const imageVariant = {
+    hidden: { rotateY: -90, opacity: 0 },
+    visible: { rotateY: 0, opacity: 1, transition: { duration: 1 } },
+  };
+
   return (
     <section className="hero-section bg-[#F8E8FE] py-24 mb-5 lg:h-[86vh] h-fit lg:p-0 flex justify-center items-center">
       <div className="w-[80%] grid lg:grid-cols-2 grid-cols-1 items-center gap-16">
-        <div className="intro flex flex-col gap-4 ">
+        {/* Animated text container */}
+        <motion.div
+          className="intro flex flex-col gap-4"
+          initial="hidden"
+          animate="visible"
+          variants={textVariant}
+        >
           <h1 className="text-4xl max-md:text-3xl font-bold text-gray-800">
             RESEARCH BREED.
           </h1>
@@ -26,10 +44,12 @@ function HeroSection({ loggedIn }) {
               Sign Up
             </Link>
           )}
-        </div>
-        <div>
+        </motion.div>
+
+        {/* Animated image container */}
+        <motion.div initial="hidden" animate="visible" variants={imageVariant}>
           <img src={StudentImg} alt="Student illustration" />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
