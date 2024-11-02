@@ -62,15 +62,7 @@ const FetchBlog = () => {
         {blogs.map((blog) => (
           <div key={blog.id} className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-2">{blog.title}</h2>
-            {blog.image ? (
-              <img
-                src={blog.image}
-                alt={blog.title}
-                className="w-full h-48 object-cover rounded-md mb-4"
-              />
-            ) : (
-              <p>No image available</p>
-            )}
+
             <div
               className="text-gray-700"
               dangerouslySetInnerHTML={{ __html: blog.post }}

@@ -34,7 +34,7 @@ function HeroSection({ loggedIn }) {
           <p className="text-lg text-black-100 font-bold">
             {loggedIn
               ? "Welcome back to ResearchBreed! Your gateway to the latest academic opportunities awaits. Explore top journals, discover new research calls, and connect with experts in your field."
-              : "Find calls for papers, connect with like-minded researchers, and share your expertise. Your source for new research opportunities."}
+              : "Find Call for Papers, connect with like-minded researchers, and share your expertise. Your source for new research opportunities."}
           </p>
           {!loggedIn && (
             <Link

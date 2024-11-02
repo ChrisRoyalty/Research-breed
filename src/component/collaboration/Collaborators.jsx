@@ -14,13 +14,12 @@ const Collaborators = () => {
   const [collaborators, setCollaborators] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
-  const [showActions, setShowActions] = useState(false);
-  const collaboratorsPerPage = 3; // Limit to 3 collaborators per page
+  const [visibleActions, setVisibleActions] = useState(null); // Track visible actions per collaborator
+  const collaboratorsPerPage = 3;
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-
     if (!token) {
       navigate("/login");
       return;
@@ -28,9 +27,7 @@ const Collaborators = () => {
 
     axios
       .get("https://dev-api.researchbreed.com/api/collaborate", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         setCollaborators(response.data.data);
@@ -39,7 +36,6 @@ const Collaborators = () => {
       .catch((error) => {
         console.error("Error fetching collaborators", error);
         setLoading(false);
-
         if (error.response && error.response.status === 401) {
           localStorage.removeItem("authToken");
           navigate("/login");
@@ -78,8 +74,8 @@ const Collaborators = () => {
 
   if (collaborators.length === 0) {
     return (
-      <div className="w-full h-screen flex justify-center items-center text-center">
-        <div className="border-4 border-red-500 p-10 rounded-lg shadow-lg bg-white animate-bounce-in">
+      <div className="flex justify-center items-center h-screen text-center p-4">
+        <div className="border-4 border-red-500 p-10 rounded-lg shadow-lg bg-white animate-bounce-in max-w-lg mx-auto">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -107,104 +103,64 @@ const Collaborators = () => {
   }
 
   return (
-    <div className="w-full flex justify-center items-center py-12 bg-gray-50">
-      <div className="lg:w-[30%] w-[90%] grid grid-cols-1 gap-8 p-6">
+    <div className="w-full flex justify-center items-center py-12 bg-gray-50 px-4">
+      <div className="lg:w-[80%] w-full grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {displayedCollaborators.map((collaborator, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 grid text-center"
+            className="bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 text-center overflow-hidden p-4"
           >
-            <div className="lg:rounded-l-lg max-sm:rounded-t-lg px-4 py-12 bg-[#8F3FA9] text-white flex flex-col items-center">
+            <div className="flex flex-col items-center px-4 py-8 bg-[#8F3FA9] text-white">
               <img
                 src={collaborator.image}
                 alt={`${collaborator.firstname} ${collaborator.lastname}`}
-                className="rounded-full w-[120px] h-[120px] border-4 border-white object-cover"
+                className="rounded-full w-24 h-24 lg:w-28 lg:h-28 border-4 border-white object-cover shadow-md"
               />
-              <h4 className="font-bold text-2xl mt-4 text-white">{`${
+              <h4 className="font-bold text-lg lg:text-2xl mt-4">{`${
                 collaborator.firstname || ""
               } ${collaborator.lastname || ""}`}</h4>
             </div>
-            <div className="p-12">
-              {/* Collaborator details */}
-              {collaborator.gender && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">Gender:</strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.gender}
-                  </span>
-                </p>
-              )}
-              {collaborator.institution && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">Institution:</strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.institution}
-                  </span>
-                </p>
-              )}
-              {collaborator.occupation && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">Occupation:</strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.occupation}
-                  </span>
-                </p>
-              )}
-              {collaborator.field_of_study && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">
-                    Field Of Study:
-                  </strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.field_of_study}
-                  </span>
-                </p>
-              )}
-              {collaborator.degree && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">Degree:</strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.degree}
-                  </span>
-                </p>
-              )}
-              {collaborator.interest && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">Interest:</strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.interest}
-                  </span>
-                </p>
-              )}
-              {collaborator.number_of_publications && (
-                <p className="text-gray-700 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">NumOfPubli..:</strong>{" "}
-                  <span className="w-[100%] text-start ">
-                    {collaborator.number_of_publications}
-                  </span>
-                </p>
-              )}
-              {collaborator.account_status && (
-                <p className="text-gray-500 text-sm mt-1 grid grid-cols-2 w-full items-center">
-                  <strong className="w-[80%] text-start">
-                    Account Status:
-                  </strong>{" "}
-                  <span className="w-[100%] text-start text-green-600 text-[22px]">
-                    {collaborator.account_status}
-                  </span>
-                </p>
-              )}
+            <div className="p-6 space-y-2 text-left">
+              <p>
+                <strong>Gender:</strong> {collaborator.gender}
+              </p>
+              <p>
+                <strong>Email:</strong> {collaborator.email}
+              </p>
+              <p>
+                <strong>Phone:</strong> {collaborator.phone}
+              </p>
+              <p>
+                <strong>Occupation:</strong> {collaborator.occupation}
+              </p>
+              <p>
+                <strong>Interest:</strong> {collaborator.interest}
+              </p>
+              <p>
+                <strong>Publications:</strong>{" "}
+                {collaborator.number_of_publications}
+              </p>
+              <p>
+                <strong>Institution:</strong> {collaborator.institution}
+              </p>
+              <p>
+                <strong>Field of Study:</strong> {collaborator.field_of_study}
+              </p>
+              <p>
+                <strong>Degree:</strong> {collaborator.degree}
+              </p>
 
               <button
-                onClick={() => setShowActions(!showActions)}
-                className="mt-4 bg-[#8F3FA9] text-white px-4 py-2 rounded transition-colors hover:bg-[#741C9D]"
+                onClick={() =>
+                  setVisibleActions(visibleActions === index ? null : index)
+                }
+                className="mt-4 bg-[#8F3FA9] text-white px-4 py-2 rounded transition-colors hover:bg-[#741C9D] w-full"
               >
                 {`Collaborate with ${collaborator.firstname || "User"}`}
               </button>
 
-              {/* Social Media Icons */}
-              {showActions && (
-                <div className="flex justify-center items-center mt-4 space-x-2">
+              {visibleActions === index && (
+                <div className="flex justify-evenly mt-4">
                   <FaFacebookSquare
                     onClick={() =>
                       window.open(
@@ -212,7 +168,7 @@ const Collaborators = () => {
                         "_blank"
                       )
                     }
-                    className="text-[#3b5998] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                    className="text-[#3b5998] text-2xl cursor-pointer hover:scale-110 transition-transform"
                   />
                   <FaLinkedin
                     onClick={() =>
@@ -221,7 +177,7 @@ const Collaborators = () => {
                         "_blank"
                       )
                     }
-                    className="text-[#0077b5] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                    className="text-[#0077b5] text-2xl cursor-pointer hover:scale-110 transition-transform"
                   />
                   <FaTwitter
                     onClick={() =>
@@ -230,19 +186,19 @@ const Collaborators = () => {
                         "_blank"
                       )
                     }
-                    className="text-[#1DA1F2] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                    className="text-[#1DA1F2] text-2xl cursor-pointer hover:scale-110 transition-transform"
                   />
                   <FaEnvelope
                     onClick={() => handleEmailClick(collaborator.email)}
-                    className="text-[#c71610] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                    className="text-[#c71610] text-2xl cursor-pointer hover:scale-110 transition-transform"
                   />
                   <FaPhone
                     onClick={() => handlePhoneClick(collaborator.phone)}
-                    className="text-[#6d4c41] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                    className="text-[#6d4c41] text-2xl cursor-pointer hover:scale-110 transition-transform"
                   />
                   <FaWhatsapp
                     onClick={() => handleWhatsappClick(collaborator.phone)}
-                    className="text-[#25D366] text-[42px] border border-[#8F3FA9] p-2 hover:text-[#8F3FA9] rounded-full cursor-pointer hover:scale-110 transition-transform"
+                    className="text-[#25D366] text-2xl cursor-pointer hover:scale-110 transition-transform"
                   />
                 </div>
               )}
@@ -250,8 +206,7 @@ const Collaborators = () => {
           </div>
         ))}
 
-        {/* Pagination Controls */}
-        <div className="flex justify-center items-center mt-4 w-full">
+        <div className="flex justify-center mt-6 col-span-full">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
             disabled={currentPage === 0}

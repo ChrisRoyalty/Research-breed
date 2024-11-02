@@ -45,7 +45,7 @@ const Footer = () => {
             </div>
           </div>
           <form className="flex md:justify-end md:mt-0 mt-8 ">
-            {/* <div className="w-fit flex flex-col gap-4">
+            <div className="w-fit flex flex-col gap-4">
               <h3 className="font-bold">Get the Latest Update</h3>
               <div className="flex">
                 <input
@@ -57,7 +57,7 @@ const Footer = () => {
                   Subscribe
                 </button>
               </div>
-            </div> */}
+            </div>
           </form>
         </div>
       </div>
@@ -85,7 +85,8 @@ const Footer = () => {
           <a href="" className="flex items-center gap-2 max-sm:text-[12px]">
             <FaRegCopyright /> 2024 Researchbreed, LLC. All Rights Reserved.
           </a>
-          <a href=""></a>
+          <a>Call: 09036514482</a>
+          <a>Email Us: ResearchBreed@gmail.com </a>
         </div>
       </div>
     </footer>

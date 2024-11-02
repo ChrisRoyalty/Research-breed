@@ -90,7 +90,7 @@ const Listings = () => {
     { label: "All", value: "" },
     { label: "Journal", value: "journal" },
     { label: "Research Project", value: "research-project" },
-    { label: "Conference Paper", value: "conference-paper" },
+    { label: "International Conference", value: "international-conference" },
   ];
 
   // Fetch publications list when the page loads

@@ -1,52 +1,103 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ClipLoader from "react-spinners/ClipLoader"; // Importing a spinner for loading state
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false); // Loader state for update button
+
+  // Fetch the profile data from the API
+  const fetchProfileData = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        window.location.href = "/login";
+        return;
+      }
+
+      setIsLoading(true);
+
+      const response = await axios.get(
+        "https://dev-api.researchbreed.com/api/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setProfileData(response.data.data);
+      sessionStorage.setItem("profileData", JSON.stringify(response.data.data));
+      setIsLoading(false);
+    } catch (error) {
+      setError("Failed to fetch profile data.");
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const token = localStorage.getItem("authToken"); // Get token from local storage
-        if (!token) {
-          window.location.href = "/login"; // Redirect to login if no token
-          return;
-        }
-
-        setIsLoading(true); // Start loading state
-
-        const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setProfileData(response.data.data); // Store profile data in state
-        sessionStorage.setItem(
-          "profileData",
-          JSON.stringify(response.data.data)
-        ); // Optionally store profile data in session storage
-        setIsLoading(false);
-      } catch (error) {
-        setError("Failed to fetch profile data.");
-        setIsLoading(false);
-      }
-    };
-
     fetchProfileData();
   }, []);
 
-  // Loading and error handling
+  // Update the profile picture
+  const updateProfilePicture = async () => {
+    if (!imageFile) {
+      setModalMessage("No file selected.");
+      setShowModal(true);
+      return;
+    }
+
+    try {
+      setIsUpdating(true); // Show loader on button
+      const token = localStorage.getItem("authToken");
+      const formData = new FormData();
+      formData.append("image", imageFile);
+
+      const response = await axios.post(
+        "https://dev-api.researchbreed.com/api/profile-picture",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const newImageUrl = response.data.data.profile_image;
+      setProfileData((prevData) => ({
+        ...prevData,
+        profile_image: newImageUrl,
+      }));
+
+      setModalMessage("Profile Picture updated successfully.");
+      setShowModal(true);
+    } catch (error) {
+      console.error(error);
+      setModalMessage("Failed to update profile picture.");
+      setShowModal(true);
+    } finally {
+      setIsUpdating(false); // Hide loader after update
+    }
+  };
+
+  // Handle logout functionality
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    window.location.href = "/login";
+  };
+
+  // Handle error state
   if (error) {
     return <p className="text-red-600 text-center mt-6">{error}</p>;
   }
 
+  // Show loading spinner while fetching data
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[70vh]">
@@ -55,127 +106,117 @@ const Profile = () => {
     );
   }
 
+  // Handle case when profile data is not yet available
   if (!profileData) {
     return <p className="text-center mt-6">Loading profile data...</p>;
   }
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Clear local storage
-    sessionStorage.clear(); // Clear session storage
-    window.location.href = "/login"; // Redirect to login
-  };
 
   return (
     <div className="flex justify-center items-center h-auto py-[15vh] bg-gray-100">
       <div className="max-w-xl w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-center">Your Profile</h1>
 
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Name</h2>
-          <p>
-            {profileData.firstname} {profileData.lastname}
-          </p>
+        {/* Profile Image */}
+        <div className="flex justify-center mb-6">
+          <img
+            src={profileData.profile_image}
+            alt="Profile"
+            className="w-32 h-32 rounded-full object-cover"
+          />
         </div>
 
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Email</h2>
-          <p>{profileData.email}</p>
-        </div>
+        {/* Image Upload */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
+          className="mb-4"
+        />
+        <button
+          onClick={updateProfilePicture}
+          className="bg-[#8F3FA9] hover:bg-[#8F3FA9]/90 text-white py-2 px-4 rounded flex items-center justify-center"
+          disabled={isUpdating} // Disable button during update
+        >
+          {isUpdating ? (
+            <ClipLoader size={20} color="#FFFFFF" />
+          ) : (
+            "Update Profile Picture"
+          )}
+        </button>
 
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Gender</h2>
-          <p>{profileData.gender || "Not provided"}</p>
-        </div>
+        {/* Profile Fields */}
+        {[
+          {
+            label: "Name",
+            value: `${profileData.firstname} ${profileData.lastname}`,
+          },
+          { label: "Email", value: profileData.email },
+          { label: "Gender", value: profileData.gender || "Not provided" },
+          { label: "WhatsApp No.", value: profileData.phone || "Not provided" },
+          {
+            label: "Occupation",
+            value: profileData.occupation || "Not provided",
+          },
+          { label: "Interest", value: profileData.interest || "Not provided" },
+          {
+            label: "Number of Publications",
+            value: profileData.number_of_publications || "Not provided",
+          },
+          {
+            label: "Field of Study",
+            value: profileData.field_of_study || "Not provided",
+          },
+          {
+            label: "Institution",
+            value: profileData.institution || "Not provided",
+          },
+          { label: "Degree", value: profileData.degree || "Not provided" },
+          {
+            label: "Account Status",
+            value: profileData.account_status || "Not provided",
+          },
+          {
+            label: "Date Created",
+            value: new Date(profileData.date_created).toLocaleDateString(),
+          },
+        ].map((field, index) => (
+          <div className="mb-4 flex justify-between items-center" key={index}>
+            <h2 className="text-lg font-bold">{field.label}</h2>
+            <p>{field.value}</p>
+          </div>
+        ))}
 
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">WhatsApp No.</h2>
-          <p>{profileData.phone || "Not provided"}</p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Occupation</h2>
-          <p>{profileData.occupation || "Not provided"}</p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Interest</h2>
-          <p>{profileData.interest || "Not provided"}</p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Number of Publications</h2>
-          <p>{profileData.number_of_publications || "Not provided"}</p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Field of Study</h2>
-          <p>{profileData.field_of_study || "Not provided"}</p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Degree</h2>
-          <p>{profileData.degree || "Not provided"}</p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">LinkedIn</h2>
-          <p>
-            {profileData.linkedin_url ? (
-              <a
-                href={profileData.linkedin_url}
-                className="text-[#8F3FA9]"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {profileData.linkedin_url}
-              </a>
-            ) : (
-              "Not provided"
-            )}
-          </p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Facebook</h2>
-          <p>
-            {profileData.facebook_url ? (
-              <a
-                href={profileData.facebook_url}
-                className="text-[#8F3FA9]"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {profileData.facebook_url}
-              </a>
-            ) : (
-              "Not provided"
-            )}
-          </p>
-        </div>
-
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold">Twitter</h2>
-          <p>
-            {profileData.twitter_url ? (
-              <a
-                href={profileData.twitter_url}
-                className="text-[#8F3FA9]"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {profileData.twitter_url}
-              </a>
-            ) : (
-              "Not provided"
-            )}
-          </p>
-        </div>
+        {/* Profile Links */}
+        {[
+          { label: "LinkedIn", url: profileData.linked_url },
+          { label: "Facebook", url: profileData.facebook_url },
+          { label: "Twitter", url: profileData.twitter_url },
+        ].map((link, index) => (
+          <div className="mb-4 flex justify-between items-center" key={index}>
+            <h2 className="text-lg font-bold">{link.label}</h2>
+            <p>
+              {link.url ? (
+                <a
+                  href={link.url}
+                  className="text-[#8F3FA9]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {link.url}
+                </a>
+              ) : (
+                "Not provided"
+              )}
+            </p>
+          </div>
+        ))}
 
         <div className="mb-4 flex justify-between items-center">
           <h2 className="text-lg font-bold">Open to Collaborate?</h2>
-          <p>{profileData.open_to_collaborate ? "Yes" : "No"}</p>
+          <p>{profileData.is_open_to_collaborate}</p>
         </div>
 
+        {/* Action Buttons */}
         <div className="text-center mt-6">
           <a
             href="/edit-profile"
@@ -193,6 +234,21 @@ const Profile = () => {
             Logout
           </button>
         </div>
+
+        {/* Modal for messages */}
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded shadow-lg">
+              <p>{modalMessage}</p>
+              <button
+                onClick={() => setShowModal(false)}
+                className="mt-4 bg-[#8F3FA9] hover:bg-[#8F3FA9]/90 text-white py-2 px-4 rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

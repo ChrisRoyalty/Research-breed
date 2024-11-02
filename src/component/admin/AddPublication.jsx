@@ -15,17 +15,16 @@ const AddPublication = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState(""); // "success" or "error"
   const [wordCount, setWordCount] = useState(0); // Track word count
+  const [isLoading, setIsLoading] = useState(false); // Loader state
 
   const MAX_WORD_COUNT = 750;
 
-  // Function to count words
   const countWords = (content) => {
     const text = content.replace(/<[^>]*>/g, ""); // Remove HTML tags
     const words = text.trim().split(/\s+/); // Split by whitespace
     return words.filter((word) => word.length > 0).length; // Only count non-empty words
   };
 
-  // Handle body change with word count restriction
   const handleBodyChange = (content) => {
     const currentWordCount = countWords(content);
     setWordCount(currentWordCount);
@@ -41,12 +40,14 @@ const AddPublication = () => {
 
   const handlePublish = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loader
     const token = sessionStorage.getItem("authToken");
 
     if (!token) {
       setMessage("You are not authenticated. Please log in again.");
       setModalType("error");
       showModal();
+      setIsLoading(false); // Stop loader
       return;
     }
 
@@ -71,7 +72,6 @@ const AddPublication = () => {
       if (response.data.success) {
         setMessage("Publication published successfully!");
         setModalType("success");
-        // Reset the form fields
         setTitle("");
         setCategory("journal");
         setBody("");
@@ -88,14 +88,17 @@ const AddPublication = () => {
       setModalType("error");
       console.error(error);
       showModal();
+    } finally {
+      setIsLoading(false); // Stop loader
     }
   };
 
   const showModal = () => {
     setModalVisible(true);
-    setTimeout(() => {
-      setModalVisible(false);
-    }, 3000); // Hide the modal after 3 seconds
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -126,9 +129,7 @@ const AddPublication = () => {
       {isModalVisible && (
         <>
           <div className="blur-background" />
-          <div
-            className={`fixed top-0 left-0 w-full h-full flex items-center justify-center z-50`}
-          >
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
             <div
               className={`bg-white p-4 rounded-md shadow-md max-w-sm w-full ${
                 modalType === "success"
@@ -143,6 +144,12 @@ const AddPublication = () => {
               >
                 {message}
               </p>
+              <button
+                onClick={closeModal}
+                className="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+              >
+                Close
+              </button>
             </div>
           </div>
         </>
@@ -181,7 +188,9 @@ const AddPublication = () => {
             >
               <option value="journal">Journal</option>
               <option value="research-project">Research Project</option>
-              <option value="conference-paper">International Conference</option>
+              <option value="international-conference">
+                International Conference
+              </option>
             </select>
           </div>
 
@@ -233,7 +242,7 @@ const AddPublication = () => {
             <label className="block text-gray-700 font-medium mb-2">Body</label>
             <ReactQuill
               value={body}
-              onChange={handleBodyChange} // Handle change with word count restriction
+              onChange={handleBodyChange}
               theme="snow"
               modules={{
                 toolbar: [
@@ -259,24 +268,19 @@ const AddPublication = () => {
                 "link",
                 "image",
               ]}
-              className="min-h-[200px] max-h-[500px] w-full overflow-auto resize-none border rounded-md focus:ring-2 focus:ring-[#8F3FA9]"
-              placeholder="Write your publication here..."
             />
-            {/* Display word count */}
-            <p className="text-right text-gray-500 mt-1">
-              {wordCount} / {MAX_WORD_COUNT} words
+            <p className="text-sm text-gray-500 mt-1">
+              Word count: {wordCount}/{MAX_WORD_COUNT}
             </p>
           </div>
 
-          {/* Publish Button */}
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              className="px-6 py-3 bg-[#8F3FA9] text-white rounded-md shadow-md hover:bg-[#7A3298] transition"
-            >
-              Publish
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#8F3FA9] text-white font-semibold p-3 rounded-md hover:bg-[#70168c]"
+            disabled={isLoading} // Disable button while loading
+          >
+            {isLoading ? "Publishing..." : "Publish"}
+          </button>
         </form>
       </div>
     </div>

@@ -16,7 +16,7 @@ const EditProfile = () => {
     linkedin_url: "",
     facebook_url: "",
     twitter_url: "",
-    open_to_collaborate: "0", // "1" for Yes, "0" for No
+    is_open_to_collaborate: "0", // "1" for Yes, "0" for No
   });
 
   const [error, setError] = useState("");
@@ -58,7 +58,7 @@ const EditProfile = () => {
           linkedin_url: data.linkedin_url || "",
           facebook_url: data.facebook_url || "",
           twitter_url: data.twitter_url || "",
-          open_to_collaborate: data.open_to_collaborate ? "1" : "0",
+          is_open_to_collaborate: data.is_open_to_collaborate ? "1" : "0",
         });
       } catch (error) {
         setError("Failed to fetch profile data.");
@@ -71,17 +71,10 @@ const EditProfile = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "open_to_collaborate") {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const validateForm = () => {
@@ -104,38 +97,14 @@ const EditProfile = () => {
     setError("");
     setLoading(true);
 
-    const dataToSend = {
-      gender: formData.gender,
-      phone: formData.phone,
-      occupation: formData.occupation,
-      number_of_publications: formData.number_of_publications,
-      institution: formData.institution,
-      field_of_study: formData.field_of_study,
-      degree: formData.degree,
-      linkedin_url: formData.linkedin_url,
-      facebook_url: formData.facebook_url,
-      twitter_url: formData.twitter_url,
-      open_to_collaborate: formData.open_to_collaborate,
-      location: formData.location,
-      interest: formData.interest,
-    };
-
-    // Remove empty fields
-    Object.keys(dataToSend).forEach((key) => {
-      if (dataToSend[key] === "") {
-        delete dataToSend[key];
-      }
-    });
-
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.patch(
         "https://dev-api.researchbreed.com/api/update-profile",
-        dataToSend,
+        formData, // Send form data directly
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
           },
         }
       );
@@ -159,6 +128,7 @@ const EditProfile = () => {
         <h1 className="text-2xl font-bold mb-6">Edit Profile</h1>
         {error && <p className="text-red-600 mb-4">{error}</p>}
         {message && <p className="text-green-600 mb-4">{message}</p>}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="gender" className="block text-gray-700">
@@ -187,6 +157,7 @@ const EditProfile = () => {
               value={formData.phone}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your phone number"
             />
           </div>
 
@@ -201,6 +172,7 @@ const EditProfile = () => {
               value={formData.occupation}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your occupation"
             />
           </div>
 
@@ -215,6 +187,7 @@ const EditProfile = () => {
               value={formData.interest}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your interests"
             />
           </div>
 
@@ -232,6 +205,22 @@ const EditProfile = () => {
               value={formData.number_of_publications}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter number of publications"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="institution" className="block text-gray-700">
+              Institution
+            </label>
+            <input
+              type="text"
+              id="institution"
+              name="institution"
+              value={formData.institution}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your institution"
             />
           </div>
 
@@ -246,6 +235,7 @@ const EditProfile = () => {
               value={formData.field_of_study}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your field of study"
             />
           </div>
 
@@ -253,21 +243,15 @@ const EditProfile = () => {
             <label htmlFor="degree" className="block text-gray-700">
               Degree
             </label>
-            <select
+            <input
+              type="text"
               id="degree"
               name="degree"
               value={formData.degree}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
-            >
-              <option value="">Select Degree</option>
-              <option value="WAEC">WAEC</option>
-              <option value="ND">ND</option>
-              <option value="HND">HND</option>
-              <option value="BSC">BSC</option>
-              <option value="MSC">MSC</option>
-              <option value="PhD">PhD</option>
-            </select>
+              placeholder="Enter your degree"
+            />
           </div>
 
           <div className="mb-4">
@@ -281,6 +265,7 @@ const EditProfile = () => {
               value={formData.linkedin_url}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your LinkedIn profile URL"
             />
           </div>
 
@@ -295,6 +280,7 @@ const EditProfile = () => {
               value={formData.facebook_url}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your Facebook profile URL"
             />
           </div>
 
@@ -309,20 +295,21 @@ const EditProfile = () => {
               value={formData.twitter_url}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
+              placeholder="Enter your Twitter profile URL"
             />
           </div>
 
           <div className="mb-4">
             <label
-              htmlFor="open_to_collaborate"
+              htmlFor="is_open_to_collaborate"
               className="block text-gray-700"
             >
               Open to Collaborate
             </label>
             <select
-              id="open_to_collaborate"
-              name="open_to_collaborate"
-              value={formData.open_to_collaborate}
+              id="is_open_to_collaborate"
+              name="is_open_to_collaborate"
+              value={formData.is_open_to_collaborate}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
             >
@@ -331,15 +318,15 @@ const EditProfile = () => {
             </select>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-[#8F3FA9] hover:bg-[#8F3FA9]/90 text-white py-2 px-4 rounded-lg transition duration-200"
-            >
-              {loading ? "Updating..." : "Update Profile"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            className={`w-full bg-[#8F3FA9] text-white font-bold py-2 rounded-lg ${
+              loading ? "opacity-50" : ""
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Updating..." : "Update Profile"}
+          </button>
         </form>
       </div>
     </div>

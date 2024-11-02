@@ -9,7 +9,7 @@ function Header() {
   const [toggleMenu, setToggleMenu] = useState("hidden");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showModal, setShowModal] = useState(false); // State for showing modal
+  const [showModal, setShowModal] = useState(false);
   const headerRef = useRef(null);
   const navigate = useNavigate();
 
@@ -32,13 +32,13 @@ function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    setIsAuthenticated(true);
+    setIsAuthenticated(false); // Set to false on logout
     navigate("/login");
   };
 
   const handleCollaborateClick = () => {
     if (!isAuthenticated) {
-      setShowModal(true); // Show modal when user is not authenticated
+      setShowModal(true);
     } else {
       navigate("/collaboration");
     }
@@ -113,7 +113,7 @@ function Header() {
             }`}
             onClick={() => {
               handleCollaborateClick();
-              hideMenu(); // Close sidebar on small screens
+              hideMenu();
             }}
           >
             Collaborate
@@ -165,9 +165,7 @@ function Header() {
             >
               <NavLink
                 to="/edit-profile"
-                className={`block px-4 py-2 text-[#8F3FA9] hover:bg-gray-100 ${
-                  showDropdown ? "blinking-icon" : ""
-                }`}
+                className="block px-4 py-2 text-[#8F3FA9] hover:bg-gray-100"
                 onClick={() => {
                   hideMenu();
                   toggleDropdown();
@@ -237,21 +235,12 @@ function Header() {
                 Login
               </button>
               <button
-                className="w-full bg-gray-200 text-[#8F3FA9] py-2 rounded-lg"
-                onClick={() => {
-                  setShowModal(false);
-                  navigate("/signup");
-                }}
+                className="w-full bg-gray-300 py-2 rounded-lg"
+                onClick={() => setShowModal(false)}
               >
-                Sign Up
+                Cancel
               </button>
             </div>
-            <button
-              className="w-full bg-gray-200 mt-4 text-[#8F3FA9] py-2 rounded-lg"
-              onClick={() => setShowModal(false)}
-            >
-              Cancel
-            </button>
           </div>
         </div>
       )}
