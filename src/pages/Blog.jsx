@@ -64,7 +64,7 @@ const Blog = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/blog-posts"
+          `${process.env.REACT_APP_API_BASE_URL}/api/blog-posts`
         );
         console.log(response); // Log the full response to check its structure
         if (response.data && Array.isArray(response.data.data)) {
@@ -101,7 +101,7 @@ const Blog = () => {
 
     try {
       const response = await axios.post(
-        `https://dev-api.researchbreed.com/api/${endpoint}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/${endpoint}`,
         { post_slug },
         {
           headers: {

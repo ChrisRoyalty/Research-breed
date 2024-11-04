@@ -23,7 +23,7 @@ const Profile = () => {
       setIsLoading(true);
 
       const response = await axios.get(
-        "https://dev-api.researchbreed.com/api/profile",
+        `${process.env.REACT_APP_API_BASE_URL}/api/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ const Profile = () => {
       formData.append("image", imageFile);
 
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/profile-picture",
+        `${process.env.REACT_APP_API_BASE_URL}/api/profile-picture`,
         formData,
         {
           headers: {

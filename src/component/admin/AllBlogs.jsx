@@ -23,7 +23,7 @@ const FetchBlogs = () => {
       try {
         const token = sessionStorage.getItem("authToken");
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/admin/blogs",
+          `${process.env.REACT_APP_API_BASE_URL}/api/admin/blogs`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -69,7 +69,8 @@ const FetchBlogs = () => {
   };
 
   const handleApproveDisapprove = async (slug, action) => {
-    const url = "https://dev-api.researchbreed.com/api/admin/update-blog"; // Ensure correct endpoint
+    const url = `${process.env.REACT_APP_API_BASE_URL}/api/admin/update-blog`;
+    // Ensure correct endpoint
     const token = sessionStorage.getItem("authToken");
 
     if (!token) {

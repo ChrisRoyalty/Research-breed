@@ -28,7 +28,7 @@ function Login() {
 
     if (token) {
       axios
-        .get("https://dev-api.researchbreed.com/api/validate-token", {
+        .get(`${process.env.REACT_APP_API_BASE_URL}/api/validate-token`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
@@ -63,7 +63,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/login",
+        `${process.env.REACT_APP_API_BASE_URL}/api/login`,
         { email, password },
         {
           headers: {

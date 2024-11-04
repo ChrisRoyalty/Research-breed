@@ -103,7 +103,7 @@ const Listings = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://dev-api.researchbreed.com/api/publication-list"
+        `${process.env.REACT_APP_API_BASE_URL}/api/publication-list`
       );
       setPublications(response.data.data);
       setLoading(false);
@@ -135,7 +135,7 @@ const Listings = () => {
 
     try {
       const response = await axios.post(
-        `https://dev-api.researchbreed.com/api/search-publication`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/search-publication`,
         formData
       );
       setPublications(response.data.data);
@@ -158,7 +158,7 @@ const Listings = () => {
 
     try {
       const response = await axios.post(
-        `https://dev-api.researchbreed.com/api/filter-publication`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/filter-publication`,
         formData
       );
       if (response.data.success) {

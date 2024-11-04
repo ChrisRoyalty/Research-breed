@@ -56,7 +56,7 @@ function AdminLogin() {
 
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/admin-login",
+        `${process.env.REACT_APP_API_BASE_URL}/api/admin-login`,
         { email, password }
       );
 
@@ -93,7 +93,7 @@ function AdminLogin() {
     setIsResending(true);
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/resend-verification",
+        `${process.env.REACT_APP_API_BASE_URL}/api/resend-verification`,
         { email }
       );
 

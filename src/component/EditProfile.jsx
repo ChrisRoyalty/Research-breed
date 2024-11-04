@@ -34,7 +34,7 @@ const EditProfile = () => {
         }
 
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/profile",
+          `${process.env.REACT_APP_API_BASE_URL}/api/profile`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -100,7 +100,7 @@ const EditProfile = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.patch(
-        "https://dev-api.researchbreed.com/api/update-profile",
+        `${process.env.REACT_APP_API_BASE_URL}/api/update-profile`,
         formData, // Send form data directly
         {
           headers: {

@@ -53,7 +53,7 @@ const AddPublication = () => {
 
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/admin/publication",
+        `${process.env.REACT_APP_API_BASE_URL}/api/publication`,
         {
           title,
           category,

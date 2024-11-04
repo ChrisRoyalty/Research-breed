@@ -46,7 +46,7 @@ const CreateAccount = () => {
   const registerUser = async () => {
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/create-account",
+        `${process.env.REACT_APP_API_BASE_URL}/api/create-account`,
         {
           firstname,
           lastname,

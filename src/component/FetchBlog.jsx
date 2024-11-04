@@ -20,7 +20,7 @@ const FetchBlog = () => {
 
       try {
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/posts",
+          `${process.env.REACT_APP_API_BASE_URL}/api/posts`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

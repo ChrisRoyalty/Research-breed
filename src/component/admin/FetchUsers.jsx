@@ -37,7 +37,7 @@ const FetchUsers = () => {
 
       try {
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/admin/users",
+          `${process.env.REACT_APP_API_BASE_URL}/api/admin/users`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

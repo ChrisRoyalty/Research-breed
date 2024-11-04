@@ -33,7 +33,7 @@ const AdminBlogCreate = () => {
 
     try {
       const response = await axios.post(
-        "https://dev-api.researchbreed.com/api/create-post",
+        `${process.env.REACT_APP_API_BASE_URL}/api/create-post`,
         formData,
         {
           headers: {

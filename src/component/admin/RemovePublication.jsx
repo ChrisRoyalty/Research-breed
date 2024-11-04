@@ -8,7 +8,7 @@ function RemovePublication() {
   const handleRemovePublication = async () => {
     try {
       await axios.delete(
-        `https://dev-api.researchbreed.com/api/admin/publication/${publicationSlug}`
+        `${process.env.REACT_APP_API_BASE_URL}/api/admin/publication/${publicationSlug}`
       );
       alert("Publication removed successfully!");
     } catch (error) {

@@ -25,7 +25,7 @@ function AdminDashboard() {
         }
 
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/admin/dashboard",
+          `${process.env.REACT_APP_API_BASE_URL}/api/admin/dashboard`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -50,7 +50,9 @@ function AdminDashboard() {
   // Logout function
   const handleLogout = async () => {
     try {
-      await axios.post("https://dev-api.researchbreed.com/api/logout");
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/profile/logout`
+      );
       sessionStorage.removeItem("authToken"); // Clear the token
       navigate("/"); // Redirect to home page
     } catch (error) {

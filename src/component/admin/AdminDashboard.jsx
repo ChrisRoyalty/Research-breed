@@ -56,7 +56,7 @@ function AdminDashboard() {
         const token = sessionStorage.getItem("authToken"); // Retrieve the token from session storage (or localStorage if you prefer)
 
         const response = await axios.get(
-          "https://dev-api.researchbreed.com/api/admin/dashboard",
+          `${process.env.REACT_APP_API_BASE_URL}/api/admin/dashboard`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the Authorization header
@@ -88,8 +88,8 @@ function AdminDashboard() {
   // Logout function
   const handleLogout = async () => {
     try {
-      await axios.post("https://dev-api.researchbreed.com/api/logout"); // Adjust to your actual endpoint
-      navigate("/"); // Redirect to home page
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/logout`); // Adjust to your actual endpoint
+      navigate("/admin-login"); // Redirect to home page
     } catch (error) {
       console.error("Error logging out:", error);
     }

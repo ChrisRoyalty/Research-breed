@@ -26,7 +26,7 @@ const Collaborators = () => {
     }
 
     axios
-      .get("https://dev-api.researchbreed.com/api/collaborate", {
+      .get(`${process.env.REACT_APP_API_BASE_URL}/api/collaborate`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

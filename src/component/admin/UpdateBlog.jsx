@@ -11,7 +11,7 @@ const UpdateBlog = () => {
         // Retrieve the token from session storage
         const token = sessionStorage.getItem("authToken"); // Change 'authToken' to your actual token key
         const response = await axios.patch(
-          "https://dev-api.researchbreed.com/api/admin/update-blog",
+          `${process.env.REACT_APP_API_BASE_URL}/api//admin/update-blog`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the headers
