@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Spinner from ".././component/Spinner";
+import Spinner from "./Spinner";
 
 const FetchBlog = () => {
   const [blogs, setBlogs] = useState([]);

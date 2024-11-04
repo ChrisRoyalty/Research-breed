@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
-import Spinner from "../../component/Spinner";
-import Message from "../../component/Message"; // Import the Message component
+import Spinner from "../Spinner";
+import Message from "../Message"; // Import the Message component
 import { CSSTransition } from "react-transition-group";
 import "../../css/modalAnimation.css"; // Ensure modal animation CSS is included
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
