@@ -7,12 +7,12 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons for show/hid
 import axios from "axios";
 
 // Modal component
-const SuccessModal = ({ onClose }) => {
+const SuccessModal = ({ message, onClose }) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
       <div className="bg-white p-8 rounded-lg shadow-lg text-center">
         <h2 className="text-2xl font-bold mb-4 text-[#8F3FA9]">Success!</h2>
-        <p>Your account has been created successfully.</p>
+        <p>{message}</p>
         <button
           className="mt-4 bg-[#8F3FA9] text-white px-4 py-2 rounded"
           onClick={onClose}
@@ -58,15 +58,9 @@ const CreateAccount = () => {
       const data = response.data;
 
       if (data.success) {
-        setMessage("Account created successfully!");
+        setMessage(data.message); // Use the exact message from the response
         setError("");
         setShowModal(true); // Show modal on success
-
-        // Auto-close modal and navigate to login after 3 seconds
-        setTimeout(() => {
-          setShowModal(false);
-          navigate("/login");
-        }, 3000);
       } else {
         setError("Failed to create account: " + data.message);
         setMessage("");
@@ -202,7 +196,9 @@ const CreateAccount = () => {
           </footer>
         </form>
       </div>
-      {showModal && <SuccessModal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <SuccessModal message={message} onClose={() => setShowModal(false)} />
+      )}
     </div>
   );
 };

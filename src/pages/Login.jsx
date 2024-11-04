@@ -44,6 +44,62 @@ function Login() {
     }
   }, [navigate]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setMessage("");
+  //   setError("");
+
+  //   if (!validateEmail(email)) {
+  //     setError("Please enter a valid email address.");
+  //     return;
+  //   }
+
+  //   if (password.length < 6) {
+  //     setError("Password must be at least 6 characters long.");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_API_BASE_URL}/api/login`,
+  //       { email, password },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     if (response.data.success) {
+  //       localStorage.setItem("authToken", response.data.data.token);
+  //       setMessage("Login successful!");
+  //       setIsSuccess(true); // Trigger success icon
+  //       setShowModal(true); // Show the modal
+  //       setTimeout(() => {
+  //         setShowModal(false); // Hide modal after 3 seconds
+  //         navigate("/");
+  //       }, 3000);
+  //     } else {
+  //       setError("Login failed: " + response.data.message);
+  //       setIsSuccess(false); // Trigger error icon
+  //       setShowModal(true); // Show the modal
+  //       setTimeout(() => setShowModal(false), 3000); // Hide after 3 seconds
+  //     }
+  //   } catch (error) {
+  //     setError(
+  //       error.response?.data?.message ||
+  //         "An unexpected error occurred. Please try again later."
+  //     );
+  //     setIsSuccess(false); // Trigger error icon
+  //     setShowModal(true); // Show the modal
+  //     setTimeout(() => setShowModal(false), 3000); // Hide after 3 seconds
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -74,12 +130,12 @@ function Login() {
 
       if (response.data.success) {
         localStorage.setItem("authToken", response.data.data.token);
-        setMessage("Login successful!");
+        setMessage(response.data.message || "Login successful!"); // Set the API message
         setIsSuccess(true); // Trigger success icon
         setShowModal(true); // Show the modal
         setTimeout(() => {
           setShowModal(false); // Hide modal after 3 seconds
-          navigate("/");
+          navigate("/"); // Navigate to the desired page after login
         }, 3000);
       } else {
         setError("Login failed: " + response.data.message);
