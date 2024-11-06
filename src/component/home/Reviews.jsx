@@ -153,14 +153,14 @@ const Reviews = () => {
               {/* Display total number of reviews */}
             </div>
           </div>
-          <div className="write-reviews bg-white py-3 pl-4 max-sm:px-2 rounded-lg text-black flex items-center gap-4 max-sm:w-[150px] w-[50%]">
-            <RiPencilFill className="text-[25px]" />
+          <div className="write-reviews bg-white py-3 md:pl-4 max-sm:px-2 rounded-lg text-black flex items-center gap-4 max-sm:w-[150px] w-[50%]">
+            <RiPencilFill className="text-[25px]  max-sm:hidden" />
             <input
               type="text"
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
               placeholder="Write a review"
-              className="outline-none w-[90%]"
+              className="outline-none w-[90%] max-sm:hidden"
             />
             <button
               onClick={handleSubmitReview}
@@ -240,7 +240,7 @@ const Reviews = () => {
               <p>{networkMessage}</p>
               <button
                 onClick={() => setShowModal(false)}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+                className="bg-[#8F3FA9] text-white px-4 py-2 rounded mt-4"
               >
                 Close
               </button>

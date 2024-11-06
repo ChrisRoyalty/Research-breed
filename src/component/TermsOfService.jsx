@@ -135,7 +135,7 @@ const TermsOfService = () => {
         <h2 className="text-2xl font-semibold mt-8 mb-4">13. Privacy</h2>
         <p className="mb-4">
           Please refer to our{" "}
-          <a href="/privacy" className="text-blue-600 underline">
+          <a href="/privacy-policy" className="text-[#8F3FA9] underline">
             Privacy Policy
           </a>{" "}
           for information on how we collect, use, and disclose your personal
