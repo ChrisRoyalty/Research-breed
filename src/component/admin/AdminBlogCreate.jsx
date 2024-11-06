@@ -96,22 +96,22 @@ const AdminBlogCreate = () => {
   }) => {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-[90%]">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-fit ">
           <h2 className="text-xl font-bold mb-4">Notification</h2>
-          {message && <p className="text-green-600 mb-4">{message}</p>}
+          {message && <p className="text-[#8F3FA9] mb-4">{message}</p>}
           {error && <p className="text-red-600 mb-4">{error}</p>}
           <div className="flex gap-4">
             {showSubscribeButton && (
               <button
                 onClick={onSubscribe}
-                className="bg-blue-500 text-white p-2 rounded-lg"
+                className="bg-[#8F3FA9] text-white p-2 rounded-lg"
               >
                 Subscribe to Remove Limit
               </button>
             )}
             <button
               onClick={() => navigate("/blog")} // Navigate to blog page
-              className="bg-blue-500 text-white p-2 rounded-lg"
+              className="bg-[#8F3FA9] text-white p-2 rounded-lg"
             >
               Go to Blog
             </button>
@@ -131,7 +131,7 @@ const AdminBlogCreate = () => {
     <div className="min-h-screen flex justify-center items-center bg-gray-100 py-[15vh]">
       <div className="w-full max-w-[800px] bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Create Blog</h2>
-        {message && <p className="text-green-600">{message}</p>}
+        {message && <p className="text-[#8F3FA9]">{message}</p>}
         {error && <p className="text-red-600">{error}</p>}
 
         <form onSubmit={handleSubmit}>
@@ -168,7 +168,7 @@ const AdminBlogCreate = () => {
 
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white p-3 rounded-lg my-8"
+            className="w-full bg-[#8F3FA9] text-white p-3 rounded-lg my-8"
             disabled={isLoading || wordCount > 750}
           >
             {isLoading ? "Creating Blog..." : "Create Blog"}

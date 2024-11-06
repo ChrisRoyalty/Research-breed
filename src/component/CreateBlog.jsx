@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 
 const CreateBlog = () => {
@@ -24,6 +24,7 @@ const CreateBlog = () => {
     if (!token) {
       setError("You are not authenticated. Please log in.");
       setIsLoading(false);
+      setShowModal(true);
       return;
     }
 
@@ -43,22 +44,24 @@ const CreateBlog = () => {
         }
       );
 
-      console.log("API response:", response.data); // Debugging the response
+      console.log("API response:", response.data);
 
       if (response.data.success) {
         setMessage("Blog created successfully!");
         setError("");
-        setShowSubscribeButton(false); // Reset subscribe button visibility
+        setShowSubscribeButton(false);
+        setShowModal(true);
+        setTitle(""); // Clear title field
+        setPost(""); // Clear post field
+        setWordCount(0); // Reset word count
       } else {
         setError(response.data.message);
         setMessage("");
-
-        // Handle the case when the user hits the daily blog limit
         if (
           response.data.message ===
           "You can only create a blog once in a day. Subscribe to remove limit"
         ) {
-          setShowSubscribeButton(true); // Show the Subscribe button
+          setShowSubscribeButton(true);
         }
         setShowModal(true);
       }
@@ -76,7 +79,7 @@ const CreateBlog = () => {
   };
 
   const handlePostChange = (value) => {
-    const wordArray = value.trim().split(/\s+/); // Split post into words
+    const wordArray = value.trim().split(/\s+/);
     const currentWordCount = wordArray.length;
 
     if (currentWordCount <= 750) {
@@ -88,21 +91,21 @@ const CreateBlog = () => {
   const Modal = ({ message, onClose, onSubscribe, showSubscribeButton }) => {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-[90%]">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-fit">
           <h2 className="text-xl font-bold mb-4">Notification</h2>
           <p className="mb-4">{message}</p>
           <div className="flex gap-4">
             {showSubscribeButton && (
               <button
                 onClick={onSubscribe}
-                className="bg-blue-500 text-white p-2 rounded-lg"
+                className="bg-[#8F3FA9] text-white p-2 rounded-lg"
               >
                 Subscribe to Remove Limit
               </button>
             )}
             <button
-              onClick={() => navigate("/blog")} // Navigate to blog page
-              className="bg-blue-500 text-white p-2 rounded-lg"
+              onClick={() => navigate("/blog")}
+              className="bg-[#8F3FA9] text-white p-2 rounded-lg"
             >
               Go to Blog
             </button>
@@ -122,7 +125,7 @@ const CreateBlog = () => {
     <div className="min-h-screen flex justify-center items-center bg-gray-100 py-[15vh]">
       <div className="w-full max-w-[800px] bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Create Blog</h2>
-        {message && <p className="text-green-600">{message}</p>}
+        {message && <p className="text-[#8F3FA9]">{message}</p>}
         {error && <p className="text-red-600">{error}</p>}
 
         <form onSubmit={handleSubmit}>
@@ -159,7 +162,7 @@ const CreateBlog = () => {
 
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white p-3 rounded-lg my-8"
+            className="w-full bg-[#8F3FA9] text-white p-3 rounded-lg my-8"
             disabled={isLoading || wordCount > 750}
           >
             {isLoading ? "Creating Blog..." : "Create Blog"}
@@ -171,8 +174,8 @@ const CreateBlog = () => {
         <Modal
           message={error || message}
           onClose={() => setShowModal(false)}
-          onSubscribe={() => navigate("/subscribe")} // Navigate to subscribe page
-          showSubscribeButton={showSubscribeButton} // Pass the state to Modal
+          onSubscribe={() => navigate("/subscribe")}
+          showSubscribeButton={showSubscribeButton}
         />
       )}
     </div>

@@ -4,8 +4,8 @@ import { RiPencilFill } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa"; // Default user icon
 
 const Reviews = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [isMobile, setIsMobile] = useState(false);
+  // const [currentIndex, setCurrentIndex] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(4); // Default rating
   const [showModal, setShowModal] = useState(false);
@@ -13,15 +13,15 @@ const Reviews = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reviews, setReviews] = useState([]); // Holds reviews fetched from API
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 640);
-    };
+  // useEffect(() => {
+  //   const checkScreenSize = () => {
+  //     setIsMobile(window.innerWidth <= 640);
+  //   };
 
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
+  //   checkScreenSize();
+  //   window.addEventListener("resize", checkScreenSize);
+  //   return () => window.removeEventListener("resize", checkScreenSize);
+  // }, []);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -50,15 +50,15 @@ const Reviews = () => {
     fetchReviews();
   }, []);
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
-  };
+  // const nextSlide = () => {
+  //   setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
+  // };
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
-    );
-  };
+  // const prevSlide = () => {
+  //   setCurrentIndex((prevIndex) =>
+  //     prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
+  //   );
+  // };
 
   const handleSubmitReview = async () => {
     // Check if the user is logged in by verifying the token in localStorage
