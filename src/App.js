@@ -26,6 +26,7 @@ import TermsOfService from "./component/TermsOfService";
 import PrivacyPolicy from "./component/PrivacyPolicy";
 import CodeOfConduct from "./component/CodeOfConduct";
 import AdminBlogCreate from "./component/admin/AdminBlogCreate";
+import FetchReview from "./component/admin/FetchReview";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
         <Route path="add-publication" element={<AddPublication />} />
         <Route path="remove-publication" element={<RemovePublication />} />
         <Route path="users" element={<FetchUsers />} />
+        <Route path="all-review" element={<FetchReview />} />
       </Route>
     </Routes>
   );

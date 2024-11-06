@@ -5,7 +5,7 @@ import OurMission from "../component/about/OurMission";
 import OurValues from "../component/about/OurValues";
 import OurPlatform from "../component/about/OurPlatform";
 // import Team from "../component/about/Team";
-// import Reviews from "../component/home/Reviews";
+import Reviews from "../component/home/Reviews";
 import Footer from "../component/Footer";
 function About() {
   return (
@@ -16,7 +16,7 @@ function About() {
       <OurValues />
       <OurPlatform />
       {/* <Team /> */}
-      {/* <Reviews /> */}
+      <Reviews />
       <Footer />
     </div>
   );

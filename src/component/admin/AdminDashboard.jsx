@@ -167,6 +167,18 @@ function AdminDashboard() {
               All Blogs
             </NavLink>
 
+            <NavLink
+              to="all-review"
+              className={({ isActive }) =>
+                isActive
+                  ? "bg-white text-[#8F3FA9] p-2 rounded transition transform scale-105"
+                  : "hover:bg-white hover:text-[#8F3FA9] p-2 rounded transition duration-300"
+              }
+              onClick={handleLinkClick} // Close sidebar on link click
+            >
+              All Review
+            </NavLink>
+
             {/* Logout Button */}
             <NavLink
               to="/"

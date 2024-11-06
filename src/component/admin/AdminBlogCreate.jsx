@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AdminBlogCreate = () => {
   const [title, setTitle] = useState("");
@@ -10,10 +10,10 @@ const AdminBlogCreate = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // const [showModal, setShowModal] = useState(false);
-  // const [showSubscribeButton, setShowSubscribeButton] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showSubscribeButton, setShowSubscribeButton] = useState(false);
   const [wordCount, setWordCount] = useState(0);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +24,7 @@ const AdminBlogCreate = () => {
     if (!token) {
       setError("You are not authenticated. Please log in.");
       setIsLoading(false);
+      setShowModal(true);
       return;
     }
 
@@ -48,19 +49,20 @@ const AdminBlogCreate = () => {
       if (response.data.success) {
         setMessage("Blog created successfully!");
         setError("");
-        // setShowSubscribeButton(false); // Reset subscribe button visibility
+        setShowModal(true);
+        setShowSubscribeButton(false); // Reset subscribe button visibility
       } else {
         setError(response.data.message);
         setMessage("");
+        setShowModal(true);
 
         // Handle the case when the user hits the daily blog limit
-        // if (
-        //   response.data.message ===
-        //   "You can only create a blog once in a day. Subscribe to remove limit"
-        // ) {
-        //   setShowSubscribeButton(true); // Show the Subscribe button
-        // }
-        // setShowModal(true);
+        if (
+          response.data.message ===
+          "You can only create a blog once in a day. Subscribe to remove limit"
+        ) {
+          setShowSubscribeButton(true); // Show the Subscribe button
+        }
       }
     } catch (err) {
       if (err.response) {
@@ -69,7 +71,7 @@ const AdminBlogCreate = () => {
         setError("An unexpected error occurred.");
       }
       setMessage("");
-      // setShowModal(true);
+      setShowModal(true);
     }
 
     setIsLoading(false);
@@ -85,38 +87,45 @@ const AdminBlogCreate = () => {
     }
   };
 
-  // const Modal = ({ message, onClose, onSubscribe, showSubscribeButton }) => {
-  //   return (
-  //     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-  //       <div className="bg-white p-6 rounded-lg shadow-lg w-[90%]">
-  //         <h2 className="text-xl font-bold mb-4">Notification</h2>
-  //         <p className="mb-4">{message}</p>
-  //         <div className="flex gap-4">
-  //           {showSubscribeButton && (
-  //             <button
-  //               onClick={onSubscribe}
-  //               className="bg-blue-500 text-white p-2 rounded-lg"
-  //             >
-  //               Subscribe to Remove Limit
-  //             </button>
-  //           )}
-  //           <button
-  //             onClick={() => navigate("/blog")} // Navigate to blog page
-  //             className="bg-blue-500 text-white p-2 rounded-lg"
-  //           >
-  //             Go to Blog
-  //           </button>
-  //           <button
-  //             onClick={onClose}
-  //             className="bg-gray-500 text-white p-2 rounded-lg"
-  //           >
-  //             Continue Creating
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // };
+  const Modal = ({
+    message,
+    error,
+    onClose,
+    onSubscribe,
+    showSubscribeButton,
+  }) => {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-[90%]">
+          <h2 className="text-xl font-bold mb-4">Notification</h2>
+          {message && <p className="text-green-600 mb-4">{message}</p>}
+          {error && <p className="text-red-600 mb-4">{error}</p>}
+          <div className="flex gap-4">
+            {showSubscribeButton && (
+              <button
+                onClick={onSubscribe}
+                className="bg-blue-500 text-white p-2 rounded-lg"
+              >
+                Subscribe to Remove Limit
+              </button>
+            )}
+            <button
+              onClick={() => navigate("/blog")} // Navigate to blog page
+              className="bg-blue-500 text-white p-2 rounded-lg"
+            >
+              Go to Blog
+            </button>
+            <button
+              onClick={onClose}
+              className="bg-gray-500 text-white p-2 rounded-lg"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100 py-[15vh]">
@@ -167,14 +176,15 @@ const AdminBlogCreate = () => {
         </form>
       </div>
 
-      {/* {showModal && (
+      {showModal && (
         <Modal
-          message={error || message}
+          message={message}
+          error={error}
           onClose={() => setShowModal(false)}
-          onSubscribe={() => navigate("/subscribe")} // Navigate to subscribe page
-          showSubscribeButton={showSubscribeButton} // Pass the state to Modal
+          onSubscribe={() => navigate("/subscribe")}
+          showSubscribeButton={showSubscribeButton}
         />
-      )} */}
+      )}
     </div>
   );
 };

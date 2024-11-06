@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { TailSpin } from "react-loader-spinner";
 import "tailwindcss/tailwind.css";
 
 const FetchPublications = () => {
@@ -11,6 +12,7 @@ const FetchPublications = () => {
     message: "",
     isError: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDeleteVisible, setConfirmDeleteVisible] = useState({
     isVisible: false,
     publicationSlug: null,
@@ -18,6 +20,7 @@ const FetchPublications = () => {
 
   useEffect(() => {
     const fetchPublications = async () => {
+      setIsLoading(true);
       const token = sessionStorage.getItem("authToken");
       if (!token) return;
 
@@ -33,6 +36,8 @@ const FetchPublications = () => {
         setPublications(response.data.data);
       } catch (error) {
         showNotification("Failed to fetch publications.", true);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -47,6 +52,7 @@ const FetchPublications = () => {
 
   // Handle delete publication with custom confirmation modal
   const handleDelete = async () => {
+    setIsLoading(true);
     const token = sessionStorage.getItem("authToken");
     const { publicationSlug } = isConfirmDeleteVisible;
 
@@ -72,6 +78,7 @@ const FetchPublications = () => {
     } catch (error) {
       showNotification("Error occurred while deleting publication.", true);
     } finally {
+      setIsLoading(false);
       closeConfirmDelete();
     }
   };
@@ -118,53 +125,59 @@ const FetchPublications = () => {
     <div className="p-4 md:p-10 lg:p-16 bg-gray-50 min-h-screen rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Call for Papers</h2>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-          <thead>
-            <tr className="bg-[#8F3FA9] text-white uppercase text-sm">
-              <th className="py-3 px-6 text-left">Title</th>
-              <th className="py-3 px-6 text-left">Category</th>
-              <th className="py-3 px-6 text-left">Publisher</th>
-              <th className="py-3 px-6 text-left">Date</th>
-              <th className="py-3 px-6 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {publications.map((pub) => (
-              <tr
-                key={pub.slug}
-                className="border-b hover:bg-[#F2D4F5] cursor-pointer"
-              >
-                <td
-                  className="py-3 px-6 truncate"
-                  onClick={() => handlePublicationClick(pub)}
-                >
-                  {pub.title}
-                </td>
-                <td className="py-3 px-6 truncate">{pub.category}</td>
-                <td className="py-3 px-6 truncate">{pub.publisher}</td>
-                <td className="py-3 px-6 truncate">
-                  {new Date(pub.date_of_publication).toLocaleDateString()}
-                </td>
-                <td className="py-3 px-6">
-                  <button
-                    onClick={() => handlePublicationClick(pub)}
-                    className="text-[#8F3FA9] hover:underline mr-4"
-                  >
-                    View More
-                  </button>
-                  <button
-                    onClick={() => openConfirmDelete(pub.slug)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </td>
+      {isLoading ? (
+        <div className="flex justify-center items-center min-h-[200px]">
+          <TailSpin color="#8F3FA9" height={50} width={50} />
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+            <thead>
+              <tr className="bg-[#8F3FA9] text-white uppercase text-sm">
+                <th className="py-3 px-6 text-left">Title</th>
+                <th className="py-3 px-6 text-left">Category</th>
+                <th className="py-3 px-6 text-left">Publisher</th>
+                <th className="py-3 px-6 text-left">Date</th>
+                <th className="py-3 px-6 text-left">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {publications.map((pub) => (
+                <tr
+                  key={pub.slug}
+                  className="border-b hover:bg-[#F2D4F5] cursor-pointer"
+                >
+                  <td
+                    className="py-3 px-6 truncate"
+                    onClick={() => handlePublicationClick(pub)}
+                  >
+                    {pub.title}
+                  </td>
+                  <td className="py-3 px-6 truncate">{pub.category}</td>
+                  <td className="py-3 px-6 truncate">{pub.publisher}</td>
+                  <td className="py-3 px-6 truncate">
+                    {new Date(pub.date_of_publication).toLocaleDateString()}
+                  </td>
+                  <td className="py-3 px-6">
+                    <button
+                      onClick={() => handlePublicationClick(pub)}
+                      className="text-[#8F3FA9] hover:underline mr-4"
+                    >
+                      View More
+                    </button>
+                    <button
+                      onClick={() => openConfirmDelete(pub.slug)}
+                      className="text-red-500 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Modal for Full Publication Content */}
       {isModalVisible && selectedPublication && (
@@ -174,13 +187,21 @@ const FetchPublications = () => {
             onClick={closeModal}
           />
           <div className="bg-white p-6 rounded-md shadow-md w-[80%] z-50 h-[95%] max-sm:w-[90%] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4 text-[#8F3FA9]">
-              {selectedPublication.title}
-            </h2>
-            <div
-              className="mb-4 text-gray-600"
-              dangerouslySetInnerHTML={{ __html: selectedPublication.body }}
-            />
+            {isLoading ? (
+              <div className="flex justify-center">
+                <TailSpin color="#8F3FA9" height={50} width={50} />
+              </div>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold mb-4 text-[#8F3FA9]">
+                  {selectedPublication.title}
+                </h2>
+                <div
+                  className="mb-4 text-gray-600"
+                  dangerouslySetInnerHTML={{ __html: selectedPublication.body }}
+                />
+              </>
+            )}
             <button
               onClick={closeModal}
               className="mt-4 bg-[#8F3FA9] text-white py-2 px-4 rounded-md"
@@ -233,12 +254,24 @@ const FetchPublications = () => {
           >
             <h2
               className={`text-2xl font-bold mb-4 ${
-                notificationModal.isError ? "text-red-500" : "text-green-500"
+                notificationModal.isError ? "text-red-600" : "text-green-600"
               }`}
             >
               {notificationModal.isError ? "Error" : "Success"}
             </h2>
-            <p className="text-gray-600">{notificationModal.message}</p>
+            <p className="mb-4 text-gray-600">{notificationModal.message}</p>
+            <button
+              onClick={() =>
+                setNotificationModal({
+                  isVisible: false,
+                  message: "",
+                  isError: false,
+                })
+              }
+              className="bg-[#8F3FA9] text-white py-2 px-4 rounded-md"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}

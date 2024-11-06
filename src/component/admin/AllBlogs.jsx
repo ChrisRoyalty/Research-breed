@@ -14,9 +14,9 @@ const FetchBlogs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState(null); // To hold the blog being viewed
-  const [updating, setUpdating] = useState(false); // To handle update loading state
-  const [status, setStatus] = useState({}); // To track the approval status of each blog
+  const [selectedBlog, setSelectedBlog] = useState(null); // Holds the blog being viewed
+  const [updating, setUpdating] = useState(false); // Update loading state
+  const [status, setStatus] = useState({}); // Tracks the approval status of each blog
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -32,9 +32,10 @@ const FetchBlogs = () => {
         );
         if (response.data.success) {
           setBlogs(response.data.data);
-          // Initialize the status state with blog status from API
+
+          // Initialize status state with blog status from API
           const initialStatus = response.data.data.reduce((acc, blog) => {
-            acc[blog.slug] = blog.status; // Assuming the blog API returns a status
+            acc[blog.slug] = blog.status;
             return acc;
           }, {});
           setStatus(initialStatus);
@@ -60,17 +61,15 @@ const FetchBlogs = () => {
     setIsModalOpen(false);
   };
 
-  // Helper function to truncate content to 2-3 lines (plain text)
+  // Helper function to truncate content
   const truncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + "...";
-    }
-    return text;
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
   };
 
   const handleApproveDisapprove = async (slug, action) => {
     const url = `${process.env.REACT_APP_API_BASE_URL}/api/admin/update-blog`;
-    // Ensure correct endpoint
     const token = sessionStorage.getItem("authToken");
 
     if (!token) {
@@ -84,7 +83,6 @@ const FetchBlogs = () => {
 
     try {
       setUpdating(true);
-
       const response = await axios.patch(url, data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -93,7 +91,7 @@ const FetchBlogs = () => {
       });
 
       if (response.data.success) {
-        // Update the status for the blog
+        // Update status for the blog
         setStatus((prevStatus) => ({
           ...prevStatus,
           [slug]: action === "approve" ? "approved" : "disapproved",
@@ -159,7 +157,7 @@ const FetchBlogs = () => {
               <td className="px-4 py-2 border flex flex-col gap-2">
                 {status[blog.slug] === "approved" ? (
                   <>
-                    <span>Approved</span>{" "}
+                    <span>Approved</span>
                     <FaCheckCircle className="text-green-500 text-2xl" />
                   </>
                 ) : status[blog.slug] === "disapproved" ? (

@@ -3,7 +3,7 @@ import HeroSection from "../component/home/HeroSection";
 import Featured from "../component/home/Featured";
 import Research from "../component/home/Research";
 import HowItWorks from "../component/home/HowItWorks";
-// import Reviews from "../component/home/Reviews";
+import Reviews from "../component/home/Reviews";
 import "../css/home.css";
 import Footer from "../component/Footer";
 
@@ -24,7 +24,7 @@ function Home() {
       <Featured />
       <Research />
       <HowItWorks />
-      {/* <Reviews /> */}
+      <Reviews />
       <Footer />
     </div>
   );

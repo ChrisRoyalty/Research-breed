@@ -1,24 +1,39 @@
 import React, { useState } from "react";
 import { FaLock } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons for show/hide password
 import axios from "axios";
 
-// Modal component
-const SuccessModal = ({ message, onClose }) => {
+// Modal component to display any message
+const MessageModal = ({ message, onClose, isError, onGoToLogin }) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
       <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-        <h2 className="text-2xl font-bold mb-4 text-[#8F3FA9]">Success!</h2>
-        <p>{message}</p>
-        <button
-          className="mt-4 bg-[#8F3FA9] text-white px-4 py-2 rounded"
-          onClick={onClose}
+        <h2
+          className={`text-2xl font-bold mb-4 ${
+            isError ? "text-red-500" : "text-[#8F3FA9]"
+          }`}
         >
-          Close
-        </button>
+          {isError ? "Error" : "Account Created!"}
+        </h2>
+        <p>{message}</p>
+        <div className="mt-4 flex justify-center gap-4">
+          <button
+            className="bg-gray-400 text-white px-4 py-2 rounded"
+            onClick={onClose}
+          >
+            Close
+          </button>
+          {!isError && (
+            <button
+              className="bg-[#8F3FA9] text-white px-4 py-2 rounded"
+              onClick={onGoToLogin}
+            >
+              Go to Login
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -29,11 +44,11 @@ const CreateAccount = () => {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false); // For controlling modal visibility
+  const [showModal, setShowModal] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -58,24 +73,26 @@ const CreateAccount = () => {
       const data = response.data;
 
       if (data.success) {
-        setMessage(data.message); // Use the exact message from the response
-        setError("");
-        setShowModal(true); // Show modal on success
+        setMessage(
+          "Account created successfully! Please check your email to verify your account."
+        );
+        setIsError(false);
       } else {
-        setError("Failed to create account: " + data.message);
-        setMessage("");
+        setMessage("Failed to create account: " + data.message);
+        setIsError(true);
       }
     } catch (error) {
       if (error.response) {
-        setError("Error: " + error.response.data.message);
+        setMessage("Error: " + error.response.data.message);
       } else if (error.request) {
-        setError("Error: No response from server.");
+        setMessage("Error: No response from server.");
       } else {
-        setError("Error: " + error.message);
+        setMessage("Error: " + error.message);
       }
-      setMessage("");
+      setIsError(true);
     } finally {
       setLoading(false);
+      setShowModal(true); // Show modal regardless of success or error
     }
   };
 
@@ -87,8 +104,6 @@ const CreateAccount = () => {
             <FaLock className="text-white text-[30px]" />
           </div>
           <h4 className="text-[24px] font-bold">Create an Account</h4>
-          {message && <p>{message}</p>}
-          {error && <p>{error}</p>}
           <div className="socials flex gap-8">
             <FcGoogle className="text-[40px] border-[1px] border-black rounded-full p-2" />
             <FaFacebook className="text-[40px] border-[1px] border-black rounded-full p-2 text-blue-600" />
@@ -135,7 +150,7 @@ const CreateAccount = () => {
           <div className="w-full flex flex-col gap-2 relative">
             <label className="rounded-[30px] font-bold">Password</label>
             <input
-              type={showPassword ? "text" : "password"} // Toggle between password and text
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -144,14 +159,11 @@ const CreateAccount = () => {
             />
             <div
               className="absolute right-4 top-[52px] cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+              onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </div>
           </div>
-          {message && (
-            <div className="message text-center text-[#8F3FA9]">{message}</div>
-          )}
           <footer className="flex flex-col justify-center items-center sm:mt-8 mt-4 gap-4">
             <button
               type="submit"
@@ -189,15 +201,17 @@ const CreateAccount = () => {
               <Link className="font-bold text-[18px]" to="/login">
                 Already Have an Account?
               </Link>
-              <Link className="font-bold text-[18px]" to="/login">
-                Login
-              </Link>
             </div>
           </footer>
         </form>
       </div>
       {showModal && (
-        <SuccessModal message={message} onClose={() => setShowModal(false)} />
+        <MessageModal
+          message={message}
+          onClose={() => setShowModal(false)}
+          isError={isError}
+          onGoToLogin={() => navigate("/login")}
+        />
       )}
     </div>
   );

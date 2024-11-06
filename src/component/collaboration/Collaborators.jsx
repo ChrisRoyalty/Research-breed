@@ -112,7 +112,7 @@ const Collaborators = () => {
           >
             <div className="flex flex-col items-center px-4 py-8 bg-[#8F3FA9] text-white">
               <img
-                src={collaborator.image}
+                src={collaborator.profile_image}
                 alt={`${collaborator.firstname} ${collaborator.lastname}`}
                 className="rounded-full w-24 h-24 lg:w-28 lg:h-28 border-4 border-white object-cover shadow-md"
               />
